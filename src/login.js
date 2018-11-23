@@ -6,9 +6,15 @@ import logo from './logo.png';
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {username: '', password: ''};
-    this.handleChange = this.handleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.state = {
+      username: '',
+      password: '',
+      firstname: '',
+      lastname: '',
+      new_username: '',
+      new_password: ''
+    };
+    this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange(event) {
@@ -17,16 +23,23 @@ class LoginForm extends React.Component {
     this.setState({[name]: value});
   }
 
-  handleSubmit(event) {
+  handleLoginSubmit(event) {
     alert("Signed In");
+    event.preventDefault();
+  }
+
+  handleSignupSubmit(event) {
+    alert("Signed Up");
     event.preventDefault();
   }
 
   render() {
     return (
+      <div className="main">
+
       <div className="login">
       <img src={logo} className="logo" alt="logo" />
-      <form className="form" onSubmit={this.handleSubmit}>
+      <form className="login_form" onSubmit={this.handleLoginSubmit.bind(this)}>
         <label className="username_box">
           Username:
           <input type="text" name="username" value={this.state.username.value} onChange={this.handleChange}/>
@@ -35,8 +48,33 @@ class LoginForm extends React.Component {
           Password:
           <input type="password" name="password" value={this.state.password.value} onChange={this.handleChange}/>
         </label>
-        <input type="submit" value="Sign In" />
+        <input type="submit" className="login_button" value="Sign In" />
       </form>
+      </div>
+
+      <div className="signup">
+      <h3>Create New Account</h3>
+      <form className="signup_form" onSubmit={this.handleSignupSubmit.bind(this)}>
+        <label>
+          First Name:
+          <input type="text" name="firstname" value={this.state.firstname.value} onChange={this.handleChange}/>
+        </label>
+        <label>
+          Last Name:
+          <input type="text" name="lastname" value={this.state.lastname.value} onChange={this.handleChange}/>
+        </label>
+        <label>
+          Create Username:
+          <input type="text" name="new_username" value={this.state.new_username.value} onChange={this.handleChange}/>
+        </label>
+        <label>
+          Create Password:
+          <input type="text" name="new_password" value={this.state.new_password.value} onChange={this.handleChange}/>
+        </label>
+        <input type="submit" className="signup_button" value="Sign Up" />
+      </form>
+      </div>
+
       </div>
     );
   }

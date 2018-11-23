@@ -1,11 +1,16 @@
-form {
+.login form {
   float: right;
   padding: 25px;
 }
 
-label {
+.login label {
   margin: 10px;
   color: white;
+}
+
+.signup label {
+  display: block;
+  padding: 10px;
 }
 
 input {
@@ -20,4 +25,23 @@ input {
 
 .logo {
   height: 70px;
+}
+
+.login_button {
+  cursor: pointer;
+}
+
+.signup {
+  float: right;
+  padding: 50px;
+  align-items: center;
+}
+
+.signup_button {
+  background-color: #663300;
+  color: white;
+  padding: 10px 10px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
 }
