@@ -1,0 +1,23 @@
+form {
+  float: right;
+  padding: 25px;
+}
+
+label {
+  margin: 10px;
+  color: white;
+}
+
+input {
+  margin-left: 5px;
+}
+
+.login {
+  width: 100%;
+  display: inline-block;
+  background-color: #663300;
+}
+
+.logo {
+  height: 70px;
+}
