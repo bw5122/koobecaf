@@ -31,10 +31,8 @@ class LoginForm extends React.Component {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        username: this.state.new_username,
-        password: this.state.new_password,
-        firstname: this.state.firstname,
-        lastname: this.state.lastname
+        username: this.state.username,
+        password: this.state.password
       })
     });
     const body = await response.text();
