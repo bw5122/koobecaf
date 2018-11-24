@@ -28,9 +28,24 @@ class LoginForm extends React.Component {
     event.preventDefault();
   }
 
-  handleSignupSubmit(event) {
-    alert("Signed Up");
-    event.preventDefault();
+  handleSignupSubmit = async e => {
+    e.preventDefault();
+    const response = await fetch("/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        username: this.state.new_username,
+        password: this.state.new_password,
+        firstname: this.state.firstname,
+        lastname: this.state.lastname
+      })
+    });
+    const body = await response.text();
+    this.setState({
+      responseToPost: body
+    });
   }
 
   render() {
