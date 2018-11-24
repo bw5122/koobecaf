@@ -23,9 +23,24 @@ class LoginForm extends React.Component {
     this.setState({[name]: value});
   }
 
-  handleLoginSubmit(event) {
-    alert("Signed In");
+  handleLoginSubmit = async e => {
     event.preventDefault();
+    const response = await fetch("/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        username: this.state.new_username,
+        password: this.state.new_password,
+        firstname: this.state.firstname,
+        lastname: this.state.lastname
+      })
+    });
+    const body = await response.text();
+    this.setState({
+      responseToPost: body
+    });
   }
 
   handleSignupSubmit = async e => {
