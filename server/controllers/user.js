@@ -11,10 +11,17 @@ var signUp = function(req, res) {
     };
     User.addUser(newUser, function(err, data) {
         if (err) {
-            console.log('Error: ', err);
+            console.log(err);
+            res.send({
+                data: null,
+                error: err
+            });
         } else {
-            console.log('Success!');
             console.log(data);
+            res.send({
+                data: data,
+                error: null
+            });
         }
     });
 }
@@ -26,18 +33,77 @@ var login = function(req, res) {
         password: req.body.password,
     };
     User.login(user, function(err, data) {
-        if (err)
-            console.log("Error: ", err);
-        else {
-            console.log('Success!');
+        if (err) {
+            console.log(err);
+            res.send({
+                data: null,
+                err: err
+            });
+        } else {
             console.log(data);
+            res.send({
+                data: data,
+                err: null
+            });
         }
     });
 };
 
+var updateProfile = function(req, res) {
+    console.log("User Controller: update_profile");
+    // need to check input here
+    if (!req.body.userID)
+        res.send({
+            data: null,
+            err: "Missing parameters in request",
+        });
+    User.updateProfile(req.body, function(err, data) {
+        if (err) {
+            console.log(err);
+            res.send({
+                data: null,
+                err: err
+            });
+        } else {
+            console.log(data);
+            res.send({
+                data: data,
+                err: null
+            });
+        }
+    });
+};
+
+var getProfile = function(req, res) {
+    console.log("User Controller get_profile");
+    // need to check input here
+    if (!req.params.userID)
+        res.send({
+            data: null,
+            err: "Missing parameters in request"
+        });
+    User.getProfile(req.params, function(err, data) {
+        if (err) {
+            console.log(err);
+            res.send({
+                data: null,
+                err: err
+            });
+        } else {
+            console.log(data);
+            res.send({
+                data: data,
+                err: null
+            });
+        }
+    })
+}
+
 var user_controller = {
     sign_up: signUp,
     login: login,
+    update_profile: updateProfile,
+    get_profile: getProfile,
 };
 
 module.exports = user_controller;
