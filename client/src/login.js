@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './login.css';
 import logo from './logo.png';
 import { Redirect, withRouter } from 'react-router-dom';
+
 //logo: 8ebee8
 class LoginForm extends Component {
   constructor(props) {
@@ -15,6 +16,7 @@ class LoginForm extends Component {
       lastname: '',
       new_username: '',
       new_password: ''
+
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -22,7 +24,9 @@ class LoginForm extends Component {
   handleChange(event) {
     const name = event.target.name;
     const value = event.target.value;
-    this.setState({[name]: value});
+    this.setState({
+      [name]: value
+    });
   }
 
 
@@ -74,7 +78,7 @@ class LoginForm extends Component {
         username: 'User1'
       }
     });
-  }
+  };
 
   handleSignupSubmit = e => {
     e.preventDefault();
@@ -89,6 +93,7 @@ class LoginForm extends Component {
         firstname: this.state.firstname,
         lastname: this.state.lastname
       })
+
     })
     .then(res => res.json())
     .then(
@@ -104,6 +109,33 @@ class LoginForm extends Component {
   render() {
     return (
       <div className="main">
+        <div className="login">
+          <img src={logo} className="logo" alt="logo" />
+          <form
+            className="login_form"
+            onSubmit={this.handleLoginSubmit.bind(this)}
+          >
+            <label className="username_box">
+              Username:
+              <input
+                type="text"
+                name="username"
+                value={this.state.username.value}
+                onChange={this.handleChange}
+              />{" "}
+            </label>{" "}
+            <label className="password_box">
+              Password:
+              <input
+                type="password"
+                name="password"
+                value={this.state.password.value}
+                onChange={this.handleChange}
+              />{" "}
+            </label>{" "}
+            <input type="submit" className="login_button" value="Sign In" />
+          </form>{" "}
+        </div>
 
       <div className="login">
       <img src={logo} className="logo" alt="logo" />

@@ -4,8 +4,7 @@ var SHA3 = require("crypto-js/sha3");
 dynamo.AWS.config.loadFromPath('config.json');
 
 var User = dynamo.define('User', {
-    hashKey: 'username',
-    //rangeKey: 'userID',
+    hashKey: 'userID',
     // add the timestamp attributes (updatedAt, createdAt)
     timestamps: true,
 
@@ -20,8 +19,13 @@ var User = dynamo.define('User', {
         affiliation: Joi.string(),
         birthday: Joi.string(),
         interests: dynamo.types.stringSet(),
-        chats: dynamo.types.numberSet(),
-    }
+        groupchats: dynamo.types.stringSet(),
+    },
+    indexes: [{
+        hashKey: 'username',
+        name: 'usernameIndex',
+        type: 'global'
+    }]
 });
 
 /* Create the table */
@@ -32,83 +36,100 @@ dynamo.createTables({
     },
 }, function(err) {
     if (err) {
-        console.log('Error creating tables: ', err);
+        console.log('Error creating table User: ', err.message);
     } else {
-        console.log('Tables has been created');
+        console.log('Table User has been created');
     }
 });
 
 /* sign up */
-var userTable_addUser = function(user, ctrl_cb) {
-    console.log("userTable: Adding new user " + user.username);
-    // check if the account exist
-    User.get({
-        username: user.username,
-    }, function(err, usr) {
-        if (usr) //existed
-        {
-            console.log("This user ", usr.get('username'), "already existed.")
-            ctrl_cb("This user name already existed.", null);
-        } else {
-            // create new user
+var userTable_addUser = function(user, cb) {
+    console.log("userTable: Adding new user: " + user.username);
+    //check if the account exist
+    User.query(user.username).usingIndex('usernameIndex').exec(function(err, data) {
+        if (err)
+            cb(err, null);
+        else if (data.Count > 0)
+            cb("This user name already existed.", null);
+        else {
+            //create a new user
             var hashedPassword = SHA3(user.password).toString();
-            User.create({
-                username: user.username,
-                password: hashedPassword,
-                firstname: user.firstname,
-                lastname: user.lastname,
-            }, function(err, usr_1) {
+            user.password = hashedPassword;
+            User.create(user, function(err, usr_1) {
                 if (err)
-                    ctrl_cb(err, null);
+                    cb(err, null);
                 else {
                     console.log('created new user', usr_1.get('username'));
-                    ctrl_cb(null, usr_1.attrs);
+                    cb(null, usr_1.attrs);
                 }
             });
         }
-    });
+    })
 }
 
-
-var userTable_login = function(user, ctrl_cb) {
+var userTable_login = function(user, cb) {
     console.log("userTable: Login for ", user.username);
-    User.get({
-        username: user.username,
-    }, function(err, usr) {
-        if (usr) {
+    //check if the account exist
+    User.query(user.username).usingIndex('usernameIndex').exec(function(err, data) {
+        if (err)
+            cb(err, null);
+        else if (data.Count == 0)
+            cb("This user does not exist.", null);
+        else {
+            usr = data.Items[0].attrs;
             var hashedPassword = SHA3(user.password).toString();
-            if (hashedPassword == usr.get('password')) {
+            if (hashedPassword == usr.password) {
                 //login now
-                ctrl_cb(null, usr.get('username'));
+                cb(null, {
+                    userID: usr.userID,
+                    firstname: usr.firstname,
+                    lastname: usr.lastname,
+                });
             } else {
-                ctrl_cb('Error: incorrect password', null);
+                cb('Error: incorrect password', null);
             }
-        } else {
-            ctrl_cb(err.message, null)
         }
     })
 }
 
-var userTable_updateProfile = function(user, ctrl_cb) {
-    console.log("userTable: updateProfile for ", user.username);
-    User.update({
-        username: user.username,
-        status: user.status,
-        affiliation: user.affiliation,
-        birthday: user.birthday,
-        interests: user.interests,
-    }, function(err, usr) {
+var userTable_updateProfile = function(user, cb) {
+    console.log("userTable: updateProfile for ", user.userID);
+    User.update(user, function(err, usr) {
         if (err)
-            ctrl_cb(err.message, null);
+            cb(err.message, null);
         else {
-            ctrl_cb(null, usr.attrs);
+            var userinfo = usr.attrs;
+            delete userinfo.username;
+            delete userinfo.userID;
+            delete userinfo.password;
+            delete userinfo.updatedAt;
+            delete userinfo.createdAt;
+            cb(null, userinfo);
         }
     })
+}
+
+var userTable_getProfile = function(user, cb) {
+    console.log("userTable: updateProfile for ", user.userID);
+    User.query(user.userID)
+        .attributes(['firstname', 'lastname', 'status', 'affiliation', 'birthday', 'interests', 'email', 'photo'])
+        .exec(function(err, data) {
+            if (err)
+                cb(err, null);
+            else if (data.Count == 0)
+                cb("This user does not exist.", null);
+            else {
+                usr = data.Items[0].attrs;
+                cb(null, usr);
+            }
+        })
 }
 
 var userTable = {
     addUser: userTable_addUser,
     login: userTable_login,
+    updateProfile: userTable_updateProfile,
+    getProfile: userTable_getProfile,
 }
 
 module.exports = userTable;
