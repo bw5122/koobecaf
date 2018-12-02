@@ -92,3 +92,49 @@
 - post: "/uploadmsg"
 
 # API Specification
+
+## /user/signup
+
+- req{username, password, firstname, lastname}
+- res{firstname, lastname, userID}
+
+## /user/login
+
+- req{username,password}
+- res{firstname, lastname, userID}
+
+## /user/getprofile/:userID
+
+- res{lastname,firstname,photo,interests[],status,affiliation,birthday}
+
+## /user/updateprofile
+
+- req{userID,lastname,firstname,photo,interests[],status,affiliation,birthday }
+- res{lastname,firstname,photo,interests[],status,affiliation,birthday}
+
+## /post/createpost
+
+- req{postBy, creator, content, friendtags[]}
+- res{postBy, creator, content, friendtags[], postID, createdAt}
+
+## /post/getownpost/:userID
+
+- res{[{
+  content, createdAt,postID, friendtags[], postBy, image, comments[]
+  }]
+  }
+
+## /post/uploadimage/:postID
+
+- req{image}
+- res{image, postBy, creator, content, friendtags[], postID, createdAt}
+
+## /post/addcomment
+
+- req{postID, content, creator}
+- res{postID, content, creator, createdAt}
+
+## /post/deletement
+
+- req {postID, createdAt}
+- res {error}
