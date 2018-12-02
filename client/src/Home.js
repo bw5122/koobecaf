@@ -40,11 +40,11 @@ class Home extends Component {
       },
       body: JSON.stringify({
         //TODO:
-        postBy:
-        creator:
-        content:
-        friendtags:[]
-        image:
+        postBy:'',
+        creator:'',
+        content:'',
+        friendtags:[],
+        image:''
       })
     })
     .then(res => res.json())
