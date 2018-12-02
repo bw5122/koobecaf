@@ -10,9 +10,30 @@ class Profile extends Component {
     }
   }
 
+  componentDidMount() {
+    fetch("/user/getprofile/" + this.state.userID, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        userID: this.state.userID
+      })
+    })
+    .then(res => res.json())
+    .then(
+      (result) => {
+        alert("get profile success");
+      },
+      (error) => {
+        alert("Error! Please try again.");
+      }
+    )
+  }
+
   handlePhotoUpload = e => {
     e.preventDefault();
-    fetch("/uploadphoto/" + this.state.userID, {
+    fetch("/user/uploadphoto/" + this.state.userID, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
