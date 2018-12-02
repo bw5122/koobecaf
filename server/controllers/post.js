@@ -1,5 +1,6 @@
 var Post = require('../models/post');
-
+var Comm = require('../models/comment');
+var async = require("async");
 var createPost = function(req, res) {
     console.log("Post Controller: createPost");
     console.log(req.body);
@@ -42,8 +43,24 @@ var getOnePost = function(req, res) {
                     error: "Cannot find the post",
                 });
             } else {
+                //get comments
+                var comments = [];
+                Comm.getComment(postID, function(err1, data1) {
+                    if (err) {
+                        console.log(err);
+                        res.send({
+                            data: null,
+                            error: err
+                        });
+                    } else if (data.Count == 0) {
+                        comments = [];
+                    } else {
+                        var comments = data.Items
+                    }
+                })
                 console.log("print data.Items")
                 console.log(data.Items);
+                data.Items[0]['comments'] = comments;
                 res.send({
                     data: data.Items[0],
                     error: null

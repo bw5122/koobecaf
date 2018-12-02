@@ -20,7 +20,7 @@ var uploadUserPhoto = function(req, res) {
             });
         } else {
             //store the image into userTable
-            console.log(req.params.userID);
+            console.log(req.file);
             var usr = {
                 userID: userID,
                 image: req.file.location,

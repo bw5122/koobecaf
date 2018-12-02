@@ -90,3 +90,5 @@
 - get: "/getallgroupchat"
 - get: "/getchathistory"
 - post: "/uploadmsg"
+
+# API Specification
