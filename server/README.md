@@ -28,10 +28,17 @@
 
 ## Comment Table
 
-- string: postID(partition key)
+- string: commentID(partition key)
+- string: postID(gloabl secondary index partition key)
 - string: creator
 - string: content
-- string: createdAt(range key)
+- string: createdAt(gloabl secondary index range key)
+
+## Friend Table
+
+- stirng: user1(partition key)
+- string: user2
+- string: chatID
 
 ## Chat Table
 
@@ -40,10 +47,11 @@
 
 ## Message Table
 
-- string: charID(partition key)
+- string: messageID(partition key)
+- string: charID(gloabl secondary index partition key)
 - string: sender
 - string: content
-- string: createdAt(timestamp)
+- string: createdAt(gloabl secondary index range key)
 
 ## Notice Table
 
@@ -121,8 +129,7 @@
 
 - res{[{
   content, createdAt,postID, friendtags[], postBy, image, comments[]
-  }]
-  }
+  }]}
 
 ## /post/uploadimage/:postID
 
@@ -132,9 +139,9 @@
 ## /post/addcomment
 
 - req{postID, content, creator}
-- res{postID, content, creator, createdAt}
+- res{commentID, postID, content, creator, createdAt}
 
-## /post/deletement
+## /post/deletecomment
 
-- req {postID, createdAt}
+- req {commentID}
 - res {error}
