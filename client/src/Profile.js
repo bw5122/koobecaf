@@ -5,13 +5,48 @@ class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      photo: {}
+      photo: {},
+      userID: 1
     }
+  }
+
+  handlePhotoUpload = e => {
+    e.preventDefault();
+    fetch("/uploadphoto/" + this.state.userID, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+
+      })
+    })
+    .then(res => res.json())
+    .then(
+      (result) => {
+        alert("Upload success");
+      },
+      (error) => {
+        alert("Error! Please try again.");
+      }
+    )
   }
 
   render() {
     return (
+      <div>
+      <h2>Upload Photo</h2>
 
+      <form className="photo_form" onSubmit={this.handlePhotoUpload.bind(this)}>
+        <label className="file_upload">
+          Choose from file:
+          <input type="file"/>
+        </label>
+        <input type="submit" className="upload_button" value="Upload" />
+      </form>
+      </div>
     )
   }
+
 }
+export default Profile;
