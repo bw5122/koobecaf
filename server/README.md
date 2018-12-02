@@ -60,8 +60,8 @@
 - post: "/login"
 - post: "/signup"
 - post: "/updateprofile"
-- get: "/getprofile"
-- post: "/uploadphoto"
+- get: "/getprofile/:userID"
+- post: "/uploadphoto/:userID"
 
 ## /friend
 
@@ -73,10 +73,15 @@
 
 ## /post
 
-- get: "/getpost"
+- get: "/getpost/:userID"
 - post: "/createpost"
 - post: "/addcomment"
+- delete: "/deletecomment"
 - post: "/uploadimage"
+- get: "/getonepost/:postID"
+- get: "/getallpost/:userID"
+- get: "/getownpost/:postID"
+- post: "/uploadimage/:postID"
 
 ## /chat
 
