@@ -85,13 +85,9 @@ class Home extends Component {
     return(
       <div className="homepage">
         <div className="nav">
-          <button id="nav_button" onClick="navigate()">Nav</button>
-          <ButtonGroup>
-            <Button>1</Button>
-            <Button>2</Button>
-            <Button>3</Button>
-            <Button>4</Button>
-          </ButtonGroup>
+          <button id="nav_button" onClick={this.navigate}>Nav</button>
+          <button id="profile_button" onClick="">{username}</button>
+          <button id="home_button" onClick="">Home</button>
         </div>
 
         <div className="content">
