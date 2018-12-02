@@ -1,18 +1,22 @@
-import React, { Component } from "react";
-import ReactDOM from "react-dom";
-import "./login.css";
-import logo from "./logo.png";
+import React, {Component} from 'react';
+import ReactDOM from 'react-dom';
+import './login.css';
+import logo from './logo.png';
+import { Redirect, withRouter } from 'react-router-dom';
+
 //logo: 8ebee8
-class LoginForm extends React.Component {
+class LoginForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: "",
-      password: "",
-      firstname: "",
-      lastname: "",
-      new_username: "",
-      new_password: ""
+      // all fields limit length to 20 characters
+      username: '',
+      password: '',
+      firstname: '',
+      lastname: '',
+      new_username: '',
+      new_password: ''
+
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -25,9 +29,16 @@ class LoginForm extends React.Component {
     });
   }
 
-  handleLoginSubmit = async e => {
+
+  handleLoginSubmit = e => {
     e.preventDefault();
-    const response = await fetch("/login", {
+    const user = this.state.username;
+    const pw = this.state.password;
+    if(user.length === 0 || pw.length === 0) {
+      alert("Empty field. Please try again.");
+      return;
+    }
+    fetch("/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -36,16 +47,42 @@ class LoginForm extends React.Component {
         username: this.state.username,
         password: this.state.password
       })
-    });
-    const body = await response.text();
-    this.setState({
-      responseToPost: body
+    })
+    .then(res => res.json())
+    .then(
+      (result) => {
+        this.props.history.push({
+          pathname:"/home",
+          state: {
+            userID: result.userID
+          }
+        });
+      },
+      (error) => {
+        alert("error");
+      }
+    )
+  }
+
+  handleDumbLogin = e => {
+    e.preventDefault();
+    const user = this.state.username;
+    const pw = this.state.password;
+    if(user.length === 0 || pw.length === 0) {
+      alert("Empty field. Please try again.");
+      return;
+    }
+    this.props.history.push({
+      pathname:"/home",
+      state: {
+        username: 'User1'
+      }
     });
   };
 
-  handleSignupSubmit = async e => {
+  handleSignupSubmit = e => {
     e.preventDefault();
-    const response = await fetch("/signup", {
+    fetch("/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -56,12 +93,18 @@ class LoginForm extends React.Component {
         firstname: this.state.firstname,
         lastname: this.state.lastname
       })
-    });
-    const body = await response.text();
-    this.setState({
-      responseToPost: body
-    });
-  };
+
+    })
+    .then(res => res.json())
+    .then(
+      (result) => {
+        alert("Sign up success");
+      },
+      (error) => {
+        alert("Error! Please try again.");
+      }
+    )
+  }
 
   render() {
     return (
@@ -94,54 +137,47 @@ class LoginForm extends React.Component {
           </form>{" "}
         </div>
 
-        <div className="signup">
-          <h3> Create New Account </h3>{" "}
-          <form
-            className="signup_form"
-            onSubmit={this.handleSignupSubmit.bind(this)}
-          >
-            <label>
-              First Name:
-              <input
-                type="text"
-                name="firstname"
-                value={this.state.firstname.value}
-                onChange={this.handleChange}
-              />{" "}
-            </label>{" "}
-            <label>
-              Last Name:
-              <input
-                type="text"
-                name="lastname"
-                value={this.state.lastname.value}
-                onChange={this.handleChange}
-              />{" "}
-            </label>{" "}
-            <label>
-              Create Username:
-              <input
-                type="text"
-                name="new_username"
-                value={this.state.new_username.value}
-                onChange={this.handleChange}
-              />{" "}
-            </label>{" "}
-            <label>
-              Create Password:
-              <input
-                type="text"
-                name="new_password"
-                value={this.state.new_password.value}
-                onChange={this.handleChange}
-              />{" "}
-            </label>{" "}
-            <input type="submit" className="signup_button" value="Sign Up" />
-          </form>{" "}
-        </div>
+      <div className="login">
+      <img src={logo} className="logo" alt="logo" />
+      <form className="login_form" onSubmit={this.handleDumbLogin.bind(this)}>
+        <label className="username_box">
+          Username:
+          <input type="text" name="username" value={this.state.username.value} onChange={this.handleChange} maxLength="20"/>
+        </label>
+        <label className="password_box">
+          Password:
+          <input type="password" name="password" value={this.state.password.value} onChange={this.handleChange} maxLength="20"/>
+        </label>
+        <input type="submit" className="login_button" value="Sign In" />
+      </form>
+      </div>
+
+      <div className="signup">
+      <h3>Create New Account</h3>
+      <form className="signup_form" onSubmit={this.handleSignupSubmit.bind(this)}>
+        <label>
+          First Name:
+          <input type="text" name="firstname" value={this.state.firstname.value} onChange={this.handleChange} maxLength="20"/>
+        </label>
+        <label>
+          Last Name:
+          <input type="text" name="lastname" value={this.state.lastname.value} onChange={this.handleChange} maxLength="20"/>
+        </label>
+        <label>
+          Create Username:
+          <input type="text" name="new_username" value={this.state.new_username.value} onChange={this.handleChange} maxLength="20"/>
+        </label>
+        <label>
+          Create Password:
+          <input type="text" name="new_password" value={this.state.new_password.value} onChange={this.handleChange} maxLength="20"/>
+        </label>
+        <input type="submit" className="signup_button" value="Sign Up" />
+      </form>
+      </div>
+
       </div>
     );
   }
 }
 
-export default LoginForm;
+export default withRouter(LoginForm);
