@@ -1,0 +1,61 @@
+body {
+  background-color: #cecece;
+}
+
+Post {
+  margin: 5px;
+}
+
+.nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: #663300;
+  height: 80px;
+}
+
+.content {
+  position: relative;
+  margin-top: 80px;
+  width: 100%;
+  z-index: -1;
+}
+
+.posts {
+  position: absolute;
+  left: 25%;
+  width: 75%;
+}
+
+.oldposts {
+  margin-top: 50px;
+}
+
+#newpost {
+  width: 50%;
+  height: 50px;
+  padding: 10px;
+  margin: 10px;
+}
+
+#create_button {
+  border-radius: 8px;
+  background-color: #663300;
+  color: white;
+  padding: 10px 10px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 15px;
+  position: absolute;
+  right: 50%;
+}
+
+#nav_button {
+  border-radius: 8px;
+  background-color: white;
+  color: #663300;
+  font-size: 15px;
+  padding: 5px 10px;
+  font-weight: bold;
+  margin: 10px;
+}

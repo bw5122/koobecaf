@@ -1,0 +1,21 @@
+.box {
+  width: 50%;
+  background-color: white;
+  padding: 10px;
+  margin: 10px;
+}
+
+.img {
+  width: 10px;
+  height: auto;
+}
+#newcomment {
+  width: 70%;
+  border: 2px solid #888888;
+  border-radius: 4px;
+  padding: 5px 10px;
+}
+
+#like_button {
+
+}
