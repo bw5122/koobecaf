@@ -1,14 +1,7 @@
-import React, {
-    Component
-} from 'react';
+import React, {Component} from 'react';
 import io from "socket.io-client";
-import {
-    render
-} from 'react-dom'
-import {
-    Launcher
-} from './react-chat-window/lib/index'
-//import "./ChatRoom.css"
+import {render} from 'react-dom'
+import {Launcher} from './react-chat-window/lib/index'
 
 class Chatroom extends Component {
     constructor(props) {
@@ -64,7 +57,7 @@ class Chatroom extends Component {
           }) */
         socket.on('message', (obj) => {
             console.log('message event is received at the front-end!');
-            this.updateMsg(obj);
+              this.updateMsg(obj);
         })
     }
 

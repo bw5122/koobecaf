@@ -1,11 +1,9 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
-import LoginForm from './login';
-import Post from './Post';
-import Home from './Home';
-import Profile from './Profile';
+import LoginForm from './Pages/LoginPage';
+import Post from './Components/Post';
+import Home from './Pages/HomePage';
+import Profile from './Pages/ProfilePage';
 
 const App = () => (
   <div className="app-routes">

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Image from 'react-image';
 import Moment from 'react-moment';
 import Comment from './Comment'
-import './Post.css';
+import '../Styles/Post.css';
 
 class Post extends Component {
   constructor(props) {

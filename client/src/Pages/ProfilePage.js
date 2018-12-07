@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import Post from "./Post";
-import profile_default from './profile.png';
+import Post from "../Components/Post";
+import profile_default from '../Assets/profile.png';
 
 class Profile extends Component {
   constructor(props) {
