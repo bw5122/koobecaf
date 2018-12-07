@@ -50,7 +50,9 @@ io.on('connection', function(socket) {
     socket.join(socket.handshake.query.chatid);
 
     //getChatHistory()???
-    //chat_ctrl.get_chat_history(socket.handshake.query.chatid);
+    chat_ctrl.get_chat_history(socket.handshake.query.chatid, function(data) {
+        console.log(data);
+    });
 
     // 监听客户端的登陆
     socket.on('login', function(obj) {
@@ -104,6 +106,18 @@ io.on('connection', function(socket) {
         console.log("chatid: " + obj.chatid);
         //io.to(obj.chatid).emit('message', obj);//successful?
         //io.in(obj.chatid).emit('message', obj);
+
+        //upload message
+        var fakemessage = {
+            type: 'text',
+            sender: 'user1',
+            chatID: '1',
+            content: 'first message'
+        };
+        chat_ctrl.add_message(fakemessage, function(data) {
+            console.log(data);
+        })
+
 
         obj.author = "them";
         socket.broadcast.to(obj.chatid).emit('message', obj);

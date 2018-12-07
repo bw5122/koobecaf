@@ -15,7 +15,6 @@ var User = dynamo.define('User', {
         email: Joi.string().email(),
         firstname: Joi.string(),
         lastname: Joi.string(),
-        status: Joi.string(),
         affiliation: Joi.string(),
         birthday: Joi.string(),
         interests: dynamo.types.stringSet(),
