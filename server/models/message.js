@@ -51,7 +51,7 @@ var messageTable_addMessage = function(message, cb) {
 
 var messageTable_getMessage = function(chatID, cb) {
     console.log("Message Table: get Message");
-    Message.query(chatID).usingIndex('chatIDIndex').descending().exec(cb);
+    Message.query(chatID).usingIndex('chatIDIndex').ascending().exec(cb);
 }
 
 var messageTable_deleteMessage = function(messageID, cb) {
