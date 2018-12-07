@@ -38,7 +38,7 @@ class LoginForm extends Component {
       alert("Empty field. Please try again.");
       return;
     }
-    fetch("/signup", {
+    fetch("/user/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -54,6 +54,8 @@ class LoginForm extends Component {
         this.props.history.push({
           pathname:"/home",
           state: {
+            firstname: result.firstname,
+            lastname: result.lastname,
             userID: result.userID
           }
         });
@@ -82,7 +84,7 @@ class LoginForm extends Component {
 
   handleSignupSubmit = e => {
     e.preventDefault();
-    fetch("/signup", {
+    fetch("/user/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -98,7 +100,14 @@ class LoginForm extends Component {
     .then(res => res.json())
     .then(
       (result) => {
-        alert("Sign up success");
+        this.props.history.push({
+          pathname:"/home",
+          state: {
+            firstname: result.firstname,
+            lastname: result.lastname,
+            userID: result.userID
+          }
+        });
       },
       (error) => {
         alert("Error! Please try again.");
@@ -109,34 +118,6 @@ class LoginForm extends Component {
   render() {
     return (
       <div className="main">
-        <div className="login">
-          <img src={logo} className="logo" alt="logo" />
-          <form
-            className="login_form"
-            onSubmit={this.handleLoginSubmit.bind(this)}
-          >
-            <label className="username_box">
-              Username:
-              <input
-                type="text"
-                name="username"
-                value={this.state.username.value}
-                onChange={this.handleChange}
-              />{" "}
-            </label>{" "}
-            <label className="password_box">
-              Password:
-              <input
-                type="password"
-                name="password"
-                value={this.state.password.value}
-                onChange={this.handleChange}
-              />{" "}
-            </label>{" "}
-            <input type="submit" className="login_button" value="Sign In" />
-          </form>{" "}
-        </div>
-
       <div className="login">
       <img src={logo} className="logo" alt="logo" />
       <form className="login_form" onSubmit={this.handleDumbLogin.bind(this)}>

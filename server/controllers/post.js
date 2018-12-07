@@ -1,5 +1,6 @@
 var Post = require('../models/post');
-
+var Comm = require('../models/comment');
+var async = require("async");
 var createPost = function(req, res) {
     console.log("Post Controller: createPost");
     console.log(req.body);
@@ -30,6 +31,7 @@ var getOnePost = function(req, res) {
         });
     else {
         Post.getOnePost(postID, function(err, data) {
+            var mydata = data;
             if (err) {
                 console.log(err);
                 res.send({
@@ -42,12 +44,27 @@ var getOnePost = function(req, res) {
                     error: "Cannot find the post",
                 });
             } else {
-                console.log("print data.Items")
-                console.log(data.Items);
-                res.send({
-                    data: data.Items[0],
-                    error: null
-                });
+                //get comments
+                var comments = [];
+                Comm.getComment(postID, function(err1, data1) {
+                    if (err) {
+                        console.log(err);
+                        res.send({
+                            data: null,
+                            error: err
+                        });
+                    } else {
+                        if (data1.Items.length > 0)
+                            comments = data1.Items;
+                        mydata.Items[0].attrs.comments = comments;
+                        console.log(mydata.Items[0]);
+                        res.send({
+                            data: mydata.Items[0],
+                            error: null
+                        });
+                    }
+                })
+
             }
         })
     }
@@ -64,9 +81,33 @@ var getOwnPost = function(req, res) {
             });
         } else {
             console.log(data.Items);
-            res.send({
-                data: data.Items,
-                error: null
+            var postIDs = data.Items.map(obj => {
+                return obj.attrs.postID
+            });
+            console.log(postIDs);
+            var counter = 0;
+            async.forEach(postIDs, function(postID, callback) {
+                console.log(postID); // print the key
+                Comm.getComment(postID, function(err, data1) {
+                    if (err) {
+                        callback();
+                    } else {
+                        var comments = []
+                        if (data1.Items.length > 0)
+                            comments = data1.Items;
+                        data.Items[counter].attrs.comments = comments;
+                        console.log(counter);
+                        console.log(data.Items[counter].attrs.comments)
+                        counter++;
+                        // tell async that that particular element of the iterator is done
+                        callback();
+                    }
+                })
+            }, function(err) {
+                res.send({
+                    data: data.Items,
+                    error: null
+                });
             });
         }
     })
@@ -87,9 +128,33 @@ var getAllPost = function(req, res) {
             });
         } else {
             console.log(data.Items);
-            res.send({
-                data: data.Items,
-                error: err
+            var postIDs = data.Items.map(obj => {
+                return obj.attrs.postID
+            });
+            console.log(postIDs);
+            var counter = 0;
+            async.forEach(postIDs, function(postID, callback) {
+                console.log(postID); // print the key
+                Comm.getComment(postID, function(err, data1) {
+                    if (err) {
+                        callback();
+                    } else {
+                        var comments = []
+                        if (data1.Items.length > 0)
+                            comments = data1.Items;
+                        data.Items[counter].attrs.comments = comments;
+                        console.log(counter);
+                        console.log(data.Items[counter].attrs.comments)
+                        counter++;
+                        // tell async that that particular element of the iterator is done
+                        callback();
+                    }
+                })
+            }, function(err) {
+                res.send({
+                    data: data.Items,
+                    error: null
+                });
             });
         }
     })
