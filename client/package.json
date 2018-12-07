@@ -6,6 +6,7 @@
         "babel-core": "^6.26.3",
         "babel-loader": "^8.0.4",
         "babel-preset-env": "^1.7.0",
+        "emoji-js": "^3.4.1",
         "express": "^4.16.4",
         "moment": "^2.22.2",
         "react": "^16.6.3",

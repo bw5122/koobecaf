@@ -12,6 +12,7 @@ class Chatroom extends Component {
       chatid: this.props.chatid,
       socket:""
     };
+    console.log("constrcutor of chatroom: "+this.state.chatid);
   }
 
   updateMsg(message){
@@ -22,6 +23,8 @@ class Chatroom extends Component {
 
   _onMessageWasSent(message){
     var testMsg = {
+      chatid: '',
+      senderid: '',
       author: 'them',
       type: 'emoji',
       data: { code: 'hello world' }
@@ -55,6 +58,14 @@ class Chatroom extends Component {
         console.log('message event is received at the front-end!');
         this.updateMsg(obj);
     })
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot){
+    if(prevState.chatid != this.props.chatid)
+      this.setState({
+        chatid: this.props.chatid
+      })
+    this.createSocket();
   }
 
   render() {

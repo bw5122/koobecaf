@@ -24,14 +24,27 @@ export default class FriendList extends Component {
       //  e.preventDefault();
         console.log("chatoom");
       //  alert("Chatroom!");
+        if(this.state.renderChatRoom){
+          this.setState({renderChatRoom: false});
+          console.log("here");
+        }
         this.setState({renderChatRoom: true, chatid: chatid});
+    }
+
+    b(chatid){
+      if(this.state.renderChatRoom){
+        this.setState({renderChatRoom: false});
+        console.log("destructor");
+      }
+      console.log("constructor");
+      this.setState({renderChatRoom: true, chatid: chatid});
     }
 
     render() {
         return(
             <div className="friend-list">
               <button className="_button_" onClick={() => this.a(1)}>Mary</button>
-              <button className="_button_" onClick={() => this.a(2)}>Bob</button>
+              <button className="_button_" onClick={() => this.b(2)}>Bob</button>
               <div className="chat-room">
                 {(this.state.renderChatRoom)? <ChatRoom chatid={this.state.chatid}/> : ''}
               </div>

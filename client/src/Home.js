@@ -10,9 +10,13 @@ class Home extends Component {
     this.state = {
       // all fields limit length to 20 characters
       userID: this.props.location.state.userID,
-      posts: [],
+      posts: [{postBy: 'jack',
+              creator: 'jack',
+              content: 'test post',
+              friendtags: ['berry']}],
       newpost: '',
       friendtags: []
+
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleCreatePost = this.handleCreatePost.bind(this);
@@ -105,9 +109,6 @@ class Home extends Component {
               <input type="submit" id="create_button" value="Share" />
             </form>
             <div className="oldposts">
-            <Post creator="User2" content="Wowwwww!!!" />
-            <Post creator="User3" content="Happy Thanksgiving!" />
-            <Post creator="User4" content="Happy Birthday!" />
             <ul>{all_posts}</ul>
             </div>
           </div>
@@ -117,5 +118,9 @@ class Home extends Component {
     )
   }
 }
-
+/* not applied to the new strcutre this.props.info
+<Post creator="User2" content="Wowwwww!!!" />
+<Post creator="User3" content="Happy Thanksgiving!" />
+<Post creator="User4" content="Happy Birthday!" />
+*/
 export default Home;

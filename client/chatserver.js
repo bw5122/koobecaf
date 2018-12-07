@@ -19,6 +19,9 @@ io.on('connection', function(socket) {
   //  socket.join(newChatid);
     console.log("a user is connected to chat room: "+socket.handshake.query.chatid);
     socket.join(socket.handshake.query.chatid);
+
+    //getChatHistory()???
+
     // 监听客户端的登陆
     socket.on('login', function(obj){
         // 用户id设为socketid
@@ -60,9 +63,10 @@ io.on('connection', function(socket) {
       console.log("chatid: "+obj.chatid);
         //io.to(obj.chatid).emit('message', obj);//successful?
         //io.in(obj.chatid).emit('message', obj);
+
         obj.author = "them";
         socket.broadcast.to(obj.chatid).emit('message', obj);
-
+        //uploadmsg()
         console.log(obj.username+"说:"+ obj.message)
     })
 

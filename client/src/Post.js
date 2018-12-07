@@ -8,7 +8,7 @@ class Post extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      comments: this.props.info.comments,
+      comments: [{},{}],
       newcomment: '',
       likes: {} // list of user names
     };
@@ -57,7 +57,7 @@ class Post extends Component {
   }
 
   render() {
-    const time = this.props.info.createdAt;
+    const time = (this.props.info) ? (this.props.info).createdAt : '';
     const comments = this.state.comments.map((ele) =>
       <Comment info={ele} />
     );
