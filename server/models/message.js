@@ -10,6 +10,7 @@ var Message = dynamo.define('Message', {
     schema: {
         messageID: dynamo.types.uuid(),
         sender: Joi.string(),
+        type: Joi.string(),
         chatID: Joi.string(),
         content: Joi.string(),
     },
@@ -48,7 +49,7 @@ var messageTable_addMessage = function(message, cb) {
     });
 }
 
-var messageTable_getMessage = function(message, cb) {
+var messageTable_getMessage = function(chatID, cb) {
     console.log("Message Table: get Message");
     Message.query(chatID).usingIndex('chatIDIndex').descending().exec(cb);
 }
@@ -67,4 +68,4 @@ var MessageTable = {
     deleteMessage: messageTable_deleteMessage,
 }
 
-module.exports = chatTable;
+module.exports = MessageTable;
