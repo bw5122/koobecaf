@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import ReactDOM from "react-dom";
-import "./login.css";
-import logo from "./logo.png";
-import { Redirect, withRouter } from "react-router-dom";
+import React, {Component} from 'react';
+import ReactDOM from 'react-dom';
+import './login.css';
+import logo from './logo.png';
+import { Redirect, withRouter } from 'react-router-dom';
 
 //logo: 8ebee8
 class LoginForm extends Component {
@@ -10,12 +10,13 @@ class LoginForm extends Component {
     super(props);
     this.state = {
       // all fields limit length to 20 characters
-      username: "",
-      password: "",
-      firstname: "",
-      lastname: "",
-      new_username: "",
-      new_password: ""
+      username: '',
+      password: '',
+      firstname: '',
+      lastname: '',
+      new_username: '',
+      new_password: ''
+
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -28,11 +29,12 @@ class LoginForm extends Component {
     });
   }
 
+
   handleLoginSubmit = e => {
     e.preventDefault();
     const user = this.state.username;
     const pw = this.state.password;
-    if (user.length === 0 || pw.length === 0) {
+    if(user.length === 0 || pw.length === 0) {
       alert("Empty field. Please try again.");
       return;
     }
@@ -46,34 +48,36 @@ class LoginForm extends Component {
         password: this.state.password
       })
     })
-      .then(res => res.json())
-      .then(
-        result => {
-          this.props.history.push({
-            pathname: "/home",
-            state: {
-              userID: result.userID
-            }
-          });
-        },
-        error => {
-          alert("error");
-        }
-      );
-  };
+    .then(res => res.json())
+    .then(
+      (result) => {
+        this.props.history.push({
+          pathname:"/home",
+          state: {
+            firstname: result.firstname,
+            lastname: result.lastname,
+            userID: result.userID
+          }
+        });
+      },
+      (error) => {
+        alert("error");
+      }
+    )
+  }
 
   handleDumbLogin = e => {
     e.preventDefault();
     const user = this.state.username;
     const pw = this.state.password;
-    if (user.length === 0 || pw.length === 0) {
+    if(user.length === 0 || pw.length === 0) {
       alert("Empty field. Please try again.");
       return;
     }
     this.props.history.push({
-      pathname: "/home",
+      pathname:"/home",
       state: {
-        username: "User1"
+        username: 'User1'
       }
     });
   };
@@ -91,128 +95,67 @@ class LoginForm extends Component {
         firstname: this.state.firstname,
         lastname: this.state.lastname
       })
+
     })
-      .then(res => res.json())
-      .then(
-        result => {
-          alert("Sign up success");
-        },
-        error => {
-          alert("Error! Please try again.");
-        }
-      );
-  };
+    .then(res => res.json())
+    .then(
+      (result) => {
+        this.props.history.push({
+          pathname:"/home",
+          state: {
+            firstname: result.firstname,
+            lastname: result.lastname,
+            userID: result.userID
+          }
+        });
+      },
+      (error) => {
+        alert("Error! Please try again.");
+      }
+    )
+  }
 
   render() {
     return (
       <div className="main">
-        <div className="login">
-          <img src={logo} className="logo" alt="logo" />
-          <form
-            className="login_form"
-            onSubmit={this.handleLoginSubmit.bind(this)}
-          >
-            <label className="username_box">
-              Username:
-              <input
-                type="text"
-                name="username"
-                value={this.state.username.value}
-                onChange={this.handleChange}
-              />{" "}
-            </label>{" "}
-            <label className="password_box">
-              Password:
-              <input
-                type="password"
-                name="password"
-                value={this.state.password.value}
-                onChange={this.handleChange}
-              />{" "}
-            </label>{" "}
-            <input type="submit" className="login_button" value="Sign In" />
-          </form>{" "}
-        </div>
+      <div className="login">
+      <img src={logo} className="logo" alt="logo" />
+      <form className="login_form" onSubmit={this.handleDumbLogin.bind(this)}>
+        <label className="username_box">
+          Username:
+          <input type="text" name="username" value={this.state.username.value} onChange={this.handleChange} maxLength="20"/>
+        </label>
+        <label className="password_box">
+          Password:
+          <input type="password" name="password" value={this.state.password.value} onChange={this.handleChange} maxLength="20"/>
+        </label>
+        <input type="submit" className="login_button" value="Sign In" />
+      </form>
+      </div>
 
-        <div className="login">
-          <img src={logo} className="logo" alt="logo" />
-          <form
-            className="login_form"
-            onSubmit={this.handleDumbLogin.bind(this)}
-          >
-            <label className="username_box">
-              Username:
-              <input
-                type="text"
-                name="username"
-                value={this.state.username.value}
-                onChange={this.handleChange}
-                maxLength="20"
-              />
-            </label>{" "}
-            <label className="password_box">
-              Password:
-              <input
-                type="password"
-                name="password"
-                value={this.state.password.value}
-                onChange={this.handleChange}
-                maxLength="20"
-              />
-            </label>{" "}
-            <input type="submit" className="login_button" value="Sign In" />
-          </form>{" "}
-        </div>
+      <div className="signup">
+      <h3>Create New Account</h3>
+      <form className="signup_form" onSubmit={this.handleSignupSubmit.bind(this)}>
+        <label>
+          First Name:
+          <input type="text" name="firstname" value={this.state.firstname.value} onChange={this.handleChange} maxLength="20"/>
+        </label>
+        <label>
+          Last Name:
+          <input type="text" name="lastname" value={this.state.lastname.value} onChange={this.handleChange} maxLength="20"/>
+        </label>
+        <label>
+          Create Username:
+          <input type="text" name="new_username" value={this.state.new_username.value} onChange={this.handleChange} maxLength="20"/>
+        </label>
+        <label>
+          Create Password:
+          <input type="text" name="new_password" value={this.state.new_password.value} onChange={this.handleChange} maxLength="20"/>
+        </label>
+        <input type="submit" className="signup_button" value="Sign Up" />
+      </form>
+      </div>
 
-        <div className="signup">
-          <h3> Create New Account </h3>{" "}
-          <form
-            className="signup_form"
-            onSubmit={this.handleSignupSubmit.bind(this)}
-          >
-            <label>
-              First Name:
-              <input
-                type="text"
-                name="firstname"
-                value={this.state.firstname.value}
-                onChange={this.handleChange}
-                maxLength="20"
-              />
-            </label>{" "}
-            <label>
-              Last Name:
-              <input
-                type="text"
-                name="lastname"
-                value={this.state.lastname.value}
-                onChange={this.handleChange}
-                maxLength="20"
-              />
-            </label>{" "}
-            <label>
-              Create Username:
-              <input
-                type="text"
-                name="new_username"
-                value={this.state.new_username.value}
-                onChange={this.handleChange}
-                maxLength="20"
-              />
-            </label>{" "}
-            <label>
-              Create Password:
-              <input
-                type="text"
-                name="new_password"
-                value={this.state.new_password.value}
-                onChange={this.handleChange}
-                maxLength="20"
-              />
-            </label>{" "}
-            <input type="submit" className="signup_button" value="Sign Up" />
-          </form>{" "}
-        </div>
       </div>
     );
   }

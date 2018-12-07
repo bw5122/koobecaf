@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import Post from './Post';
+import FriendList from './FriendList'
 import './Home.css'
 
 class Home extends Component {
@@ -8,16 +9,21 @@ class Home extends Component {
     super(props);
     this.state = {
       // all fields limit length to 20 characters
-      username: this.props.location.state.username,
-      posts: {},
-      newpost: ''
+      userID: this.props.location.state.userID,
+      posts: [{postBy: 'jack',
+              creator: 'jack',
+              content: 'test post',
+              friendtags: ['berry']}],
+      newpost: '',
+      friendtags: []
+
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleCreatePost = this.handleCreatePost.bind(this);
   }
 
   navigate() {
-    alert("Navigation");
+    alert("Shit");
   }
 
   handleChange(event) {
@@ -33,24 +39,25 @@ class Home extends Component {
       alert("Cannot create empty post. Please write something!");
       return;
     }
-    fetch("/createpost", {
+    //TODO: handle image
+    fetch("/post/createpost", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        //TODO:
-        postBy: '',
-        creator:'',
-        content:'',
-        friendtags:[],
-        image: {}
+        postBy: this.state.userID,
+        creator: this.state.userID,
+        content: this.state.newpost,
+        friendtags: this.state.friendtags
       })
     })
     .then(res => res.json())
     .then(
       (data) => {
-        this.setState({posts: data});
+        this.setState(prevState => ({
+          posts: [data, prevState.posts]
+        }))
       },
       (error) => {
         alert("error");
@@ -59,14 +66,13 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    fetch("/getpost", {
+    fetch("/post/getallpost" + this.state.userID, {
       method: "GET",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        username: this.state.username,
-        password: this.state.password
+        userID: this.state.userID,
       })
     })
     .then(res => res.json())
@@ -79,24 +85,23 @@ class Home extends Component {
       }
     )
   }
-
+//TODO: share button
   render() {
     const username = this.props.location.state.username;
+
+    const all_posts = this.state.posts.map((post) =>
+      <Post info={post} userID={this.state.userID}/>
+    );
     return(
       <div className="homepage">
         <div className="nav">
-          <button id="nav_button" onClick="navigate()">Nav</button>
-          <ButtonGroup>
-            <Button>1</Button>
-            <Button>2</Button>
-            <Button>3</Button>
-            <Button>4</Button>
-          </ButtonGroup>
+          <button id="nav_button" onClick={this.navigate}>Nav</button>
+          <button id="profile_button" onClick="">{username}</button>
+          <button id="home_button" onClick="">Home</button>
         </div>
 
         <div className="content">
           <h3>This is {username} home page! </h3>
-
           <div className="posts">
             <form className="createpost" onSubmit={this.handleCreatePost}>
               <input type="text" name="newpost" placeholder="What's on your mind?" id="newpost" value={this.state.newpost.value}  onChange={this.handleChange} maxLength="200" />
@@ -104,15 +109,18 @@ class Home extends Component {
               <input type="submit" id="create_button" value="Share" />
             </form>
             <div className="oldposts">
-            <Post creator="User2" content="Wowwwww!!!" />
-            <Post creator="User3" content="Happy Thanksgiving!" />
-            <Post creator="User4" content="Happy Birthday!" />
+            <ul>{all_posts}</ul>
             </div>
           </div>
         </div>
+        <FriendList/>
       </div>
     )
   }
 }
-
+/* not applied to the new strcutre this.props.info
+<Post creator="User2" content="Wowwwww!!!" />
+<Post creator="User3" content="Happy Thanksgiving!" />
+<Post creator="User4" content="Happy Birthday!" />
+*/
 export default Home;
