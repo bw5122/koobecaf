@@ -1,0 +1,97 @@
+{
+  "_from": "react-chat-window",
+  "_id": "react-chat-window@1.0.8",
+  "_inBundle": false,
+  "_integrity": "sha1-aNgzWprk6KhUGMOhZPXqAXxC+so=",
+  "_location": "/react-chat-window",
+  "_phantomChildren": {
+    "async-limiter": "1.0.0",
+    "backo2": "1.0.2",
+    "base64-arraybuffer": "0.1.5",
+    "component-bind": "1.0.0",
+    "component-emitter": "1.2.1",
+    "component-inherit": "0.0.3",
+    "engine.io-parser": "2.1.3",
+    "fbjs": "0.8.17",
+    "has-binary2": "1.0.3",
+    "has-cors": "1.1.0",
+    "indexof": "0.0.1",
+    "loose-envify": "1.4.0",
+    "object-component": "0.0.3",
+    "parseqs": "0.0.5",
+    "parseuri": "0.0.5",
+    "safe-buffer": "5.1.2",
+    "to-array": "0.1.4",
+    "ultron": "1.1.1",
+    "xmlhttprequest-ssl": "1.5.5",
+    "yeast": "0.1.2"
+  },
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "react-chat-window",
+    "name": "react-chat-window",
+    "escapedName": "react-chat-window",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "http://registry.npm.taobao.org/react-chat-window/download/react-chat-window-1.0.8.tgz",
+  "_shasum": "68d8335a9ae4e8a85418c3a164f5ea017c42faca",
+  "_spec": "react-chat-window",
+  "_where": "/Users/berry/Desktop/nets212/project/koobecaf/client",
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/kingofthestack/react-live-chat/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "emoji-js": "3.2.2",
+    "gh-pages": "^1.0.0",
+    "prop-types": "15.5.10",
+    "react-highlight.js": "1.0.5",
+    "socket.io-client": "2.0.3"
+  },
+  "deprecated": false,
+  "description": "react-live-chat React component",
+  "devDependencies": {
+    "nwb": "0.17.x",
+    "react": "15.6.1",
+    "react-dom": "15.6.1"
+  },
+  "files": [
+    "css",
+    "es",
+    "lib",
+    "umd"
+  ],
+  "homepage": "https://github.com/kingofthestack/react-live-chat#readme",
+  "keywords": [
+    "react-component"
+  ],
+  "license": "MIT",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "name": "react-chat-window",
+  "peerDependencies": {
+    "react": "15.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kingofthestack/react-live-chat.git"
+  },
+  "scripts": {
+    "build": "nwb build-react-component --copy-files",
+    "clean": "nwb clean-module && nwb clean-demo",
+    "gh:publish": "nwb build-demo && gh-pages -d demo/dist",
+    "start": "nwb serve-react-demo",
+    "test": "nwb test-react",
+    "test:coverage": "nwb test-react --coverage",
+    "test:watch": "nwb test-react --server"
+  },
+  "version": "1.0.8"
+}

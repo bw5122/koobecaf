@@ -1,0 +1,12 @@
+._button_ {
+  position: relative;
+  margin-top: 80px;
+  left: 75%;
+}
+
+.chat-room {
+  position: fixed;
+  top: 60%;
+  left: 60%;
+  width: 75%;
+}
