@@ -33,7 +33,8 @@ class Home extends Component {
       alert("Cannot create empty post. Please write something!");
       return;
     }
-    fetch("/createpost", {
+    //TODO: handle image
+    fetch("/post/createpost", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -59,7 +60,7 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    fetch("/getpost", {
+    fetch("/post/getallpost", {
       method: "GET",
       headers: {
         "Content-Type": "application/json"
@@ -79,7 +80,7 @@ class Home extends Component {
       }
     )
   }
-
+//TODO: share button
   render() {
     const username = this.props.location.state.username;
     return(

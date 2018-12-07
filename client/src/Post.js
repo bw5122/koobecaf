@@ -23,11 +23,15 @@ class Post extends Component {
     alert("Like");
   }
 
+  handleDeleteComment = e => {
+    //no data returned.
+  }
+
   render() {
     return (
       <div className="box">
-        <h3>{this.props.creator}</h3>
-        <p>{this.props.content}</p>
+        <h3>{this.props.info.creator}</h3>
+        <p>{this.props.info.content}</p>
         <button id="like_button" onClick={this.handleNewComment}>like</button>
         <form className="createcomment" onSubmit={this.handleNewComment}>
           <input type="text" placeholder="Write a comment..." id="newcomment" value={this.state.newcomment.value}  onChange={this.handleChange} maxLength="100" />

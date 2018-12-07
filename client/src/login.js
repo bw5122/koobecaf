@@ -38,7 +38,7 @@ class LoginForm extends Component {
       alert("Empty field. Please try again.");
       return;
     }
-    fetch("/user/signup", {
+    fetch("/user/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -54,6 +54,8 @@ class LoginForm extends Component {
         this.props.history.push({
           pathname:"/home",
           state: {
+            firstname: result.firstname,
+            lastname: result.lastname,
             userID: result.userID
           }
         });
@@ -98,7 +100,14 @@ class LoginForm extends Component {
     .then(res => res.json())
     .then(
       (result) => {
-        alert("Sign up success");
+        this.props.history.push({
+          pathname:"/home",
+          state: {
+            firstname: result.firstname,
+            lastname: result.lastname,
+            userID: result.userID
+          }
+        });
       },
       (error) => {
         alert("Error! Please try again.");
