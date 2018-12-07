@@ -11,12 +11,12 @@ Post {
   top: 0;
   width: 100%;
   background-color: #663300;
-  height: 80px;
+  height: 50px;
 }
 
 .content {
   position: relative;
-  margin-top: 80px;
+  margin-top: 50px;
   width: 100%;
   z-index: -1;
 }

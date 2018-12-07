@@ -33,7 +33,8 @@ class Home extends Component {
       alert("Cannot create empty post. Please write something!");
       return;
     }
-    fetch("/createpost", {
+    //TODO: handle image
+    fetch("/post/createpost", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -59,7 +60,7 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    fetch("/getpost", {
+    fetch("/post/getallpost", {
       method: "GET",
       headers: {
         "Content-Type": "application/json"
@@ -79,19 +80,15 @@ class Home extends Component {
       }
     )
   }
-
+//TODO: share button
   render() {
     const username = this.props.location.state.username;
     return(
       <div className="homepage">
         <div className="nav">
-          <button id="nav_button" onClick="navigate()">Nav</button>
-          <ButtonGroup>
-            <Button>1</Button>
-            <Button>2</Button>
-            <Button>3</Button>
-            <Button>4</Button>
-          </ButtonGroup>
+          <button id="nav_button" onClick={this.navigate}>Nav</button>
+          <button id="profile_button" onClick="">{username}</button>
+          <button id="home_button" onClick="">Home</button>
         </div>
 
         <div className="content">
