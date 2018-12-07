@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import Post from './Post';
+import FriendList from './FriendList'
 import './Home.css'
 
 class Home extends Component {
@@ -18,7 +19,7 @@ class Home extends Component {
   }
 
   navigate() {
-    alert("Navigation");
+    alert("Shit");
   }
 
   handleChange(event) {
@@ -97,7 +98,6 @@ class Home extends Component {
 
         <div className="content">
           <h3>This is {username} home page! </h3>
-
           <div className="posts">
             <form className="createpost" onSubmit={this.handleCreatePost}>
               <input type="text" name="newpost" placeholder="What's on your mind?" id="newpost" value={this.state.newpost.value}  onChange={this.handleChange} maxLength="200" />
@@ -112,6 +112,7 @@ class Home extends Component {
             </div>
           </div>
         </div>
+        <FriendList/>
       </div>
     )
   }
