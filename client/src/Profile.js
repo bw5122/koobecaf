@@ -60,14 +60,14 @@ class Profile extends Component {
 
   handlePhotoUpload = e => {
     e.preventDefault();
-    var data = new FormData();
+    var formdata = new FormData();
     var imagedata = document.querySelector('input[type="file"]').files[0];
-    data.append("photo", imagedata);
+    formdata.append("photo", imagedata);
     console.log(imagedata);
     fetch("/user/uploadphoto/" + this.state.userID, {
       mode: "no-cors",
       method: "POST",
-      body: data
+      body: formdata
     })
       .then(res => res.json())
       .then(
@@ -99,7 +99,7 @@ class Profile extends Component {
     );
 
     const my_own_posts = this.state.posts.map((post) =>
-      <Post info={post} />
+      <Post info={post} userID={this.state.userID}/>
     );
 
     return (
