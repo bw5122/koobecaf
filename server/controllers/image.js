@@ -63,6 +63,7 @@ var uploadPostImage = function(req, res) {
             console.log(req.params.postID);
             var pst = {
                 postID: postID,
+                ID: postID,
                 image: req.file.location,
             }
             Post.updateImage(pst, function(err, data) {

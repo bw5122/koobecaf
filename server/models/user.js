@@ -125,11 +125,17 @@ var userTable_getProfile = function(user, cb) {
         })
 }
 
+var userTable_getInfo = function(userID, cb) {
+    console.log("userTable: get user info for ", userID);
+    User.query(userID).attributes(['userID', 'firstname', 'lastname', 'photo']).exec(cb);
+}
+
 var userTable = {
     addUser: userTable_addUser,
     login: userTable_login,
     updateProfile: userTable_updateProfile,
     getProfile: userTable_getProfile,
+    getInfo: userTable_getInfo,
 }
 
 module.exports = userTable;

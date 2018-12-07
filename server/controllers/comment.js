@@ -1,10 +1,11 @@
 var Comm = require('../models/comment');
-
-
+const uuidv1 = require('uuid/v1');
+var NewPost = require('../models/new_post');
 var addComment = function(req, res) {
     console.log("Comment Controller: addComment");
     var comment = req.body;
-    Comm.addComment(comment, function(err, data) {
+    comment['ID'] = "comment_" + uuidv1();
+    NewPost.addComment(comment, function(err, data) {
         if (err) {
             console.log(err);
             res.send({
@@ -23,8 +24,8 @@ var addComment = function(req, res) {
 
 var deleteComment = function(req, res) {
     console.log("Comment Controller: deleteComment");
-    var comment = req.body;
-    Comm.deleteComment(comment, function(err) {
+    var commentID = req.body.commentID;
+    Comm.deleteComment(commentID, function(err) {
         res.send({
             error: err
         });

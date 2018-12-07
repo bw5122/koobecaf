@@ -74,6 +74,7 @@ var chatTable_deleteMember = function(chat, cb) {
     })
 }
 
+var chatTable_removeMember;
 var chatTable = {
     createChat: chatTable_createChat,
     deleteChat: chatTable_deleteChat,

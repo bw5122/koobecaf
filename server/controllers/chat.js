@@ -22,6 +22,9 @@ var createGroupChat = function(req, res) {
     })
 }
 
+var addMember;
+var getAllGroupChat;
+
 var chat_controller = {
     create_group_chat: createGroupChat,
     add_member: addMember,

@@ -123,12 +123,12 @@
 ## /post/createpost
 
 - req{postBy, creator, content, friendtags[]}
-- res{postBy, creator, content, friendtags[], postID, createdAt}
+- res{postBy, creator, content, friendtags[], postID, ID, createdAt}
 
 ## /post/getownpost/:userID
 
 - res{[{
-  content, createdAt,postID, friendtags[], postBy, image, comments[]
+  content, createdAt,postID, friendtags[], postBy, image, comments[], likes[]
   }]}
 
 ## /post/uploadimage/:postID
