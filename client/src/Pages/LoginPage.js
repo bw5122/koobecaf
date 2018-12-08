@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import './login.css';
-import logo from './logo.png';
+import '../Styles/login.css';
+import logo from '../Assets/logo.png';
 import { Redirect, withRouter } from 'react-router-dom';
 
 //logo: 8ebee8

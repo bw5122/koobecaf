@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import ChatRoom from './ChatRoom'
-import './FriendList.css'
+import '../Styles/FriendList.css'
 
 
 

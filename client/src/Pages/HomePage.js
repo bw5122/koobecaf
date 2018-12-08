@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
-import Post from './Post';
-import FriendList from './FriendList'
-import './Home.css'
+import Post from '../Components/Post';
+import FriendList from '../Components/FriendList'
+import '../Styles/Home.css'
 
 class Home extends Component {
   constructor(props) {
