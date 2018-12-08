@@ -7,13 +7,14 @@ var relationTable_getFriend = function(userID, cb) {
 
 /* need to provide type */
 var relationTable_create = function(relation, cb) {
-    console.log("Relation Table: create new relation " + relation.type);
+    console.log("Relation Table: create new relation ");
+    console.log(relation);
     Relation.create(relation, function(err, rel) {
         if (err)
             cb(err, null);
         else {
-            console.log('created new relation', rel.get('type'));
-            cb(null, rel.attrs);
+            console.log('created new relation', rel);
+            cb(null, rel);
         }
     });
 }

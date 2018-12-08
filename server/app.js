@@ -29,6 +29,8 @@ var chat_router = require('./routers/chat');
 var post_router = require('./routers/post');
 var friend_router = require('./routers/friend');
 var test_router = require('./routers/test');
+var notice_router = require('./routers/notice');
+
 
 var chat_ctrl = require('./controllers/chat');
 
@@ -37,6 +39,7 @@ app.use('/chat', chat_router);
 app.use('/post', post_router);
 app.use('/friend', friend_router);
 app.use('/test', test_router);
+app.use('/notice', notice_router);
 
 // id of new chat room waiting to be created
 var newChatid = 0;

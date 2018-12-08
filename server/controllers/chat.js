@@ -40,36 +40,36 @@ var addMessage = function(message, callback) {
 var getChatHistory = function(chatID, callback) {
     console.log("Chat Controller: get Chat History for " + chatID);
     Chat.getInfo(chatID, function(err, data) {
-      if(err)
-        console.log(err);
-        var members = data.Items[0].attrs.members;
-        var members_obj = {};
-        async.each(members, function(member, cb) {
-            User.getInfo(member, function(err1, data1) {
-                if (data1.Items[0]) {
-                    if (!members_obj[data1.Items[0].attrs.userID])
-                        members_obj[data1.Items[0].attrs.userID] = data1.Items[0].attrs;
-                }
-                cb();
-            })
-        }, function() {
-            Message.getMessage(chatID, function(err2, data2) {
-                if (err2) {
-                    console.log(err2);
-                } else {
-                    //console.log(data);
-                    var history = data2.Items.map(obj => {
-                        return obj.attrs
-                    })
-                    var chatinfo = {
-                        chatID: chatID,
-                        members: members_obj,
-                        history: history,
+        if (data.Items) {
+            var members = data.Items[0].attrs.members;
+            var members_obj = {};
+            async.each(members, function(member, cb) {
+                User.getInfo(member, function(err1, data1) {
+                    if (data1.Items[0]) {
+                        if (!members_obj[data1.Items[0].attrs.userID])
+                            members_obj[data1.Items[0].attrs.userID] = data1.Items[0].attrs;
                     }
-                    callback(chatinfo);
-                }
+                    cb();
+                })
+            }, function() {
+                Message.getMessage(chatID, function(err2, data2) {
+                    if (err2) {
+                        console.log(err2);
+                    } else {
+                        //console.log(data);
+                        var history = data2.Items.map(obj => {
+                            return obj.attrs
+                        })
+                        var chatinfo = {
+                            chatID: chatID,
+                            members: members_obj,
+                            history: history,
+                        }
+                        callback(chatinfo);
+                    }
+                })
             })
-        })
+        }
     })
 }
 
