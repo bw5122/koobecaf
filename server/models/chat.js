@@ -1,31 +1,3 @@
-// var dynamo = require('dynamodb');
-// var Joi = require('joi');
-// dynamo.AWS.config.loadFromPath('config.json');
-
-// var Chat = dynamo.define('Chat', {
-//     hashKey: 'chatID',
-//     // add the timestamp attributes (updatedAt, createdAt)
-//     timestamps: true,
-//     updatedAt: false,
-//     schema: {
-//         chatID: dynamo.types.uuid(),
-//         members: dynamo.types.stringSet(),
-//     },
-// });
-
-// /* Create the table */
-// dynamo.createTables({
-//     'Chat': {
-//         readCapacity: 5,
-//         writeCapacity: 10
-//     },
-// }, function(err) {
-//     if (err) {
-//         console.log('Error creating table Chat: ', err.message);
-//     } else {
-//         console.log('Table Chat has been created');
-//     }
-// });
 var Chat = require('./database').Chat;
 
 var chatTable_createChat = function(chat, cb) {
@@ -49,7 +21,7 @@ var chatTable_deleteChat = function(chatID, cb) {
 }
 
 var chatTable_addMember = function(chat, cb) {
-    console.log("Chat Table: add member", chatID);
+    console.log("Chat Table: add member", chat.chatID);
     Chat.update({
         chatID: chat.chatID,
         members: {
@@ -74,12 +46,17 @@ var chatTable_deleteMember = function(chat, cb) {
     })
 }
 
-var chatTable_removeMember;
+var chatTable_getInfo = function(chatID, cb) {
+    console.log("Chat Table:  get info ", chatID);
+    Chat.query(chatID).exec(cb);
+}
+
 var chatTable = {
+    getInfo: chatTable_getInfo,
     createChat: chatTable_createChat,
     deleteChat: chatTable_deleteChat,
     addMember: chatTable_addMember,
-    removeMember: chatTable_removeMember,
+    removeMember: chatTable_deleteMember,
 }
 
 module.exports = chatTable;

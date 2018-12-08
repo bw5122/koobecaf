@@ -136,6 +136,14 @@ var userTable = {
     updateProfile: userTable_updateProfile,
     getProfile: userTable_getProfile,
     getInfo: userTable_getInfo,
+    addUserInfo: addUserInfo
 }
 
 module.exports = userTable;
+
+
+
+/* functional */
+var addUserInfo = function(items, cb) {
+
+}

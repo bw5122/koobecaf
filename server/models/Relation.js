@@ -1,39 +1,3 @@
-// var dynamo = require('dynamodb');
-// var Joi = require('joi');
-// dynamo.AWS.config.loadFromPath('config.json');
-
-// var Relation = dynamo.define('Relation', {
-//     hashKey: 'userID',
-//     rangeKey: 'objectID',
-//     // add the timestamp attributes (updatedAt, createdAt)
-//     timestamps: true,
-//     updatedAt: false,
-//     schema: {
-//         userID: Joi.string(),
-//         objectID: Joi.string(),
-//         type: Joi.string(),
-//         weight: Joi.number(),
-//     },
-//     indexes: [{
-//         hashKey: 'type',
-//         rangeKey: 'userID',
-//         name: 'typeIndex',
-//         type: 'global',
-//     }]
-// });
-
-// dynamo.createTables({
-//     'Relation': {
-//         readCapacity: 5,
-//         writeCapacity: 10
-//     },
-// }, function(err) {
-//     if (err) {
-//         console.log('Error creating table Relation: ', err.message);
-//     } else {
-//         console.log('Table Relation has been created');
-//     }
-// });
 var Relation = require('./database').Relation;
 
 var relationTable_getFriend = function(userID, cb) {
