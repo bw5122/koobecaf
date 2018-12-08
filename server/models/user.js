@@ -1,45 +1,46 @@
-var dynamo = require('dynamodb');
-var Joi = require('joi');
+// var dynamo = require('dynamodb');
+// var Joi = require('joi');
 var SHA3 = require("crypto-js/sha3");
-dynamo.AWS.config.loadFromPath('config.json');
+// dynamo.AWS.config.loadFromPath('config.json');
 
-var User = dynamo.define('User', {
-    hashKey: 'userID',
-    // add the timestamp attributes (updatedAt, createdAt)
-    timestamps: true,
+// var User = dynamo.define('User', {
+//     hashKey: 'userID',
+//     // add the timestamp attributes (updatedAt, createdAt)
+//     timestamps: true,
 
-    schema: {
-        username: Joi.string(),
-        userID: dynamo.types.uuid(),
-        password: Joi.string(),
-        email: Joi.string().email(),
-        firstname: Joi.string(),
-        lastname: Joi.string(),
-        affiliation: Joi.string(),
-        birthday: Joi.string(),
-        interests: dynamo.types.stringSet(),
-        groupchats: dynamo.types.stringSet(),
-    },
-    indexes: [{
-        hashKey: 'username',
-        name: 'usernameIndex',
-        type: 'global'
-    }]
-});
+//     schema: {
+//         username: Joi.string(),
+//         userID: dynamo.types.uuid(),
+//         password: Joi.string(),
+//         email: Joi.string().email(),
+//         firstname: Joi.string(),
+//         lastname: Joi.string(),
+//         affiliation: Joi.string(),
+//         birthday: Joi.string(),
+//         interests: dynamo.types.stringSet(),
+//         groupchats: dynamo.types.stringSet(),
+//     },
+//     indexes: [{
+//         hashKey: 'username',
+//         name: 'usernameIndex',
+//         type: 'global'
+//     }]
+// });
 
-/* Create the table */
-dynamo.createTables({
-    'User': {
-        readCapacity: 5,
-        writeCapacity: 10
-    },
-}, function(err) {
-    if (err) {
-        console.log('Error creating table User: ', err.message);
-    } else {
-        console.log('Table User has been created');
-    }
-});
+// /* Create the table */
+// dynamo.createTables({
+//     'User': {
+//         readCapacity: 5,
+//         writeCapacity: 10
+//     },
+// }, function(err) {
+//     if (err) {
+//         console.log('Error creating table User: ', err.message);
+//     } else {
+//         console.log('Table User has been created');
+//     }
+// });
+var User = require('./database').User;
 
 /* sign up */
 var userTable_addUser = function(user, cb) {
@@ -135,6 +136,14 @@ var userTable = {
     updateProfile: userTable_updateProfile,
     getProfile: userTable_getProfile,
     getInfo: userTable_getInfo,
+    addUserInfo: addUserInfo
 }
 
 module.exports = userTable;
+
+
+
+/* functional */
+var addUserInfo = function(items, cb) {
+
+}

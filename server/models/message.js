@@ -1,41 +1,4 @@
-var dynamo = require('dynamodb');
-var Joi = require('joi');
-dynamo.AWS.config.loadFromPath('config.json');
-
-var Message = dynamo.define('Message', {
-    hashKey: 'messageID',
-    // add the timestamp attributes (updatedAt, createdAt)
-    timestamps: true,
-    updatedAt: false,
-    schema: {
-        messageID: dynamo.types.uuid(),
-        sender: Joi.string(),
-        type: Joi.string(),
-        chatID: Joi.string(),
-        data: Joi.string(),
-    },
-    indexes: [{
-        hashKey: 'chatID',
-        rangeKey: 'createdAt',
-        name: 'chatIDIndex',
-        type: 'global',
-    }]
-});
-
-/* Create the table */
-dynamo.createTables({
-    'Message': {
-        readCapacity: 5,
-        writeCapacity: 10
-    },
-}, function(err) {
-    if (err) {
-        console.log('Error creating table Message: ', err.message);
-    } else {
-        console.log('Table Message has been created');
-    }
-});
-
+var Message = require('./database').Message;
 
 var messageTable_addMessage = function(message, cb) {
     console.log("Message Table: add Message");

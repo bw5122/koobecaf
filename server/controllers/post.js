@@ -236,13 +236,10 @@ var constructPosts = function(posts) {
             });
             index = acc.length - 1;
         }
-        // console.log(acc);
-        // console.log(index);
         if (obj.attrs.ID.startsWith("comment")) {
             // comments
             delete obj.attrs.postBy;
             // delete obj.attrs.postID;
-            //obj.attrs['user'] = getUserInfo(obj.attrs.creator);
             acc[index].comments.push(obj.attrs);
         } else if (obj.attrs.ID.startsWith("like")) {
             // likes     
@@ -338,7 +335,6 @@ var addUserToPosts = async function(posts, callback) {
             } else forLike_cb();
         }
         //add userInfo to like
-
     }, function() {
         console.log("Calling callback");
         console.log(users)
