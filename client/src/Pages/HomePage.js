@@ -113,7 +113,7 @@ class Home extends Component {
             </div>
           </div>
         </div>
-        <FriendList/>
+        <FriendList userID={this.state.userID}/>
       </div>
     )
   }

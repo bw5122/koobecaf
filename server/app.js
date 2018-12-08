@@ -46,11 +46,12 @@ var onlineCount = 0;
 
 io.on('connection', function(socket) {
     //  socket.join(newChatid);
-    console.log("a user is connected to chat room: " + socket.handshake.query.chatid);
-    socket.join(socket.handshake.query.chatid);
+    console.log("a user is connected to chat room: " + socket.handshake.query.chatID);
+    socket.join(socket.handshake.query.chatID);
+    console.log(typeof(socket.handshake.query.chatID));
 
     //getChatHistory()???
-    chat_ctrl.get_chat_history(socket.handshake.query.chatid, function(data) {
+    chat_ctrl.get_chat_history(socket.handshake.query.chatID, function(data) {
         console.log(data);
     });
 
@@ -102,27 +103,22 @@ io.on('connection', function(socket) {
     })
 
     // 监听客户端发送的信息
-    socket.on('message', function(obj) {
-        console.log("chatid: " + obj.chatid);
+    socket.on('message', function(message) {
+        console.log("chatid: " + message.chatID);
         //io.to(obj.chatid).emit('message', obj);//successful?
         //io.in(obj.chatid).emit('message', obj);
-
+        console.log(message);
         //upload message
-        var fakemessage = {
-            type: 'text',
-            sender: 'user1',
-            chatID: '1',
-            content: 'first message'
-        };
-        chat_ctrl.add_message(fakemessage, function(data) {
-            console.log(data);
+        message.data = JSON.stringify(message.data);
+        chat_ctrl.add_message(message, function(data) {
+            console.log("add_message call back: "+data);
         })
-
-
-        obj.author = "them";
-        socket.broadcast.to(obj.chatid).emit('message', obj);
+        console.log("send message event from server");
+        console.log(typeof(message.chatID));
+        console.log(message.chatID);
+        socket.broadcast.to(message.chatID).emit('message', message);
         //uploadmsg()
-        console.log(obj.username + "说:" + obj.message)
+        console.log(message.sender + "说:" + message.data);
     })
 
 })

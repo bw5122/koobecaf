@@ -8,20 +8,25 @@ class Chatroom extends Component {
         super(props);
         this.state = {
             messageList: [],
-            chatid: this.props.chatid,
+            chatID: this.props.chatID,
             socket: ""
         };
-        console.log("constrcutor of chatroom: " + this.state.chatid);
+        console.log("constrcutor of chatroom: " + this.state.chatID);
     }
 
     updateMsg(message) {
+        if(message.senderID == this.state.chatID)
+          message.author = "me";
+        else {
+          message.author = "them;"
+        }
         this.setState({
             messageList: [...this.state.messageList, message]
         })
     }
 
     _onMessageWasSent(message) {
-        var testMsg = {
+        /*var testMsg = {
             chatid: '',
             senderid: '',
             author: 'them',
@@ -29,16 +34,20 @@ class Chatroom extends Component {
             data: {
                 code: 'hello world'
             }
-        };
-        message.chatid = this.state.chatid;
+        };*/
+        message.chatID = this.state.chatID;
+        //this.updateMsg(message);
+        message['sender'] = this.props.userID;
+        console.log("client: ");
+        console.log(message);
+        delete message['author'];
         this.state.socket.emit('message', message);
-        this.updateMsg(message);
     }
 
     createSocket() {
         this.state.socket = io("http://localhost:5000", {
             query: {
-                chatid: this.state.chatid,
+                chatID: this.state.chatID,
             },
         });
     }
@@ -46,7 +55,7 @@ class Chatroom extends Component {
     componentDidMount() {
         this.createSocket();
         const socket = this.state.socket;
-        console.log('join room: ' + this.state.chatid);
+        console.log('join room: ' + this.state.chatID);
         /*  socket.emit('joinRoom', this.state.chatid); //拉好友列表的时候把chatID一起拉回来
           socket.on('login', (o)=>{
               console.log('login event is received at the front-end!')
@@ -55,16 +64,19 @@ class Chatroom extends Component {
           socket.on('logout', (o)=>{
               this.updateSysMsg(o, 'logout');
           }) */
-        socket.on('message', (obj) => {
+        socket.on('message', (message) => {
             console.log('message event is received at the front-end!');
-              this.updateMsg(obj);
+            console.log(message.data);
+            console.log(JSON.parse(message.data));
+            message.data = JSON.parse(message.data);
+            this.updateMsg(message);
         })
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevState.chatid != this.props.chatid)
+        if (prevState.chatID != this.props.chatID)
             this.setState({
-                chatid: this.props.chatid
+                chatID: this.props.chatID
             })
         this.createSocket();
     }

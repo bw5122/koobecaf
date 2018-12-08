@@ -12,7 +12,7 @@ var Message = dynamo.define('Message', {
         sender: Joi.string(),
         type: Joi.string(),
         chatID: Joi.string(),
-        content: Joi.string(),
+        data: Joi.string(),
     },
     indexes: [{
         hashKey: 'chatID',
