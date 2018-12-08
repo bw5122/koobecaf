@@ -8,35 +8,50 @@ class Chatroom extends Component {
         super(props);
         this.state = {
             messageList: [],
-            chatID: this.props.chatID,
+            chatID: 'd0e50f1e-3fab-4287-ac27-9e572e26422f',
             socket: ""
         };
         console.log("constrcutor of chatroom: " + this.state.chatID);
     }
 
-    updateMsg(message) {
-        if(message.senderID == this.state.chatID)
-          message.author = "me";
-        else {
-          message.author = "them;"
+    loadChatHistory(message) {
+        console.log("update msg");
+        for(let i=0; i<message.length; i++){
+          if(message[i].sender == '1')
+            message[i].author = "me";
+          else {
+            message[i].author = "them;"
+          }
+          message[i].data = JSON.parse(message[i].data);
         }
+        console.log(message);
         this.setState({
-            messageList: [...this.state.messageList, message]
+            //messageList: [...this.state.messageList, ...message]
+            messageList: message
         })
     }
 
+    updateMsg(message){
+      console.log("update message");
+      console.log(message);
+      if(message.sender == undefined){
+
+      }
+      else if(message.sender == '1'){
+        message.author = "me";
+        console.log("me");
+      }
+      else {
+        message.author = "them"
+      }
+      this.setState({
+          messageList: [...this.state.messageList, message]
+      })
+    }
+
     _onMessageWasSent(message) {
-        /*var testMsg = {
-            chatid: '',
-            senderid: '',
-            author: 'them',
-            type: 'emoji',
-            data: {
-                code: 'hello world'
-            }
-        };*/
         message.chatID = this.state.chatID;
-        //this.updateMsg(message);
+        this.updateMsg(message);
         message['sender'] = this.props.userID;
         console.log("client: ");
         console.log(message);
@@ -56,14 +71,12 @@ class Chatroom extends Component {
         this.createSocket();
         const socket = this.state.socket;
         console.log('join room: ' + this.state.chatID);
-        /*  socket.emit('joinRoom', this.state.chatid); //拉好友列表的时候把chatID一起拉回来
-          socket.on('login', (o)=>{
-              console.log('login event is received at the front-end!')
-              this.updateSysMsg(o, 'login');
-          })
-          socket.on('logout', (o)=>{
-              this.updateSysMsg(o, 'logout');
-          }) */
+        socket.on('history', (data) =>{
+            console.log("client: history activated");
+            console.log(data);
+            this.loadChatHistory(data.history);
+        })
+
         socket.on('message', (message) => {
             console.log('message event is received at the front-end!');
             console.log(message.data);
@@ -74,11 +87,7 @@ class Chatroom extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevState.chatID != this.props.chatID)
-            this.setState({
-                chatID: this.props.chatID
-            })
-        this.createSocket();
+
     }
 
     render() {

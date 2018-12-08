@@ -38,6 +38,7 @@ class LoginForm extends Component {
       alert("Empty field. Please try again.");
       return;
     }
+    console.log("login submit")
     fetch("/user/login", {
       method: "POST",
       headers: {
@@ -47,8 +48,26 @@ class LoginForm extends Component {
         username: this.state.username,
         password: this.state.password
       })
-    })
-    .then(res => res.json())
+    }).then( res => res.json()).
+    then(res => {
+      if(res.err){
+        console.log(res.err);
+        alert("username or password incorrect");
+      }
+      else{
+        this.props.history.push({
+          pathname:"/home",
+          state: {
+            firstname: res.data.firstname,
+            lastname: res.data.lastname,
+            userID: res.data.userID
+          }
+        });
+      }
+    });
+
+
+  /*  .then(res => res.json())
     .then(
       (result) => {
         this.props.history.push({
@@ -63,7 +82,7 @@ class LoginForm extends Component {
       (error) => {
         alert("error");
       }
-    )
+    )*/
   }
 
   handleDumbLogin = e => {
@@ -120,7 +139,7 @@ class LoginForm extends Component {
       <div className="main">
       <div className="login">
       <img src={logo} className="logo" alt="logo" />
-      <form className="login_form" onSubmit={this.handleDumbLogin.bind(this)}>
+      <form className="login_form" onSubmit={this.handleLoginSubmit.bind(this)}>
         <label className="username_box">
           Username:
           <input type="text" name="username" value={this.state.username.value} onChange={this.handleChange} maxLength="20"/>

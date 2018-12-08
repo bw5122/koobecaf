@@ -40,6 +40,8 @@ var addMessage = function(message, callback) {
 var getChatHistory = function(chatID, callback) {
     console.log("Chat Controller: get Chat History for " + chatID);
     Chat.getInfo(chatID, function(err, data) {
+      if(err)
+        console.log(err);
         var members = data.Items[0].attrs.members;
         var members_obj = {};
         async.each(members, function(member, cb) {

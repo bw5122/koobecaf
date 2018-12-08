@@ -46,61 +46,16 @@ var onlineUsers = {};
 var onlineCount = 0;
 
 io.on('connection', function(socket) {
-    //  socket.join(newChatid);
     console.log("a user is connected to chat room: " + socket.handshake.query.chatID);
     socket.join(socket.handshake.query.chatID);
-    console.log(typeof(socket.handshake.query.chatID));
-
-    //getChatHistory()???
     chat_ctrl.get_chat_history(socket.handshake.query.chatID, function(data) {
         console.log(data);
+        io.to(socket.id).emit('history', data);
     });
-
-    // 监听客户端的登陆
-    socket.on('login', function(obj) {
-        // 用户id设为socketid
-        socket.id = obj.uid;
-        //join the assigned chat room according to chatid
-        console.log('before socket.join, chat id: ' + obj.chatid);
-        // 如果没有这个用户，那么在线人数+1，将其添加进在线用户
-        if (!onlineUsers.hasOwnProperty(obj.uid)) {
-            onlineUsers[obj.uid] = obj.username;
-            onlineCount++;
-        }
-
-        // 向客户端发送登陆事件，同时发送在线用户、在线人数以及登陆用户
-        //io.sockets.in(obj.chatid).emit('connectToRoom', roomno);
-        console.log("login emit chatid: " + obj.chatid);
-        io.in(obj.chatid).emit('login', {
-            onlineUsers: onlineUsers,
-            onlineCount: onlineCount,
-            user: obj
-        });
-        console.log(obj.username + '加入了群聊');
-    })
 
     // 监听客户端的断开连接
     socket.on('disconnect', function() {
-
-        // 如果有这个用户
-        if (onlineUsers.hasOwnProperty(socket.id)) {
-            var obj = {
-                uid: socket.id,
-                username: onlineUsers[socket.id]
-            };
-
-            // 删掉这个用户，在线人数-1
-            delete onlineUsers[socket.id];
-            onlineCount--;
-
-            // 向客户端发送登出事件，同时发送在线用户、在线人数以及登出用户
-            io.emit('logout', {
-                onlineUsers: onlineUsers,
-                onlineCount: onlineCount,
-                user: obj
-            });
-            console.log(obj.username + '退出了群聊');
-        }
+      console.log("a user is disconncted");
     })
 
     // 监听客户端发送的信息
@@ -118,7 +73,6 @@ io.on('connection', function(socket) {
         console.log(typeof(message.chatID));
         console.log(message.chatID);
         socket.broadcast.to(message.chatID).emit('message', message);
-        //uploadmsg()
         console.log(message.sender + "说:" + message.data);
     })
 
