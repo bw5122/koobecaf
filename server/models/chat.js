@@ -1,32 +1,32 @@
-var dynamo = require('dynamodb');
-var Joi = require('joi');
-dynamo.AWS.config.loadFromPath('config.json');
+// var dynamo = require('dynamodb');
+// var Joi = require('joi');
+// dynamo.AWS.config.loadFromPath('config.json');
 
-var Chat = dynamo.define('Chat', {
-    hashKey: 'chatID',
-    // add the timestamp attributes (updatedAt, createdAt)
-    timestamps: true,
-    updatedAt: false,
-    schema: {
-        chatID: dynamo.types.uuid(),
-        members: dynamo.types.stringSet(),
-    },
-});
+// var Chat = dynamo.define('Chat', {
+//     hashKey: 'chatID',
+//     // add the timestamp attributes (updatedAt, createdAt)
+//     timestamps: true,
+//     updatedAt: false,
+//     schema: {
+//         chatID: dynamo.types.uuid(),
+//         members: dynamo.types.stringSet(),
+//     },
+// });
 
-/* Create the table */
-dynamo.createTables({
-    'Chat': {
-        readCapacity: 5,
-        writeCapacity: 10
-    },
-}, function(err) {
-    if (err) {
-        console.log('Error creating table Chat: ', err.message);
-    } else {
-        console.log('Table Chat has been created');
-    }
-});
-
+// /* Create the table */
+// dynamo.createTables({
+//     'Chat': {
+//         readCapacity: 5,
+//         writeCapacity: 10
+//     },
+// }, function(err) {
+//     if (err) {
+//         console.log('Error creating table Chat: ', err.message);
+//     } else {
+//         console.log('Table Chat has been created');
+//     }
+// });
+var Chat = require('./database').Chat;
 
 var chatTable_createChat = function(chat, cb) {
     console.log("Chat Table: create Chat");

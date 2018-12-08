@@ -1,48 +1,49 @@
-var dynamo = require('dynamodb');
-var Joi = require('joi');
-dynamo.AWS.config.loadFromPath('config.json');
+// var dynamo = require('dynamodb');
+// var Joi = require('joi');
+// dynamo.AWS.config.loadFromPath('config.json');
 
-var Post = dynamo.define('Post', {
-    hashKey: 'postID',
-    rangeKey: 'ID',
-    // add the timestamp attributes (updatedAt, createdAt)
-    timestamps: true,
-    updatedAt: false,
-    schema: {
-        postID: Joi.string(),
-        ID: Joi.string(),
-        type: Joi.string(),
-        content: Joi.string(),
-        creator: Joi.string(),
-        postBy: Joi.string(),
-        image: Joi.string(),
-        friendtags: dynamo.types.stringSet(),
-    },
-    indexes: [{
-        hashKey: 'postBy',
-        rangeKey: 'createdAt',
-        name: 'postByIndex',
-        type: 'global',
-    }, {
-        hashKey: 'postID',
-        rangeKey: 'createdAt',
-        name: 'postIDIndex',
-        type: 'global',
-    }]
-});
+// var Post = dynamo.define('Post', {
+//     hashKey: 'postID',
+//     rangeKey: 'ID',
+//     // add the timestamp attributes (updatedAt, createdAt)
+//     timestamps: true,
+//     updatedAt: false,
+//     schema: {
+//         postID: Joi.string(),
+//         ID: Joi.string(),
+//         type: Joi.string(),
+//         content: Joi.string(),
+//         creator: Joi.string(),
+//         postBy: Joi.string(),
+//         image: Joi.string(),
+//         friendtags: dynamo.types.stringSet(),
+//     },
+//     indexes: [{
+//         hashKey: 'postBy',
+//         rangeKey: 'createdAt',
+//         name: 'postByIndex',
+//         type: 'global',
+//     }, {
+//         hashKey: 'postID',
+//         rangeKey: 'createdAt',
+//         name: 'postIDIndex',
+//         type: 'global',
+//     }]
+// });
 
-dynamo.createTables({
-    'Post': {
-        readCapacity: 5,
-        writeCapacity: 10
-    },
-}, function(err) {
-    if (err) {
-        console.log('Error creating table Post: ', err.message);
-    } else {
-        console.log('Table Post has been created');
-    }
-});
+// dynamo.createTables({
+//     'Post': {
+//         readCapacity: 5,
+//         writeCapacity: 10
+//     },
+// }, function(err) {
+//     if (err) {
+//         console.log('Error creating table Post: ', err.message);
+//     } else {
+//         console.log('Table Post has been created');
+//     }
+// });
+var Post = require('./database').Post;
 
 
 /* all types of items need postID, ID, postBy */
