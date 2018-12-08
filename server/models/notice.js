@@ -1,42 +1,3 @@
-// var dynamo = require('dynamodb');
-// var Joi = require('joi');
-// dynamo.AWS.config.loadFromPath('config.json');
-
-// var Relation = dynamo.define('Notice', {
-//     hashKey: 'noticeID',
-//     // add the timestamp attributes (updatedAt, createdAt)
-//     timestamps: true,
-//     updatedAt: false,
-//     schema: {
-//         noticeID: dynamo.types.uuid(),
-//         sender: Joi.string(),
-//         content: Joi.string(),
-//         type: Joi.string(),
-//         // link: Joi.string(),
-//         // receiver: Joi.string(),
-//     },
-//     indexes: [{
-//         hashKey: 'receiver',
-//         rangeKey: 'createdAt',
-//         name: 'receiverIndex',
-//         type: 'global',
-//     }]
-// });
-
-
-// dynamo.createTables({
-//     'Relation': {
-//         readCapacity: 5,
-//         writeCapacity: 10
-//     },
-// }, function(err) {
-//     if (err) {
-//         console.log('Error creating table Relation: ', err.message);
-//     } else {
-//         console.log('Table Relation has been created');
-//     }
-// });
-
 var Notice = require('./database').Notice;
 var noticeTable_create = function(notice, cb) {
     console.log("Notice Table: create new notice " + notice.type);
@@ -52,16 +13,14 @@ var noticeTable_create = function(notice, cb) {
 
 /* */
 var noticeTable_delete = function(notice, cb) {
-    console.log("Relation Table: delete notice " + notice.type);
-    if (notice.type.startsWith('private')) {
-        Relation.destroy(notice.noticeID, function(err) {
-            console.log(err);
-            cb(err);
-        })
-    }
+    console.log("Relation Table: delete notice " + notice.noticeID);
+    Notice.destroy(notice.noticeID, function(err) {
+        console.log(err);
+        cb(err);
+    })
 }
 
-var noticeTable_getPublicNotices = function(IDs, cb) {
+var noticeTable_getPublicNotice = function(IDs, cb) {
     console.log("Notice Table: getPublicNotices " + IDs);
     // var date = new Date();
     // var temp = date.getDate();
@@ -70,17 +29,25 @@ var noticeTable_getPublicNotices = function(IDs, cb) {
     Notice.scan().where('sender').in(IDs).where('type').beginsWith('public').exec(cb);
 }
 
-var noticeTable_getPrivateNotices = function(userID, cb) {
+var noticeTable_getPrivateNotice = function(userID, cb) {
     console.log("Notice Table: getPrivateNotices " + userID);
     Notice.query(userID).usingIndex('receiverIndex').descending().exec(cb);
 }
+
+var noticeTable_getFriendRequest = function(userID, cb) {
+    console.log("Notice Table: getFriendRequest " + userID);
+    Notice.query(userID).usingIndex('receiverIndex').descending().filter('type').equals('friend_request').exec(cb);
+}
+
 
 
 var noticeTable = {
     addNotice: noticeTable_create,
     deleteNotice: noticeTable_delete,
-    getPublicNotices: noticeTable_getPublicNotices,
-    getPrivateNotices: noticeTable_getPrivateNotices,
+    getPublicNotice: noticeTable_getPublicNotice,
+    getPrivateNotice: noticeTable_getPrivateNotice,
+    getFriendRequest: noticeTable_getFriendRequest,
+    sendFriendRequest: noticeTable_create,
 }
 
 module.exports = noticeTable;

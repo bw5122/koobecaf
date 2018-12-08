@@ -1,45 +1,6 @@
-// var dynamo = require('dynamodb');
-// var Joi = require('joi');
+var async = require("async");
 var SHA3 = require("crypto-js/sha3");
-// dynamo.AWS.config.loadFromPath('config.json');
 
-// var User = dynamo.define('User', {
-//     hashKey: 'userID',
-//     // add the timestamp attributes (updatedAt, createdAt)
-//     timestamps: true,
-
-//     schema: {
-//         username: Joi.string(),
-//         userID: dynamo.types.uuid(),
-//         password: Joi.string(),
-//         email: Joi.string().email(),
-//         firstname: Joi.string(),
-//         lastname: Joi.string(),
-//         affiliation: Joi.string(),
-//         birthday: Joi.string(),
-//         interests: dynamo.types.stringSet(),
-//         groupchats: dynamo.types.stringSet(),
-//     },
-//     indexes: [{
-//         hashKey: 'username',
-//         name: 'usernameIndex',
-//         type: 'global'
-//     }]
-// });
-
-// /* Create the table */
-// dynamo.createTables({
-//     'User': {
-//         readCapacity: 5,
-//         writeCapacity: 10
-//     },
-// }, function(err) {
-//     if (err) {
-//         console.log('Error creating table User: ', err.message);
-//     } else {
-//         console.log('Table User has been created');
-//     }
-// });
 var User = require('./database').User;
 
 /* sign up */
@@ -144,6 +105,16 @@ module.exports = userTable;
 
 
 /* functional */
-var addUserInfo = function(items, cb) {
-
+function addUserInfo(items, callback) {
+    var users = [];
+    var counter = 0;
+    async.each(items, function(item, cb) {
+        userTable_getInfo(item, function(err, data) {
+            users[counter] = data.Items[0].attrs;
+            counter++;
+            cb();
+        })
+    }, function() {
+        callback(users);
+    });
 }
