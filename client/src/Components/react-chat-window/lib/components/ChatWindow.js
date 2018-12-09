@@ -56,7 +56,8 @@ var ChatWindow = function (_Component) {
       _react2.default.createElement(_Header2.default, {
         teamName: this.props.agentProfile.teamName,
         imageUrl: this.props.agentProfile.imageUrl,
-        onClose: this.props.onClose
+        onClose: this.props.onClose,
+        onAdd: this.props.onAdd
       }),
       _react2.default.createElement(_MessageList2.default, {
         messages: messageList,

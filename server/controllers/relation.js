@@ -14,13 +14,20 @@ var getFriend = function(req, res) {
                 data: null
             })
         } else {
+            console.log(data.Items);
             var IDs = data.Items.map(obj => {
                 return obj.attrs.objectID;
             })
             console.log(IDs);
             User.addUserInfo(IDs, function(users) {
+                var users1 = users.map(obj => {
+                    var index = data.Items.findIndex(item => item.attrs.objectID === obj.userID);
+                    if (index >= 0)
+                        obj['chatID'] = data.Items[index].attrs.chatID;
+                    return obj;
+                })
                 res.send({
-                    data: users,
+                    data: users1,
                     error: null,
                 })
             })
@@ -128,7 +135,7 @@ var acceptFriend = function(req, res) {
             objectID: request.sender.userID,
             userID: request.receiver,
             type: 'friend',
-              chatID: chatID,
+            chatID: chatID,
         }
         Relation.addFriend([edge1, edge2], function(err, data) {
             if (err) {
@@ -161,7 +168,7 @@ var acceptFriend = function(req, res) {
         var notice1 = {
             sender: request.sender.userID,
             receiver: request.receiver,
-            type: 'private_new_message',
+            type: 'private_new_friend',
         }
         Notice.addNotice(notice1, function(err, data) {
             if (err)
@@ -175,7 +182,7 @@ var acceptFriend = function(req, res) {
         var notice2 = {
             receiver: request.sender.userID,
             sender: request.receiver,
-            type: 'private_new_message',
+            type: 'private_new_friend',
         }
         Notice.addNotice(notice2, function(err, data) {
             if (err)

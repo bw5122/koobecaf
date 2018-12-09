@@ -46,6 +46,7 @@ var Launcher = function (_Component) {
   }
 
   Launcher.prototype.handleClick = function handleClick() {
+    console.log("handleClick");
     if (this.props.handleClick !== undefined) {
       this.props.handleClick();
     } else {
@@ -54,6 +55,24 @@ var Launcher = function (_Component) {
       });
     }
   };
+
+  Launcher.prototype.handleAdd = function handleAdd() {
+    console.log("handleAdd");
+    fetch("/chat/addmember", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body:JSON.stringify({
+        chatID: this.props.chatID,
+        members: ["b8e3af25-bcc0-47ee-917b-3047761d9a46"]
+      })
+    })
+    .then( res => {
+      console.log("add member");
+      console.log("shit");
+    })
+  }
 
   Launcher.prototype.render = function render() {
     var isOpen = this.props.hasOwnProperty('isOpen') ? this.props.isOpen : this.state.isOpen;
@@ -74,7 +93,9 @@ var Launcher = function (_Component) {
         onUserInputSubmit: this.props.onMessageWasSent,
         agentProfile: this.props.agentProfile,
         isOpen: isOpen,
+        chatID: this.props.chatID,
         onClose: this.handleClick.bind(this),
+        onAdd: this.handleAdd.bind(this),
         showEmoji: this.props.showEmoji
       })
     );
