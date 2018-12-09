@@ -90,13 +90,18 @@ var userTable_getInfo = function(userID, cb) {
     User.query(userID).attributes(['userID', 'firstname', 'lastname', 'photo']).exec(cb);
 }
 
+var userTable_getAllUser = function(cb) {
+    console.log("userTable: get all users");
+    User.scan().loadAll().attributes(['userID', 'interests', 'affiliation']).exec(cb);
+}
 var userTable = {
     addUser: userTable_addUser,
     login: userTable_login,
     updateProfile: userTable_updateProfile,
     getProfile: userTable_getProfile,
     getInfo: userTable_getInfo,
-    addUserInfo: addUserInfo
+    addUserInfo: addUserInfo,
+    getAllUser: userTable_getAllUser,
 }
 
 module.exports = userTable;
