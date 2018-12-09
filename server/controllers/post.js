@@ -209,6 +209,7 @@ var getAllPost = function(req, res) {
                 } else {
                     //console.log(data.Items);
                     posts1 = constructPosts(data.Items);
+                    //console.log(posts1);
                     addUserToPosts(posts1, function(posts2) {
                         res.send({
                             data: posts2,
@@ -316,6 +317,7 @@ var constructPosts = function(posts) {
             // comments
             delete obj.attrs.postBy;
             // delete obj.attrs.postID;
+            //console.log(obj.attrs);
             acc[index].comments.push(obj.attrs);
         } else if (obj.attrs.ID.startsWith("like")) {
             // likes
@@ -377,6 +379,7 @@ var addUserToPosts = async function(posts, callback) {
             if (post.comments.length > 0) {
                 //var counter = 0;
                 async.each(post.comments, function(comm, comm_cb) {
+                    console.log('comm.creator:', comm.creator);
                     if (users[comm.creator]) {
                         comm['creator'] = users[post.creator];
                     } else {

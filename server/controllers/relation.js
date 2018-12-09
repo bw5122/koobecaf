@@ -1,6 +1,7 @@
 var Relation = require('../models/relation');
 var User = require('../models/user');
 var Notice = require('../models/notice');
+var Chat = require('../models/chat');
 var notice_ctrl = require('./notice');
 var async = require('async');
 var getFriend = function(req, res) {
@@ -80,31 +81,54 @@ var getFriendRequest = function(req, res) {
 var acceptFriend = function(req, res) {
     console.log("Relaiton Controller: acceptFriend");
     var request = req.body;
+    var chatID;
     //just for testing 
-    // var request = {
-    //         receiver: req.body.receiver,
-    //         sender: {
-    //             userID: req.body.sender,
-    //         },
-    //         noticeID: req.body.noticeID,
-    //     }
-    // create two edges in relation graph
+    var request = {
+            receiver: req.body.receiver,
+            sender: {
+                userID: req.body.sender,
+            },
+            noticeID: req.body.noticeID,
+        }
+        // create two edges in relation graph
     console.log(request);
 
-    var steps = [addRelation, deleteRequest, sendSucces1, sendSucces2];
+    var steps = [createChat, deleteRequest, sendSucces1, sendSucces2];
     async.each(steps, function(step, cb) {
         step(cb);
     });
+
+    async function createChat(cb) {
+        var chat = {
+            members: [request.sender.userID, request.receiver],
+        }
+        Chat.createChat(chat, function(err, data) {
+            if (err) {
+                console.log(err);
+                res.send({
+                    error: err,
+                    data: null,
+                })
+                return;
+            }
+            chatID = data.chatID;
+            console.log(chatID);
+            addRelation(cb);
+        })
+
+    }
     async function addRelation(cb) {
         var edge1 = {
             userID: request.sender.userID,
             objectID: request.receiver,
-            type: 'friend'
+            type: 'friend',
+            chatID: chatID,
         }
         var edge2 = {
             objectID: request.sender.userID,
             userID: request.receiver,
-            type: 'friend'
+            type: 'friend',
+              chatID: chatID,
         }
         Relation.addFriend([edge1, edge2], function(err, data) {
             if (err) {
