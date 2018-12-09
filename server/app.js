@@ -1,9 +1,11 @@
-const MODE = "DEV"
+// MODE
+const MODE = "DEV";
+
 // Include the cluster module
 var cluster = require('cluster');
 
 // Code to run if we're in the master process
-if (MODE!="DEV" && cluster.isMaster) {
+if (MODE != 'DEV' && cluster.isMaster) {
 
     // Count the machine's CPUs
     var cpuCount = require('os').cpus().length;

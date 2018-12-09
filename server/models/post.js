@@ -31,12 +31,12 @@ var postTable_getOwnPost = function(userID, cb) {
 
 var postTable_getAllPost = function(IDs, cb) {
     // show three days data
-    var date = new Date();
-    var temp = date.getDate();
-    date.setDate(temp - 3);
-    var current_date = JSON.stringify(date);
+    // var date = new Date();
+    // var temp = date.getDate();
+    // date.setDate(temp - 3);
+    // var current_date = JSON.stringify(date);
     console.log("postTable: Getting all post using postBy" + IDs);
-    Post.scan().where('postBy').in(IDs).where('createdAt').gt(current_date).exec(cb);
+    Post.scan().where('postBy').in(IDs).where('type').in(['post', 'share']).exec(cb);
 }
 
 

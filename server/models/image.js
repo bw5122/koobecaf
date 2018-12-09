@@ -2,7 +2,7 @@
 var aws = require('aws-sdk');
 var multer = require('multer');
 var multerS3 = require('multer-s3');
-aws.config.loadFromPath('config.json');
+aws.config.loadFromPath('../../config.json');
 
 // Create the parameters for calling createBucket
 var photoBucket = "koobecaf-user-photo";
