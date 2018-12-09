@@ -8,7 +8,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import ChatRoom from './ChatRoom'
-import './List.css'
+import '../Styles/FriendList.css'
 
 
 
@@ -18,7 +18,7 @@ export default class FriendListRow extends Component {
     super(props);
     this.state = {
       renderChatRoom: false,
-      chatID: 'd0e50f1e-3fab-4287-ac27-9e572e26422f',
+      chatID:''
     };
     this.renderChatRoom = this.renderChatRoom.bind(this);
   }

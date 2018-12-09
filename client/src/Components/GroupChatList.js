@@ -11,7 +11,7 @@ export default class FriendList extends Component {
     this.handleNewComment = this.handleNewComment.bind(this);
     this.state = {
       renderChatRoom: false,
-      chatID:''
+      chatID: ''
     };
     this.a = this.a.bind(this);
   }

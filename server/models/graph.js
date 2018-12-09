@@ -1,3 +1,4 @@
+/*
 var Graph = require('./database').Graph;
 var copy = require('copy-dynamodb-table').copy;
 
@@ -53,3 +54,4 @@ var graphTable = {
 }
 
 module.exports = graphTable;
+*/

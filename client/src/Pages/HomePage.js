@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import Post from '../Components/Post';
-import FriendList from '../Components/List'
+import FriendList from '../Components/FriendList'
 import '../Styles/Home.css'
+import PinnedSubheaderList from '../Components/ScrollList'
 
 class Home extends Component {
   constructor(props) {
@@ -110,6 +111,7 @@ class Home extends Component {
           </div>
         </div>
         <FriendList userInfo={this.state.userInfo}/>
+        <PinnedSubheaderList/>
       </div>
     )
   }
