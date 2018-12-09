@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import Post from '../Components/Post';
-import FriendList from '../Components/FriendList'
-import AlignItemsList from '../Components/List'
+import FriendList from '../Components/List'
 import '../Styles/Home.css'
 
 class Home extends Component {
@@ -23,10 +22,6 @@ class Home extends Component {
     this.handleCreatePost = this.handleCreatePost.bind(this);
     console.log("Home:");
     console.log(this.props.location.state.userInfo);
-  }
-
-  navigate() {
-    alert("Shit");
   }
 
   handleChange(event) {
@@ -114,12 +109,14 @@ class Home extends Component {
             </div>
           </div>
         </div>
-        <AlignItemsList/>
         <FriendList userInfo={this.state.userInfo}/>
       </div>
     )
   }
 }
+
+//        <FriendList userInfo={this.state.userInfo}/>
+
 /* not applied to the new strcutre this.props.info
 <Post creator="User2" content="Wowwwww!!!" />
 <Post creator="User3" content="Happy Thanksgiving!" />

@@ -1,0 +1,14 @@
+.root {
+  width: 100%;
+  position: fixed;
+  top: 0px;
+  bottom: 0px;
+  left: 80%;
+  max-width: 300px;
+  background-color: white;
+  z-index: 0
+},
+
+.inline {
+  display: inline;
+}

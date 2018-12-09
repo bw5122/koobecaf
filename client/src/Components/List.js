@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
@@ -7,23 +7,58 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
+import './List.css'
+import FriendListRow from './FriendListRow'
 
-const styles = theme => ({
-  root: {
-    width: '100%',
-    position: 'fixed',
-    top: '50px',
-    bottom:'0px',
-    right: '0px',
-    maxWidth: 300,
-    backgroundColor: theme.palette.background.paper,
-  },
-  inline: {
-    display: 'inline',
-  },
-});
 
+export default class FriendList extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      friends: [],
+    };
+    this.loadFriendList();
+  }
+
+  loadFriendList(){
+    console.log("loadFriendList");
+    fetch("/friend/getfriend/" + this.props.userInfo.userID, {
+      method: "GET",
+    })
+    .then(res => res.json())
+    .then( res => {
+      console.log("shit");
+      if(res.err)
+        alert("error: load chat history")
+      else {
+        this.setState({
+          friends: res.data
+        })
+      }
+    })
+  }
+
+  render() {
+
+    const all_friends = this.state.friends.map((friend) =>
+      <FriendListRow friendInfo={friend} userInfo={this.props.userInfo}/>
+    );
+
+    return(
+      <List className="root">
+        <div className="friend-list">
+        <ul>{all_friends}</ul>
+        </div>
+      </List>
+        )
+    }
+}
+
+/*
 function AlignItemsList(props) {
+  console.log("List constructor");
+  loadFriendList();
   const { classes } = props;
   return (
     <List className={classes.root}>
@@ -77,10 +112,10 @@ function AlignItemsList(props) {
       </ListItem>
     </List>
   );
-}
+}*/
 
-AlignItemsList.propTypes = {
+/*AlignItemsList.propTypes = {
   classes: PropTypes.object.isRequired,
-};
+};*/
 
-export default withStyles(styles)(AlignItemsList);
+//sexport default withStyles(styles)(AlignItemsList);

@@ -2,12 +2,8 @@
 var aws = require('aws-sdk');
 var multer = require('multer');
 var multerS3 = require('multer-s3');
-<<<<<<< HEAD
 let AWS = require('aws-sdk');
 AWS.config.update({region:'us-east-1'});
-=======
-aws.config.loadFromPath('../../config.json');
->>>>>>> 7aaa1d9ccdd46398b89c2b78f910a6eb97593ab6
 
 // Create the parameters for calling createBucket
 var photoBucket = "koobecaf-user-photo-2";

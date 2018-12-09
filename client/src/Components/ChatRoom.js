@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import io from "socket.io-client";
 import {render} from 'react-dom'
 import {Launcher} from './react-chat-window/lib/index'
+import "../Styles/ChatRoom.css"
 
 class Chatroom extends Component {
     constructor(props) {
@@ -128,7 +129,7 @@ class Chatroom extends Component {
             chatHistory
         } = this.state;
         return ( <
-            Launcher agentProfile = {
+            Launcher className="chat-popup-window" agentProfile = {
                 {
                     teamName: 'react-live-chat',
                     imageUrl: 'https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png'
