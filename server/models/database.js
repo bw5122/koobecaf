@@ -1,6 +1,7 @@
 var dynamo = require('dynamodb');
 var Joi = require('joi');
-dynamo.AWS.config.loadFromPath('config.json');
+//dynamo.AWS.config.region = 'us-east-1'
+dynamo.AWS.config.loadFromPath('../../config.json');
 
 
 var Chat = dynamo.define('Chat', {

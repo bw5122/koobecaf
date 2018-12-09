@@ -199,7 +199,6 @@ var denyFriend = function(req, res) {
 
 }
 
-
 var relation_controller = {
     get_friend: getFriend,
     send_friend_request: sendFriendRequest,

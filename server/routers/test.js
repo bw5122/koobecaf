@@ -3,8 +3,8 @@ var router = express.Router();
 
 var test_ctrl = require('../controllers/test');
 
-router.post('/init', test_ctrl.init);
-router.post('/wipeout', test_ctrl.wipeout);
+router.get('/init', test_ctrl.init);
+router.get('/wipeout', test_ctrl.wipeout);
 
 ///test/init
 
