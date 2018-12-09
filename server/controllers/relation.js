@@ -1,6 +1,7 @@
 var Relation = require('../models/relation');
 var User = require('../models/user');
 var Notice = require('../models/notice');
+var notice_ctrl = require('./notice');
 var async = require('async');
 var getFriend = function(req, res) {
     var userID = req.params.userID;
@@ -65,7 +66,7 @@ var getFriendRequest = function(req, res) {
                 return obj.attrs;
             })
             console.log(requests);
-            Notice.addUserToSender(requests, function(result) {
+            notice_ctrl.addUserToSender(requests, function(result) {
                 res.send({
                     error: null,
                     data: result,

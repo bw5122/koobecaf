@@ -1,8 +1,11 @@
+// MODE
+const MODE = "DEV";
+
 // Include the cluster module
 var cluster = require('cluster');
 
 // Code to run if we're in the master process
-if (cluster.isMaster) {
+if (MODE != 'DEV' && cluster.isMaster) {
 
     // Count the machine's CPUs
     var cpuCount = require('os').cpus().length;
@@ -25,7 +28,7 @@ if (cluster.isMaster) {
 } else {
     var express = require('express');
     var app = express();
-    var port = process.env.PORT || 3000;
+    var port = process.env.PORT || 5000;
     var bodyParser = require('body-parser');
     var cookieParser = require('cookie-parser');
     var session = require('express-session');

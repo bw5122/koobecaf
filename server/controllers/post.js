@@ -2,6 +2,7 @@ var Post = require('../models/post');
 var User = require('../models/user');
 var Notice = require('../models/notice');
 var Schema = require('./checkInput');
+var Relation = require('../models/relation');
 var async = require("async");
 const uuidv1 = require('uuid/v1');
 
@@ -17,10 +18,8 @@ var createPost = function(req, res) {
         })
         return;
     }
-
     post['postID'] = uuidv1();
     post['ID'] = post.postID;
-
     //If has hashtgs
     if (post.hashtags) {
         async.each(post.hashtags, function(event, cb) {
@@ -48,12 +47,29 @@ var createPost = function(req, res) {
                 data: data,
                 error: null
             });
-
-            // send a notice of type: public_new_status
-            var notice = {
-                sender: post.postBy,
-                type: 'public_new_status',
-                link: post.postID,
+            // send a notice
+            var notice;
+            if (post.type === 'post')
+                notice = {
+                    sender: post.postBy,
+                    type: 'public_new_status',
+                    ref: post.postID,
+                }
+            else if (post.type === 'share')
+                notice = {
+                    sender: post.postBy,
+                    type: 'public_new_share',
+                    ref: post.postID,
+                }
+            else if (post.type === 'message')
+                notice = {
+                    receiver: post.postBy,
+                    sender: post.creator,
+                    type: 'private_new_message',
+                    ref: post.postID,
+                }
+            else {
+                console.log('Post type does not belong to post/message/share ');
             }
             Notice.addNotice(notice, function(err, data) {
                 if (err)
@@ -167,22 +183,40 @@ var getAllPost = function(req, res) {
     console.log("Post Controller: getAllPost");
     var userID = req.params.userID;
     // find user friends
-    // fake id array
-    var ids = ["ad8e639c-bbfb-4db9-8fdf-3724a3ee09d5", "249b2d2c-9e07-4566-9818-db05f03eef29"];
-    Post.getAllPost(ids, function(err, data) {
+    Relation.getFriend(userID, function(err, data) {
         if (err) {
             console.log(err);
             res.send({
+                error: err,
                 data: null,
-                error: err
-            });
+            })
+            return;
         } else {
-            posts1 = constructPosts(data.Items);
-            console.log(posts1);
-            res.send({
-                data: posts1,
-                error: null
+
+            var ids = data.Items.map(obj => {
+                return obj.attrs.objectID;
             });
+            ids.push(userID);
+            Post.getAllPost(ids, function(err, data) {
+                if (err) {
+                    console.log(err);
+                    res.send({
+                        data: null,
+                        error: err
+                    });
+                } else {
+                    //console.log(data.Items);
+                    posts1 = constructPosts(data.Items);
+                    addUserToPosts(posts1, function(posts2) {
+                        res.send({
+                            data: posts2,
+                            error: null
+                        });
+                    })
+
+                }
+            })
+
         }
     })
 }
