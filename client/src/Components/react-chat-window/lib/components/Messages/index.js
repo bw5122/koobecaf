@@ -18,9 +18,6 @@ var _chatIcon = require('./../../assets/chat-icon.svg');
 
 var _chatIcon2 = _interopRequireDefault(_chatIcon);
 
-var profilePhoto = require('./../../assets/image.png');
-var _profilePhoto2 = _interopRequireDefault(profilePhoto);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -56,7 +53,7 @@ var Message = function (_Component) {
         'div',
         { className: contentClassList.join(" ") },
         _react2.default.createElement('div', { className: 'sc-message--avatar', style: {
-            backgroundImage: 'url(' + _profilePhoto2.default + ')'
+            backgroundImage: 'url(' + _chatIcon2.default + ')'
           } }),
         _react2.default.createElement('div', { className: 'sc-message--username', style: {}},
           this.props.message.firstname

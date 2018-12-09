@@ -4,13 +4,13 @@ class Comment extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      userID: this.props.userID,
     };
   }
 
   render() {
     return (
-      <p>{this.props.info.content}</p>
+      <p>{this.state.userID} : {this.props.info.content}</p>
     );
   }
 }
