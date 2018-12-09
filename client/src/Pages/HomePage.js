@@ -11,10 +11,7 @@ class Home extends Component {
     this.state = {
       // all fields limit length to 20 characters
       userInfo: this.props.location.state.userInfo,
-      posts: [{postBy: 'jack',
-              creator: 'jack',
-              content: 'test post',
-              friendtags: ['berry']}],
+      posts: [],
       newpost: '',
       friendtags: []
 
@@ -54,8 +51,6 @@ class Home extends Component {
     .then(res => res.json())
     .then(
       (res) => {
-        res.data.comments = [];
-        console.log(res.data);
         this.setState({
           posts: [res.data, ...this.state.posts]
         });
@@ -75,6 +70,7 @@ class Home extends Component {
     .then(
       (res) => {
         this.setState({posts: res.data});
+        console.log(this.state.posts);
       },
       (error) => {
         console.log(error);
@@ -85,10 +81,11 @@ class Home extends Component {
 //TODO: share button
   render() {
     const username = this.props.location.state.username;
-
-    const all_posts = this.state.posts.map((post) =>
-      <Post info={post} userID={this.state.userID}/>
+    const posts = this.state.posts;
+    const all_posts = posts.map((post) =>
+      <Post info={post} userInfo={this.state.userInfo} />
     );
+    
     return(
       <div className="homepage">
         <div className="nav">
@@ -106,7 +103,7 @@ class Home extends Component {
               <input type="submit" id="create_button" value="Share" />
             </form>
             <div className="oldposts">
-            <ul>{all_posts}</ul>
+            <div>{all_posts}</div>
             </div>
           </div>
         </div>

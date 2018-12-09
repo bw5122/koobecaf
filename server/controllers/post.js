@@ -1,7 +1,6 @@
 var Post = require('../models/post');
 var User = require('../models/user');
 var Notice = require('../models/notice');
-var Schema = require('./checkInput');
 var Relation = require('../models/relation');
 var async = require("async");
 const uuidv1 = require('uuid/v1');
@@ -11,13 +10,6 @@ var createPost = function(req, res) {
     console.log(req.body);
     var post = req.body;
 
-    if (Schema.checkInput(post, Schema.createPost_schema)) {
-        res.send({
-            error: "Invalid Attributes",
-            data: null,
-        })
-        return;
-    }
     post['postID'] = uuidv1();
     post['ID'] = post.postID;
     //If has hashtgs
@@ -209,6 +201,10 @@ var getAllPost = function(req, res) {
                     posts1 = constructPosts(data.Items);
                     //console.log(posts1);
                     addUserToPosts(posts1, function(posts2) {
+                        console.log(posts2);
+                        posts2.sort(function(a, b) {
+                            return a.createdAt < b.createdAt;
+                        })
                         res.send({
                             data: posts2,
                             error: null
@@ -271,8 +267,8 @@ var deleteComment = function(req, res) {
 var unlikePost = function(req, res) {
     console.log("Post Controller: unlikePost");
     var like = req.body;
-    like['ID'] = 'like_' + like.userID;
-    delete like.userID;
+    like['ID'] = 'like_' + like.creator;
+    delete like.creator;
     Post.unlikePost(like, function(err) {
         res.send({
             error: err
