@@ -11,7 +11,7 @@ var notice_controller = {
 
 module.exports = notice_controller;
 
-function addUserToSender(requests, callback) {
+async function addUserToSender(requests, callback) {
     var counter = 0;
     async.each(requests, function(request, cb) {
         User.getInfo(request.receiver, function(err, data) {

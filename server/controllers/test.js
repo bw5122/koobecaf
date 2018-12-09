@@ -1,6 +1,8 @@
 var User = require('../models/database').User;
 var Relation = require('../models/database').Relation;
+var Post = require('../models/database').Post;
 var SHA3 = require("crypto-js/sha3");
+const uuidv1 = require('uuid/v1');
 var async = require("async");
 
 /* Initialize some Users */
@@ -23,6 +25,19 @@ for (var i = 0; i < 5; i++) {
 var relations = [];
 var counter = 0;
 var IDs;
+var posts = [];
+
+function makePost() {
+    for (var i = 0; i < 5; i++) {
+        posts[i] = {
+            postID: uuidv1(),
+            postBy: IDs[i],
+            content: "Post " + i,
+            type: 'post',
+        }
+        posts[i]['ID'] = posts[i]['postID'];
+    }
+}
 
 function makeRelation() {
     counter = 0;
@@ -45,12 +60,18 @@ var init = function(req, res) {
         IDs = data.map(obj => {
             return obj.attrs.userID;
         })
-        makeRelation(IDs);
+        makeRelation();
         //console.log(relations);
         Relation.create(relations, function(err, data) {
             if (err)
                 console.log(err);
             console.log('created 20 test relations in DynamoDB');
+        });
+        makePost();
+        Post.create(posts, function(err, data) {
+            if (err)
+                console.log(err);
+            console.log('created 5 posts in DynamoDB');
         });
     });
     res.send({});

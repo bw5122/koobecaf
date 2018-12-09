@@ -49,42 +49,40 @@ class Home extends Component {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        postBy: this.state.userID,
-        creator: this.state.userID,
+        type: "post",
+        postBy: this.state.userInfo.userID,
         content: this.state.newpost,
         friendtags: this.state.friendtags
       })
     })
     .then(res => res.json())
     .then(
-      (data) => {
-        this.setState(prevState => ({
-          posts: [data, prevState.posts]
-        }))
+      (res) => {
+        res.data.comments = [];
+        console.log(res.data);
+        this.setState({
+          posts: [res.data, ...this.state.posts]
+        });
+        //console.log(this.state.post.size);
       },
       (error) => {
-        alert("error");
+        alert("error (create posts)");
       }
     )
   }
 
   componentDidMount() {
-    fetch("/post/getallpost" + this.state.userID, {
+    fetch("/post/getallpost/" + this.state.userInfo.userID, {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        userID: this.state.userID,
-      })
     })
     .then(res => res.json())
     .then(
-      (data) => {
-        this.setState({posts: data});
+      (res) => {
+        this.setState({posts: res.data});
       },
       (error) => {
-        alert("error");
+        console.log(error);
+        alert("error (get all post)");
       }
     )
   }
@@ -126,5 +124,6 @@ class Home extends Component {
 <Post creator="User2" content="Wowwwww!!!" />
 <Post creator="User3" content="Happy Thanksgiving!" />
 <Post creator="User4" content="Happy Birthday!" />
+<FriendList userInfo={this.state.userInfo}/>
 */
 export default Home;

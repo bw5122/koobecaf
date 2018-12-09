@@ -1,6 +1,7 @@
 var bucket = require("../models/image");
 var User = require('../models/user');
 var Post = require('../models/post');
+var Notice = require('../models/notice');
 
 var singleUploadPhoto = bucket.uploadPhoto.single('photo');
 var singleUploadImage = bucket.uploadImage.single('image');
@@ -40,6 +41,8 @@ var uploadUserPhoto = function(req, res) {
                     });
                 }
             });
+            // add a public_new_photo 
+
 
         }
     });

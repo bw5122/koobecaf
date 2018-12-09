@@ -2,7 +2,7 @@ var dynamo = require('dynamodb');
 var Joi = require('joi');
 
 //TODO, input your config.json path
-
+dynamo.AWS.config.loadFromPath('../../config.json');
 //dynamo.AWS.config.loadFromPath('config.json');
 let AWS = require('aws-sdk');
 AWS.config.update({region:'us-east-1'});
@@ -126,6 +126,7 @@ var Relation = dynamo.define('Relation', {
         objectID: Joi.string(),
         type: Joi.string(),
         weight: Joi.number(),
+        chatID: Joi.string(),
     },
     indexes: [{
         hashKey: 'type',

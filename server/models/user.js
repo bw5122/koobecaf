@@ -1,6 +1,5 @@
-
 var SHA3 = require("crypto-js/sha3");
-
+var async = require("async");
 var User = require('./database').User;
 
 /* sign up */
@@ -105,6 +104,16 @@ module.exports = userTable;
 
 
 /* functional */
-var addUserInfo = function(items, cb) {
-
+function addUserInfo(items, callback) {
+    var users = [];
+    var counter = 0;
+    async.each(items, function(item, cb) {
+        userTable_getInfo(item, function(err, data) {
+            users[counter] = data.Items[0].attrs;
+            counter++;
+            cb();
+        })
+    }, function() {
+        callback(users);
+    });
 }
