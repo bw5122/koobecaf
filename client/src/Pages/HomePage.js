@@ -9,7 +9,7 @@ class Home extends Component {
     super(props);
     this.state = {
       // all fields limit length to 20 characters
-      userID: this.props.location.state.userID,
+      userInfo: this.props.location.state.userInfo,
       posts: [{postBy: 'jack',
               creator: 'jack',
               content: 'test post',
@@ -20,6 +20,8 @@ class Home extends Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleCreatePost = this.handleCreatePost.bind(this);
+    console.log("Home:");
+    console.log(this.props.location.state.userInfo);
   }
 
   navigate() {
@@ -113,7 +115,7 @@ class Home extends Component {
             </div>
           </div>
         </div>
-        <FriendList userID={this.state.userID}/>
+        <FriendList userInfo={this.state.userInfo}/>
       </div>
     )
   }

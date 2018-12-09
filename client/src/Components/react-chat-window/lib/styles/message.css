@@ -10,6 +10,12 @@
   display: flex;
 }
 
+.sc-message--username{
+  color: #e0e0eb;
+  position: relative;
+  top: 10px;
+}
+
 .sc-message--content.sent {
   justify-content: flex-end;
 }

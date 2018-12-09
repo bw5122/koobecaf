@@ -58,9 +58,7 @@ class LoginForm extends Component {
         this.props.history.push({
           pathname:"/home",
           state: {
-            firstname: res.data.firstname,
-            lastname: res.data.lastname,
-            userID: res.data.userID
+            userInfo: res.data
           }
         });
       }

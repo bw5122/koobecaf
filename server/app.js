@@ -51,10 +51,14 @@ var onlineCount = 0;
 io.on('connection', function(socket) {
     console.log("a user is connected to chat room: " + socket.handshake.query.chatID);
     socket.join(socket.handshake.query.chatID);
-    chat_ctrl.get_chat_history(socket.handshake.query.chatID, function(data) {
-        console.log(data);
-        io.to(socket.id).emit('history', data);
-    });
+
+    socket.on('requestHistory', function(){
+      console.log("request history received");
+      chat_ctrl.get_chat_history(socket.handshake.query.chatID, function(data) {
+          console.log(data);
+          io.to(socket.id).emit('history', data);
+      });
+    })
 
     // 监听客户端的断开连接
     socket.on('disconnect', function() {
@@ -68,6 +72,7 @@ io.on('connection', function(socket) {
         //io.in(obj.chatid).emit('message', obj);
         console.log(message);
         //upload message
+        delete message['author'];
         message.data = JSON.stringify(message.data);
         chat_ctrl.add_message(message, function(data) {
             console.log("add_message call back: "+data);
