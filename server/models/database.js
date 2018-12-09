@@ -30,7 +30,7 @@ var Notice = dynamo.define('Notice', {
         sender: Joi.string(),
         content: Joi.string(),
         type: Joi.string(),
-        link: Joi.string(),
+        ref: Joi.string(),
         receiver: Joi.string(),
     },
     indexes: [{
