@@ -14,19 +14,20 @@ var getFriend = function(req, res) {
                 data: null
             })
         } else {
+            console.log(data.Items);
             var IDs = data.Items.map(obj => {
                 return obj.attrs.objectID;
             })
             console.log(IDs);
             User.addUserInfo(IDs, function(users) {
-                users.map(obj => {
-                    var index = data.Items.findIndex(item => item.attrs.userID === obj.userID);
+                var users1 = users.map(obj => {
+                    var index = data.Items.findIndex(item => item.attrs.objectID === obj.userID);
                     if (index >= 0)
                         obj['chatID'] = data.Items[index].attrs.chatID;
                     return obj;
                 })
                 res.send({
-                    data: users,
+                    data: users1,
                     error: null,
                 })
             })
