@@ -71,11 +71,8 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    fetch("/post/getownpost/" + this.state.userInfo.userID, {
+    fetch("/post/getallpost/" + this.state.userInfo.userID, {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      }
     })
     .then(res => res.json())
     .then(
