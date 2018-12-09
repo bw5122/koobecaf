@@ -1,8 +1,8 @@
 var Graph = require('./database').Graph;
-var copy = require('copy-dynamodb-table').copy;
+//var copy = require('copy-dynamodb-table').copy;
 
 var config = require('../../../config.json');
-
+/*
 var graphTable_generateGraph = function() {
     console.log("graph table: generateGraph");
     copy({
@@ -23,6 +23,7 @@ var graphTable_generateGraph = function() {
             console.log(result)
         })
 }
+*/
 var graphTable_deleteTable = function() {
     Graph.deleteTable(function(err) {
         if (err) {
@@ -47,7 +48,6 @@ var graphTable_create = function(edges, cb) {
 }
 
 var graphTable = {
-    generateGraph: graphTable_generateGraph,
     deleteTable: graphTable_deleteTable,
     create: graphTable_create,
 }

@@ -10,14 +10,6 @@ var createPost = function(req, res) {
     console.log("Post Controller: createPost");
     console.log(req.body);
     var post = req.body;
-
-    if (Schema.checkInput(post, Schema.createPost_schema)) {
-        res.send({
-            error: "Invalid Attributes",
-            data: null,
-        })
-        return;
-    }
     post['postID'] = uuidv1();
     post['ID'] = post.postID;
     //If has hashtgs
