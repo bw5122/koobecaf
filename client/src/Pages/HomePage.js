@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import Post from '../Components/Post';
+import Navbar from '../Components/Navbar'
 import FriendList from '../Components/FriendList'
 import '../Styles/Home.css'
 
@@ -13,12 +14,11 @@ class Home extends Component {
       posts: [],
       newpost: '',
       friendtags: []
-
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleCreatePost = this.handleCreatePost.bind(this);
-    console.log("Home:");
-    console.log(this.props.location.state.userInfo);
+    this.homeRef = React.createRef();
+    this.updateHomePage = this.updateHomePage.bind(this);
   }
 
   navigate() {
@@ -54,10 +54,20 @@ class Home extends Component {
     .then(res => res.json())
     .then(
       (res) => {
-        this.setState({
-          posts: [res.data, ...this.state.posts]
-        });
-        //console.log(this.state.post.size);
+        fetch("/post/getallpost/" + this.state.userInfo.userID, {
+          method: "GET",
+        })
+        .then(res => res.json())
+        .then(
+          (res) => {
+            this.setState({posts: res.data});
+            console.log(this.state.posts);
+          },
+          (error) => {
+            console.log(error);
+            alert("error (get all post)");
+          }
+        )
       },
       (error) => {
         alert("error (create posts)");
@@ -81,24 +91,35 @@ class Home extends Component {
       }
     )
   }
-//TODO: share button
+
+  updateHomePage() {
+    fetch("/post/getallpost/" + this.state.userInfo.userID, {
+      method: "GET",
+    })
+    .then(res => res.json())
+    .then(
+      (res) => {
+        this.setState({posts: res.data});
+      },
+      (error) => {
+        console.log(error);
+        alert("error (get all post)");
+      }
+    )
+  }
   render() {
     const username = this.props.location.state.username;
     const posts = this.state.posts;
     const all_posts = posts.map((post) =>
-      <Post info={post} userInfo={this.state.userInfo} />
+      <Post info={post} userInfo={this.state.userInfo} updateHomePage={this.updateHomePage}/>
     );
-    
+
     return(
       <div className="homepage">
-        <div className="nav">
-          <button id="nav_button" onClick={this.navigate}>Nav</button>
-          <button id="profile_button" onClick="">{username}</button>
-          <button id="home_button" onClick="">Home</button>
-        </div>
+        <Navbar userInfo={this.state.userInfo} />
 
         <div className="content">
-          <h3>This is {username} home page! </h3>
+          <h3>This is {this.state.userInfo.firstname} home page! </h3>
           <div className="posts">
             <form className="createpost" onSubmit={this.handleCreatePost}>
               <input type="text" name="newpost" placeholder="What's on your mind?" id="newpost" value={this.state.newpost.value}  onChange={this.handleChange} maxLength="200" />

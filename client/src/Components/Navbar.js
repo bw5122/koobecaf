@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { Redirect, withRouter } from 'react-router-dom';
 
 class Navbar extends Component {
   // props: {userInfo}
@@ -51,4 +52,4 @@ class Navbar extends Component {
   }
 }
 
-export default Navbar;
+export default withRouter(Navbar);

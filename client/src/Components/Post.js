@@ -12,6 +12,7 @@ class Post extends Component {
       comments: props.info.comments,
       newcomment: '',
       likes: props.info.likes, // list of user names
+      liked: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleNewComment = this.handleNewComment.bind(this);
@@ -53,6 +54,12 @@ class Post extends Component {
       .then(res => res.json())
       .then(
         (result) => {
+          const id = result.data.creator;
+          result.data.creator = {
+            userID: id,
+            firstname: this.props.userInfo.firstname,
+            lastname: this.props.userInfo.lastname
+          }
           if(this.state.comments) {
             this.setState({
               comments: [...this.state.comments, result.data]
@@ -76,7 +83,27 @@ class Post extends Component {
 
   handleShare(e) {
     e.preventDefault();
-    
+    fetch("/post/createpost", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        type: "share",
+        postBy: this.props.userInfo.userID,
+        postID: this.props.info.postID
+      })
+    })
+    .then(res => res.json())
+    .then(
+      (res) => {
+        this.props.updateHomePage();
+        //console.log(this.state.post.size);
+      },
+      (error) => {
+        alert("error (create posts)");
+      }
+    )
   }
 
   handleNewLike(e) {
@@ -144,6 +171,21 @@ class Post extends Component {
 
   }
 
+  generateHeader() {
+    switch (this.props.info.type) {
+      case "post":
+        return <h3>{this.props.info.postBy.firstname} {this.props.info.postBy.lastname} posted:</h3>
+        break;
+
+      case "share":
+      //TODO: /post/getonepost
+        return <h3>{this.props.info.postBy.firstname} {this.props.info.postBy.lastname} shared:</h3>
+        break;
+
+      default:
+
+    }
+  }
 
   render() {
     const time = (this.props.info) ? (this.props.info).createdAt : '';
@@ -151,15 +193,16 @@ class Post extends Component {
       <Comment info={ele} userInfo={this.props.userInfo}/>
     ) : [];
     console.log(this.state.likes);
-
+    const header = this.generateHeader();
     return (
       <div className="box">
-        <h3>{this.props.info.postBy.firstname} {this.props.info.postBy.lastname}</h3>
+        {header}
         <Moment date={time} />
         <p>{this.props.info.content}</p>
         {this.state.likes.length > 0 &&
           <h4>{this.state.likes[0].creator.firstname} {this.state.likes[0].creator.lastname} and {this.state.likes.length - 1} friends like it</h4>
         }
+
         <button id="like_button" onClick={this.handleNewLike}>
           {this.state.liked ? 'unlike' : 'like'}
         </button>
