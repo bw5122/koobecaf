@@ -136,6 +136,19 @@ var Relation = dynamo.define('Relation', {
     }]
 });
 
+var Graph = dynamo.define('Graph', {
+    hashKey: 'SID',
+    rangeKey: 'EID',
+    // add the timestamp attributes (updatedAt, createdAt)
+    timestamps: false,
+    schema: {
+        SID: Joi.string(),
+        EID: Joi.string(),
+        type: Joi.string(),
+    },
+    tableName: 'graph'
+});
+
 /* Create the table */
 
 dynamo.createTables({
@@ -162,6 +175,10 @@ dynamo.createTables({
     'Notice': {
         readCapacity: 10,
         writeCapacity: 10,
+    },
+    'Graph': {
+        readCapacity: 2,
+        writeCapacity: 2,
     }
 }, function(err) {
     if (err) {
@@ -179,6 +196,7 @@ var db = {
     Chat: Chat,
     Message: Message,
     Notice: Notice,
+    Graph: Graph,
 }
 
 module.exports = db;

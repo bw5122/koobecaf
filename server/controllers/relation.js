@@ -127,7 +127,8 @@ var acceptFriend = function(req, res) {
         var edge2 = {
             objectID: request.sender.userID,
             userID: request.receiver,
-            type: 'friend'
+            type: 'friend',
+              chatID: chatID,
         }
         Relation.addFriend([edge1, edge2], function(err, data) {
             if (err) {
