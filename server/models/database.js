@@ -3,9 +3,9 @@ var Joi = require('joi');
 
 //TODO, input your config.json path
 
-//dynamo.AWS.config.loadFromPath('config.json');
-/*let AWS = require('aws-sdk');
-AWS.config.update({region:'us-east-1'});*/
+dynamo.AWS.config.loadFromPath('../../config.json');
+let AWS = require('aws-sdk');
+AWS.config.update({region:'us-east-1'});
 
 
 

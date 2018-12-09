@@ -9,7 +9,7 @@ var createPost = function(req, res) {
     console.log("Post Controller: createPost");
     console.log(req.body);
     var post = req.body;
-
+    /*
     if (Schema.checkInput(post, Schema.createPost_schema)) {
         res.send({
             error: "Invalid Attributes",
@@ -17,7 +17,7 @@ var createPost = function(req, res) {
         })
         return;
     }
-
+    */
     post['postID'] = uuidv1();
     post['ID'] = post.postID;
 
@@ -282,7 +282,7 @@ var constructPosts = function(posts) {
             // delete obj.attrs.postID;
             acc[index].comments.push(obj.attrs);
         } else if (obj.attrs.ID.startsWith("like")) {
-            // likes     
+            // likes
             delete obj.attrs.postBy;
             // delete obj.attrs.postID;
             acc[index].likes.push(obj.attrs);
