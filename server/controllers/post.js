@@ -1,5 +1,7 @@
 var Post = require('../models/post');
 var User = require('../models/user');
+var Notice = require('../models/notice');
+var Schema = require('./checkInput');
 var async = require("async");
 const uuidv1 = require('uuid/v1');
 
@@ -7,11 +9,21 @@ var createPost = function(req, res) {
     console.log("Post Controller: createPost");
     console.log(req.body);
     var post = req.body;
+
+    if (Schema.checkInput(post, Schema.createPost_schema)) {
+        res.send({
+            error: "Invalid Attributes",
+            data: null,
+        })
+        return;
+    }
+
     post['postID'] = uuidv1();
     post['ID'] = post.postID;
+
     //If has hashtgs
     if (post.hashtags) {
-        async.each(post.hashtags, function(name, cb) {
+        async.each(post.hashtags, function(event, cb) {
             var event = {
                 postID: post.postID,
                 ID: 'event_' + uuidv1(),
@@ -36,6 +48,20 @@ var createPost = function(req, res) {
                 data: data,
                 error: null
             });
+
+            // send a notice of type: public_new_status
+            var notice = {
+                sender: post.postBy,
+                type: 'public_new_status',
+                link: post.postID,
+            }
+            Notice.addNotice(notice, function(err, data) {
+                if (err)
+                    console.log(err);
+                else
+                    console.log(data.attrs);
+            })
+
         }
     });
 };
@@ -64,6 +90,18 @@ var addComment = function(req, res) {
                         data: data,
                         error: null
                     });
+                    // send a notice to postBy of type :private_new_comment
+                    var notice = {
+                        sender: comment.creator,
+                        type: 'private_new_comment',
+                        receiver: comment.postBy,
+                    }
+                    Notice.addNotice(notice, function(err, data) {
+                        if (err)
+                            console.log(err);
+                        else
+                            console.log(data);
+                    })
                 }
             })
         }
@@ -94,6 +132,7 @@ var likePost = function(req, res) {
                         data: data,
                         error: null
                     });
+                    // send a private message to postBy
                 }
             })
         }
@@ -205,6 +244,7 @@ var unlikePost = function(req, res) {
         })
     })
 }
+
 
 
 var post_controller = {
