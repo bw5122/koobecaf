@@ -207,6 +207,7 @@ var getAllPost = function(req, res) {
                 } else {
                     //console.log(data.Items);
                     posts1 = constructPosts(data.Items);
+                    //console.log(posts1);
                     addUserToPosts(posts1, function(posts2) {
                         res.send({
                             data: posts2,
@@ -314,6 +315,7 @@ var constructPosts = function(posts) {
             // comments
             delete obj.attrs.postBy;
             // delete obj.attrs.postID;
+            //console.log(obj.attrs);
             acc[index].comments.push(obj.attrs);
         } else if (obj.attrs.ID.startsWith("like")) {
             // likes     
@@ -375,12 +377,13 @@ var addUserToPosts = async function(posts, callback) {
             if (post.comments.length > 0) {
                 //var counter = 0;
                 async.each(post.comments, function(comm, comm_cb) {
+                    console.log('comm.creator:', comm.creator);
                     if (users[comm.creator]) {
                         comm['creator'] = users[post.creator];
                     } else {
 
                         User.getInfo(comm.creator, function(err, data) {
-                            if (data.Items[0]) {
+                            if (data.Items && data.Items[0]) {
                                 users[data.Items[0].attrs.userID] = data.Items[0].attrs;
                                 comm['creator'] = data.Items[0].attrs;
                             }
@@ -398,7 +401,7 @@ var addUserToPosts = async function(posts, callback) {
                         like['creator'] = users[like.creator];
                     } else {
                         User.getInfo(like.creator, function(err, data) {
-                            if (data.Items[0]) {
+                            if (data.Items && data.Items[0]) {
                                 users[data.Items[0].attrs.userID] = data.Items[0].attrs;
                                 like['creator'] = data.Items[0].attrs;
                             }

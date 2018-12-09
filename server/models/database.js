@@ -126,6 +126,7 @@ var Relation = dynamo.define('Relation', {
         objectID: Joi.string(),
         type: Joi.string(),
         weight: Joi.number(),
+        chatID: Joi.string(),
     },
     indexes: [{
         hashKey: 'type',
