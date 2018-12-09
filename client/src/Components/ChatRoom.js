@@ -16,7 +16,28 @@ class Chatroom extends Component {
     }
 
     getChatHistory(){
+      /*chat_ctrl.get_chat_history(socket.handshake.query.chatID, function(data) {
+          console.log(data);
+          io.to(socket.id).emit('history', data);
+      });*/
 
+      ///gethistory/:chatID
+      console.log("get chat history");
+      fetch("/chat/gethistory/" + this.state.chatID, {
+        method: "GET",
+      /*  headers: {
+          "Content-Type": "application/json"
+        },*/
+      })
+      .then(res => res.json())
+      .then( res => {
+        console.log("shit");
+        if(res.err)
+          alert("error: load chat history")
+        else {
+          this.loadChatHistory(res.data);
+        }
+      })
     }
 
     loadChatHistory(messages) {
@@ -49,6 +70,7 @@ class Chatroom extends Component {
       else {
         message.author = "them";
       }
+      console.log(this.state.memberInfo);
       message.firstname = (this.state.memberInfo)[message.sender].firstname;
       console.log(message);
       this.setState({
@@ -79,12 +101,14 @@ class Chatroom extends Component {
     componentDidMount() {
         this.createSocket();
         const socket = this.state.socket;
+        this.getChatHistory();
+
         console.log('join room: ' + this.state.chatID);
-        socket.on('history', (data) =>{
+      /*  socket.on('history', (data) =>{
             console.log("client: history activated");
             console.log(data);
             this.loadChatHistory(data);
-        })
+        })*/
 
         socket.on('message', (message) => {
             console.log('message event is received at the front-end!');
@@ -93,9 +117,6 @@ class Chatroom extends Component {
             message.data = JSON.parse(message.data);
             this.updateMsg(message);
         })
-
-        socket.emit('requestHistory', {})
-
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -118,6 +139,9 @@ class Chatroom extends Component {
             }
             messageList = {
                 this.state.messageList
+            }
+            chatID = {
+              this.state.chatID
             }
             showEmoji /
             >

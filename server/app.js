@@ -1,8 +1,9 @@
+const MODE = "DEV";
 // Include the cluster module
 var cluster = require('cluster');
 
 // Code to run if we're in the master process
-if (cluster.isMaster) {
+if (MODE != "DEV" && cluster.isMaster) {
 
     // Count the machine's CPUs
     var cpuCount = require('os').cpus().length;
@@ -25,7 +26,7 @@ if (cluster.isMaster) {
 } else {
     var express = require('express');
     var app = express();
-    var port = process.env.PORT || 3000;
+    var port = process.env.PORT || 5000;
     var bodyParser = require('body-parser');
     var cookieParser = require('cookie-parser');
     var session = require('express-session');
@@ -70,20 +71,14 @@ if (cluster.isMaster) {
     app.use('/test', test_router);
     app.use('/notice', notice_router);
 
-    // id of new chat room waiting to be created
-    var newChatid = 0;
-    // 在线用户
-    var onlineUsers = {};
-    // 在线用户人数
-    var onlineCount = 0;
 
     io.on('connection', function(socket) {
         console.log("a user is connected to chat room: " + socket.handshake.query.chatID);
         socket.join(socket.handshake.query.chatID);
-        chat_ctrl.get_chat_history(socket.handshake.query.chatID, function(data) {
+        /*chat_ctrl.get_chat_history(socket.handshake.query.chatID, function(data) {
             console.log(data);
             io.to(socket.id).emit('history', data);
-        });
+        });*/
 
         // 监听客户端的断开连接
         socket.on('disconnect', function() {
@@ -92,11 +87,15 @@ if (cluster.isMaster) {
 
         // 监听客户端发送的信息
         socket.on('message', function(message) {
+            console.log("message is received");
             console.log("chatid: " + message.chatID);
             //io.to(obj.chatid).emit('message', obj);//successful?
             //io.in(obj.chatid).emit('message', obj);
             console.log(message);
+
             //upload message
+            delete message['author'];
+            delete message['firstname'];
             message.data = JSON.stringify(message.data);
             chat_ctrl.add_message(message, function(data) {
                 console.log("add_message call back: " + data);
@@ -110,5 +109,5 @@ if (cluster.isMaster) {
 
     })
 
-    http.listen(port, () => console.log(`Listening on port ${port}`));
+    http.listen(5000, () => console.log(`Listening on port 5000`));
 }

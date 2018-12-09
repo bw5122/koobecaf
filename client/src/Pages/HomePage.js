@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import Post from '../Components/Post';
 import FriendList from '../Components/FriendList'
+import AlignItemsList from '../Components/List'
 import '../Styles/Home.css'
 
 class Home extends Component {
@@ -115,6 +116,7 @@ class Home extends Component {
             </div>
           </div>
         </div>
+        <AlignItemsList/>
         <FriendList userInfo={this.state.userInfo}/>
       </div>
     )

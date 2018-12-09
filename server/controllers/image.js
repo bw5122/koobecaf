@@ -23,7 +23,7 @@ var uploadUserPhoto = function(req, res) {
             console.log(req.file);
             var usr = {
                 userID: userID,
-                image: req.file.location,
+                photo: req.file.location,
             }
             User.updateProfile(usr, function(err, data) {
                 if (err) {
