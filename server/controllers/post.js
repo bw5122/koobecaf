@@ -86,6 +86,7 @@ var createPost = function(req, res) {
 var addComment = function(req, res) {
     console.log("Post Controller: addComment");
     var comment = req.body;
+    console.log(comment);
     Post.getPostInfo(comment.postID, function(err, data) {
         if (data.Items) {
             var post = data.Items[0].attrs;
@@ -197,6 +198,7 @@ var getAllPost = function(req, res) {
                 return obj.attrs.objectID;
             });
             ids.push(userID);
+            console.log(ids);
             Post.getAllPost(ids, function(err, data) {
                 if (err) {
                     console.log(err);
@@ -270,8 +272,8 @@ var deleteComment = function(req, res) {
 var unlikePost = function(req, res) {
     console.log("Post Controller: unlikePost");
     var like = req.body;
-    like['ID'] = 'like_' + like.userID;
-    delete like.userID;
+    like['ID'] = 'like_' + like.creator;
+    delete like.creator;
     Post.unlikePost(like, function(err) {
         res.send({
             error: err
@@ -316,7 +318,7 @@ var constructPosts = function(posts) {
             // delete obj.attrs.postID;
             acc[index].comments.push(obj.attrs);
         } else if (obj.attrs.ID.startsWith("like")) {
-            // likes     
+            // likes
             delete obj.attrs.postBy;
             // delete obj.attrs.postID;
             acc[index].likes.push(obj.attrs);
@@ -380,7 +382,7 @@ var addUserToPosts = async function(posts, callback) {
                     } else {
 
                         User.getInfo(comm.creator, function(err, data) {
-                            if (data.Items[0]) {
+                            if (data.Items && data.Items[0]) {
                                 users[data.Items[0].attrs.userID] = data.Items[0].attrs;
                                 comm['creator'] = data.Items[0].attrs;
                             }
@@ -398,7 +400,7 @@ var addUserToPosts = async function(posts, callback) {
                         like['creator'] = users[like.creator];
                     } else {
                         User.getInfo(like.creator, function(err, data) {
-                            if (data.Items[0]) {
+                            if (data.Items && data.Items[0]) {
                                 users[data.Items[0].attrs.userID] = data.Items[0].attrs;
                                 like['creator'] = data.Items[0].attrs;
                             }
