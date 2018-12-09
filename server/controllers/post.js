@@ -271,8 +271,8 @@ var deleteComment = function(req, res) {
 var unlikePost = function(req, res) {
     console.log("Post Controller: unlikePost");
     var like = req.body;
-    like['ID'] = 'like_' + like.userID;
-    delete like.userID;
+    like['ID'] = 'like_' + like.creator;
+    delete like.creator;
     Post.unlikePost(like, function(err) {
         res.send({
             error: err
