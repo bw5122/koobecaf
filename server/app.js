@@ -29,13 +29,23 @@ if (MODE != 'DEV' && cluster.isMaster) {
     var express = require('express');
     var app = express();
     var port = process.env.PORT || 5000;
-    var bodyParser = require('body-parser');
-    var cookieParser = require('cookie-parser');
-    var session = require('express-session');
+
     var path = require('path');
+
+    var passport = require('passport'),
+        LocalStrategy = require('passport-local').Strategy;
+
+
     var http = require('http').Server(app);
     var io = require('socket.io')(http);
 
+    var session = require("express-session"),
+        bodyParser = require("body-parser");
+
+    app.use(express.static("public"));
+    app.use(session({
+        secret: "cats"
+    }));
     app.use(bodyParser.json({
         limit: '10mb',
         extended: true
@@ -44,13 +54,81 @@ if (MODE != 'DEV' && cluster.isMaster) {
         limit: '10mb',
         extended: true
     }));
+    app.use(passport.initialize());
+    app.use(passport.session());
 
-    //app.use(express.logger("default"));
 
-    app.use(cookieParser());
-    app.use(session({
-        secret: 'thisIsMySecret'
-    }));
+    var SHA3 = require("crypto-js/sha3");
+    var userTable = require('./models/user.js');
+    passport.use(new LocalStrategy(
+        function(username, password, done) {
+            console.log(username, password);
+            userTable.findUser({
+                username: username
+            }, function(err, user) {
+                if (err) {
+                    return done(err);
+                }
+                if (!user) {
+                    return done(null, false, {
+                        message: 'Incorrect username.'
+                    });
+                }
+                console.log(SHA3(password).toString());
+                if (SHA3(password).toString() !== user.password) {
+                    return done(null, false, {
+                        message: 'Incorrect password.'
+                    });
+                }
+                return done(null, user);
+            });
+        }
+    ));
+
+
+    passport.serializeUser(function(user, done) {
+        if (user) {
+            done(null, user.userID);
+        }
+    });
+
+    passport.deserializeUser(function(id, done) {
+        userTable.getInfo(id, function(err, user) {
+            done(err, user);
+        });
+    });
+
+    /* for user login */
+    app.post('/login', function(req, res, next) {
+        console.log('server login:')
+        passport.authenticate('local', function(err, user, info) {
+            if (err) {
+                res.send({
+                    error: err,
+                    data: null,
+                });
+            }
+            if (!user) {
+                res.send({
+                    error: info,
+                    data: null,
+                });
+            }
+            req.logIn(user, function(err) {
+                if (err) {
+                    console.log(err);
+                    return next(err);
+                }
+                return res.send({
+                    data: user,
+                    error: null,
+                });
+            });
+        })(req, res);
+    })
+
+
+
 
     /* react build file */
     app.use(express.static(path.join(__dirname, '/build')));
