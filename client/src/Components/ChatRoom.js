@@ -9,53 +9,62 @@ class Chatroom extends Component {
         this.state = {
             messageList: [],
             chatID: 'd0e50f1e-3fab-4287-ac27-9e572e26422f',
-            socket: ""
+            socket: "",
+            memberInfo:{}
         };
         console.log("constrcutor of chatroom: " + this.state.chatID);
     }
 
-    loadChatHistory(message) {
+    getChatHistory(){
+
+    }
+
+    loadChatHistory(messages) {
         console.log("update msg");
-        for(let i=0; i<message.length; i++){
-          if(message[i].sender == '1')
-            message[i].author = "me";
-          else {
-            message[i].author = "them;"
-          }
-          message[i].data = JSON.parse(message[i].data);
-        }
-        console.log(message);
+        console.log(messages);
+        let history = messages.history;
+
         this.setState({
-            //messageList: [...this.state.messageList, ...message]
-            messageList: message
+          memberInfo: messages.members
+        })
+        for(let i=0; i<history.length; i++){
+          if(history[i].sender == this.props.userInfo.userID)
+            history[i].author = "me";
+          else {
+            history[i].author = "them";
+          }
+          history[i].firstname = (messages.members)[history[i].sender].firstname;
+          history[i].data = JSON.parse(history[i].data);
+        }
+        this.setState({
+            messageList: history
         })
     }
 
     updateMsg(message){
       console.log("update message");
-      console.log(message);
-      if(message.sender == undefined){
-
-      }
-      else if(message.sender == '1'){
+      if(message.sender == this.props.userInfo.userID){
         message.author = "me";
-        console.log("me");
       }
       else {
-        message.author = "them"
+        message.author = "them";
       }
+      message.firstname = (this.state.memberInfo)[message.sender].firstname;
+      console.log(message);
       this.setState({
           messageList: [...this.state.messageList, message]
       })
+      console.log("show msg list: ");
+      console.log(this.state.messageList);
     }
 
     _onMessageWasSent(message) {
         message.chatID = this.state.chatID;
+        message['sender'] = this.props.userInfo.userID;
+        message['firstname'] = this.props.userInfo.firstname;
         this.updateMsg(message);
-        message['sender'] = this.props.userID;
         console.log("client: ");
         console.log(message);
-        delete message['author'];
         this.state.socket.emit('message', message);
     }
 
@@ -74,7 +83,7 @@ class Chatroom extends Component {
         socket.on('history', (data) =>{
             console.log("client: history activated");
             console.log(data);
-            this.loadChatHistory(data.history);
+            this.loadChatHistory(data);
         })
 
         socket.on('message', (message) => {
@@ -84,6 +93,9 @@ class Chatroom extends Component {
             message.data = JSON.parse(message.data);
             this.updateMsg(message);
         })
+
+        socket.emit('requestHistory', {})
+
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {

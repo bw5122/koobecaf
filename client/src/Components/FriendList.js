@@ -37,7 +37,7 @@ export default class FriendList extends Component {
               <button className="_button_" onClick={() => this.a()}>Mary</button>
               <button className="_button_" onClick={() => this.a()}>Bob</button>
               <div className="chat-room">
-                {(this.state.renderChatRoom)? <ChatRoom chatID={this.state.chatID} userID='1'/> : ''}
+                {(this.state.renderChatRoom)? <ChatRoom chatID={this.state.chatID} userInfo={this.props.userInfo}/> : ''}
               </div>
             </div>
             )
