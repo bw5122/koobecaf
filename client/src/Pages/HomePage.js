@@ -85,7 +85,7 @@ class Home extends Component {
     const all_posts = posts.map((post) =>
       <Post info={post} userInfo={this.state.userInfo} />
     );
-    
+
     return(
       <div className="homepage">
         <div className="nav">
@@ -108,7 +108,6 @@ class Home extends Component {
           </div>
         </div>
         <FriendList userInfo={this.state.userInfo}/>
-        <PinnedSubheaderList/>
       </div>
     )
   }

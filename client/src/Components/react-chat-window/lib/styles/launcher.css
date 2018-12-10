@@ -10,6 +10,7 @@
   border-radius: 50%;
   box-shadow: none;
   transition: box-shadow 0.2s ease-in-out;
+  z-index: 20;
 }
 
 .sc-launcher:before {
@@ -17,7 +18,7 @@
   position: relative;
   display: block;
   width: 60px;
-  height: 60px;  
+  height: 60px;
   border-radius: 50%;
   transition: box-shadow 0.2s ease-in-out;
 }
@@ -30,6 +31,12 @@
   right: 25px;
   bottom: 25px;
   transition: opacity 100ms ease-in-out, transform 100ms ease-in-out;
+}
+
+.sc-launcher .sc-friend-name-icon{
+  position: fixed;
+  right: 10px;
+  bottom: 70px;
 }
 
 .sc-launcher .sc-closed-icon {

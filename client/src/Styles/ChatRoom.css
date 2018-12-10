@@ -1,7 +1,9 @@
 
 
 /* The popup chat - hidden by default */
-
+body {
+  z-index: 20;
+}
 
 /* Add styles to the form container */
 .chat-popup-window {
