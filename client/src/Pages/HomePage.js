@@ -3,6 +3,7 @@ import { Button, ButtonGroup } from 'react-bootstrap';
 import Post from '../Components/Post';
 import FriendList from '../Components/FriendList'
 import '../Styles/Home.css'
+import PinnedSubheaderList from '../Components/ScrollList'
 
 class Home extends Component {
   constructor(props) {
@@ -19,10 +20,6 @@ class Home extends Component {
     this.handleCreatePost = this.handleCreatePost.bind(this);
     console.log("Home:");
     console.log(this.props.location.state.userInfo);
-  }
-
-  navigate() {
-    alert("Shit");
   }
 
   handleChange(event) {
@@ -110,11 +107,15 @@ class Home extends Component {
             </div>
           </div>
         </div>
-
+        <FriendList userInfo={this.state.userInfo}/>
+        <PinnedSubheaderList/>
       </div>
     )
   }
 }
+
+//        <FriendList userInfo={this.state.userInfo}/>
+
 /* not applied to the new strcutre this.props.info
 <Post creator="User2" content="Wowwwww!!!" />
 <Post creator="User3" content="Happy Thanksgiving!" />

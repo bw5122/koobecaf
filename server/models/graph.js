@@ -1,3 +1,4 @@
+/*
 var Graph = require('./database').Graph;
 
 var config = require('../../../config.json');
@@ -31,3 +32,4 @@ var graphTable = {
 }
 
 module.exports = graphTable;
+*/

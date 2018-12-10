@@ -8,7 +8,12 @@ var _react2 = _interopRequireDefault(_react);
 
 var _closeIcon = require('./../assets/close-icon.png');
 
+var _addIcon = require('./../assets/add-icon.png');
+
 var _closeIcon2 = _interopRequireDefault(_closeIcon);
+
+var _addIcon2 = _interopRequireDefault(_addIcon);
+
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -43,9 +48,15 @@ var Header = function (_Component) {
         'div',
         { className: 'sc-header--close-button', onClick: this.props.onClose },
         _react2.default.createElement('img', { src: _closeIcon2.default, alt: '' })
-      )
-    );
-  };
+      ),
+
+      _react2.default.createElement(
+        'div',
+        { className: 'sc-header--add-button', onClick: this.props.onAdd },
+        _react2.default.createElement('img', { src: _addIcon2.default, alt: '' })
+      ),
+    )
+  }
 
   return Header;
 }(_react.Component);

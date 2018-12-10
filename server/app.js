@@ -142,20 +142,14 @@ if (MODE != 'DEV' && cluster.isMaster) {
     app.use('/test', test_router);
     app.use('/notice', notice_router);
 
-    // id of new chat room waiting to be created
-    var newChatid = 0;
-    // 在线用户
-    var onlineUsers = {};
-    // 在线用户人数
-    var onlineCount = 0;
 
     io.on('connection', function(socket) {
         console.log("a user is connected to chat room: " + socket.handshake.query.chatID);
         socket.join(socket.handshake.query.chatID);
-        chat_ctrl.get_chat_history(socket.handshake.query.chatID, function(data) {
+        /*chat_ctrl.get_chat_history(socket.handshake.query.chatID, function(data) {
             console.log(data);
             io.to(socket.id).emit('history', data);
-        });
+        });*/
 
         // 监听客户端的断开连接
         socket.on('disconnect', function() {
@@ -164,11 +158,15 @@ if (MODE != 'DEV' && cluster.isMaster) {
 
         // 监听客户端发送的信息
         socket.on('message', function(message) {
+            console.log("message is received");
             console.log("chatid: " + message.chatID);
             //io.to(obj.chatid).emit('message', obj);//successful?
             //io.in(obj.chatid).emit('message', obj);
             console.log(message);
+
             //upload message
+            delete message['author'];
+            delete message['firstname'];
             message.data = JSON.stringify(message.data);
             chat_ctrl.add_message(message, function(data) {
                 console.log("add_message call back: " + data);
