@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Button, Icon, Input} from 'semantic-ui-react'
 import Image from 'react-image';
 import Moment from 'react-moment';
 import Comment from './Comment'
@@ -203,14 +204,14 @@ class Post extends Component {
           <h4>{this.state.likes[0].creator.firstname} {this.state.likes[0].creator.lastname} and {this.state.likes.length - 1} friends like it</h4>
         }
 
-        <button id="like_button" onClick={this.handleNewLike}>
-          {this.state.liked ? 'unlike' : 'like'}
-        </button>
-        <button id="share_button" onClick={this.handleShare}>share</button>
+        <Button id="like_button" onClick={this.handleNewLike}>
+          {this.state.liked ? <Icon name='thumbs up' /> : <Icon name='thumbs up outline' />}
+        </Button>
+        <Button id="share_button" onClick={this.handleShare}>share</Button>
         <ul id="comment_list">{all_comments}</ul>
         <form className="createcomment" onSubmit={this.handleNewComment}>
-          <input type="text" name="newcomment" placeholder="Write a comment..." id="newcomment" value={this.state.newcomment.value}  onChange={this.handleChange} maxLength="100" />
-          <input type="submit" id="comment_button" value="Comment" />
+          <Input type="text" name="newcomment" placeholder="Write a comment..." id="newcomment" value={this.state.newcomment.value}  onChange={this.handleChange} maxLength="100" />
+          <Input type="submit" id="comment_button" value="Comment" />
         </form>
       </div>
     );
