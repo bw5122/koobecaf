@@ -29,23 +29,16 @@ if (MODE != 'DEV' && cluster.isMaster) {
     var express = require('express');
     var app = express();
     var port = process.env.PORT || 5000;
-
     var path = require('path');
-
     var passport = require('passport'),
         LocalStrategy = require('passport-local').Strategy;
-
-
     var http = require('http').Server(app);
     var io = require('socket.io')(http);
-
     var session = require("express-session"),
         bodyParser = require("body-parser");
 
+
     app.use(express.static("public"));
-    app.use(session({
-        secret: "cats"
-    }));
     app.use(bodyParser.json({
         limit: '10mb',
         extended: true
@@ -54,8 +47,12 @@ if (MODE != 'DEV' && cluster.isMaster) {
         limit: '10mb',
         extended: true
     }));
+    app.use(session({
+        secret: "cats"
+    }));
     app.use(passport.initialize());
     app.use(passport.session());
+    app.use(express.static(path.join(__dirname, '/build')));
 
 
     var SHA3 = require("crypto-js/sha3");
@@ -74,7 +71,6 @@ if (MODE != 'DEV' && cluster.isMaster) {
                         message: 'Incorrect username.'
                     });
                 }
-                console.log(SHA3(password).toString());
                 if (SHA3(password).toString() !== user.password) {
                     return done(null, false, {
                         message: 'Incorrect password.'
@@ -124,14 +120,9 @@ if (MODE != 'DEV' && cluster.isMaster) {
                     error: null,
                 });
             });
-        })(req, res);
+        })(req, res, next);
     })
 
-
-
-
-    /* react build file */
-    app.use(express.static(path.join(__dirname, '/build')));
 
     // routers
     var user_router = require('./routers/user');
