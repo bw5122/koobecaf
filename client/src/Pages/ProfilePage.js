@@ -6,9 +6,7 @@ class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstname: this.props.location.state.firstname,
-      lastname: this.props.location.state.lastname,
-      userID: this.props.location.state.userID,
+      userInfo: this.props.location.state.userInfo,
       data: {},
       posts: []
       //default photo url:
@@ -16,14 +14,8 @@ class Profile extends Component {
   }
 
   componentDidMount() {
-    fetch("/user/getprofile/" + this.state.userID, {
+    fetch("/user/getprofile/" + this.state.userInfo.userID, {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        userID: this.state.userID
-      })
     })
     .then(res => res.json())
     .then(
@@ -35,21 +27,16 @@ class Profile extends Component {
         alert("Error (loading profile)! Please try again.");
       }
     )
+
     // get own posts
-    fetch("/post/getownpost" + this.state.userID, {
+    fetch("/post/getownpost/" + this.state.userInfo.userID, {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        userID: this.state.userID
-      })
     })
     .then(res => res.json())
     .then(
-      (result) => {
+      (res) => {
         // check if any field is undefined before display
-        this.setState({posts: result});
+        this.setState({posts: res.data});
       },
       (error) => {
         alert("Error (loading posts)! Please try again.");
@@ -99,7 +86,7 @@ class Profile extends Component {
     );
 
     const my_own_posts = this.state.posts.map((post) =>
-      <Post info={post} userID={this.state.userID}/>
+      <Post info={post} userInfo={this.state.userInfo} />
     );
 
     return (

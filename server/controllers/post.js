@@ -1,6 +1,7 @@
 var Post = require('../models/post');
 var User = require('../models/user');
 var Notice = require('../models/notice');
+var Schema = require('./checkInput');
 var Relation = require('../models/relation');
 var async = require("async");
 const uuidv1 = require('uuid/v1');
@@ -9,7 +10,6 @@ var createPost = function(req, res) {
     console.log("Post Controller: createPost");
     console.log(req.body);
     var post = req.body;
-
     post['postID'] = uuidv1();
     post['ID'] = post.postID;
     //If has hashtgs
@@ -78,6 +78,7 @@ var createPost = function(req, res) {
 var addComment = function(req, res) {
     console.log("Post Controller: addComment");
     var comment = req.body;
+    console.log(comment);
     Post.getPostInfo(comment.postID, function(err, data) {
         if (data.Items) {
             var post = data.Items[0].attrs;
@@ -189,6 +190,7 @@ var getAllPost = function(req, res) {
                 return obj.attrs.objectID;
             });
             ids.push(userID);
+            console.log(ids);
             Post.getAllPost(ids, function(err, data) {
                 if (err) {
                     console.log(err);
@@ -201,10 +203,6 @@ var getAllPost = function(req, res) {
                     posts1 = constructPosts(data.Items);
                     //console.log(posts1);
                     addUserToPosts(posts1, function(posts2) {
-                        console.log(posts2);
-                        posts2.sort(function(a, b) {
-                            return a.createdAt < b.createdAt;
-                        })
                         res.send({
                             data: posts2,
                             error: null
@@ -314,7 +312,7 @@ var constructPosts = function(posts) {
             //console.log(obj.attrs);
             acc[index].comments.push(obj.attrs);
         } else if (obj.attrs.ID.startsWith("like")) {
-            // likes     
+            // likes
             delete obj.attrs.postBy;
             // delete obj.attrs.postID;
             acc[index].likes.push(obj.attrs);
