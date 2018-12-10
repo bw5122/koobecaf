@@ -104,6 +104,10 @@ class Home extends Component {
       }
     )
   }
+
+  navigateToProfile() {
+    
+  }
   render() {
     const username = this.props.location.state.username;
     const posts = this.state.posts;
