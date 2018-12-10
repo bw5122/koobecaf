@@ -3,7 +3,7 @@ import { Button, ButtonGroup } from 'react-bootstrap';
 import Post from '../Components/Post';
 import FriendList from '../Components/FriendList'
 import '../Styles/Home.css'
-import PinnedSubheaderList from '../Components/ScrollList'
+import SimpleDialogDemo from '../Components/GroupChatCreator'
 
 class Home extends Component {
   constructor(props) {
@@ -108,6 +108,7 @@ class Home extends Component {
           </div>
         </div>
         <FriendList userInfo={this.state.userInfo}/>
+        <SimpleDialogDemo/>
       </div>
     )
   }
