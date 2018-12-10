@@ -3,9 +3,9 @@ import React, { Component } from "react";
 class FriendRequest extends Component {
   constructor(props) {
     super(props);
-    this.setState({
-
-    });
+    this.state = {
+      userInfo: this.props.userInfo
+    }
   }
 
   handleAccept(e) {

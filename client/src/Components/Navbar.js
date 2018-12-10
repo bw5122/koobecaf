@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
 import { Redirect, withRouter } from 'react-router-dom';
 
-class Navbar extends Component {
+class Navigationbar extends Component {
   // props: {userInfo}
   constructor(props) {
     super(props);
     this.state = {
       userInfo: this.props.userInfo,
-      notifications: []
+      notifications: [],
+      requests: []
     }
     this.navigateToHome = this.navigateToHome.bind(this);
     this.navigateToProfile = this.navigateToProfile.bind(this);
@@ -54,13 +55,26 @@ class Navbar extends Component {
 
   handleFriendRequests = e => {
     e.preventDefault();
-
+    fetch("/getfriendrequest/" + this.state.userInfo.userID, {
+      method: "GET",
+    })
+    .then(res => res.json())
+    .then(
+      (result) => {
+        // check if any field is undefined before display
+        this.setState({requests: result.data});
+      },
+      (error) => {
+        alert("Error (get friend requests)! Please try again.");
+      }
+    )
   }
 
   render() {
 
     return (
-      <div className="nav">
+
+      <div className="nav" display="hidden">
         <button id="profile_button" onClick={this.navigateToProfile}>{this.props.userInfo.firstname}</button>
         <button id="home_button" onClick={this.navigateToHome}>Home</button>
         <button id="notify_button" onClick={this.handleNotify}>Notifications</button>
@@ -70,4 +84,4 @@ class Navbar extends Component {
   }
 }
 
-export default withRouter(Navbar);
+export default withRouter(Navigationbar);

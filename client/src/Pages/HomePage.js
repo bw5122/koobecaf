@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import { Button, ButtonGroup } from 'react-bootstrap';
 import Post from '../Components/Post';
-import Navbar from '../Components/Navbar'
+import Navigationbar from '../Components/Navbar'
 import FriendList from '../Components/FriendList'
 import '../Styles/Home.css'
 import PinnedSubheaderList from '../Components/ScrollList'
@@ -106,7 +105,7 @@ class Home extends Component {
   }
 
   navigateToProfile() {
-    
+
   }
   render() {
     const username = this.props.location.state.username;
@@ -117,7 +116,7 @@ class Home extends Component {
 
     return(
       <div className="homepage">
-        <Navbar userInfo={this.state.userInfo} />
+        <Navigationbar userInfo={this.state.userInfo} />
 
         <div className="content">
           <h3>This is {this.state.userInfo.firstname} home page! </h3>

@@ -1,6 +1,4 @@
-import React, {
-    Component
-} from 'react';
+import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import '../Styles/login.css';
 import logo from '../Assets/logo.png';
@@ -138,10 +136,9 @@ class LoginForm extends Component {
     }
 
     render() {
-        return ( <
-            div className = "main" >
-            <
-            div className = "login" >
+        return (
+          <div className = "main" >
+            <div className = "login" >
             <
             img src = {
                 logo
