@@ -123,6 +123,13 @@ if (MODE != 'DEV' && cluster.isMaster) {
         })(req, res, next);
     })
 
+    app.get('/logout', function(req, res) {
+        req.logout();
+        res.send({
+            error: null,
+            data: 'Bye!'
+        })
+    });
 
     // routers
     var user_router = require('./routers/user');

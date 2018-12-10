@@ -99,7 +99,8 @@ var getHistory = function(req, res) {
     var chatID = req.params.chatID;
     console.log("Chat Controller: get Chat History for " + chatID);
     Chat.getInfo(chatID, function(err, data) {
-        var members = data.Items[0].attrs.members;
+        if (data.Ttems)
+            var members = data.Items[0].attrs.members;
         var members_obj = {};
         async.each(members, function(member, cb) {
             User.getInfo(member, function(err1, data1) {

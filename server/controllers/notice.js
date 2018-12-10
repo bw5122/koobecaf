@@ -47,7 +47,7 @@ var getNotice = function(req, res) {
                         });
                         var notices = privateNotices.concat(publicNotices);
                         console.log(notices);
-                        addUserToNotice(notices, function(results) {
+                        addUserToSender(notices, function(results) {
                             //sort by date
                             results.sort(function(a, b) {
                                 return a.createdAt < b.createdAt;
@@ -74,7 +74,7 @@ module.exports = notice_controller;
 async function addUserToSender(requests, callback) {
     var counter = 0;
     async.each(requests, function(request, cb) {
-        //console.log(request.sender);
+        console.log(request.sender);
         User.getInfo(request.sender, function(err, data) {
             if (err)
                 console.log(err);
@@ -87,37 +87,5 @@ async function addUserToSender(requests, callback) {
         })
     }, function() {
         callback(requests);
-    });
-}
-
-async function addUserToNotice(notices, callback) {
-    var counter = 0;
-    async.each(notices, function(notice, cb) {
-        console.log(notice);
-        if (!notice.receiver)
-            User.getInfo(notice.sender, function(err, data) {
-                if (err)
-                    console.log(err);
-                if (data.Count > 0)
-                    notices[counter].sender = data.Items[0].attrs;
-                else
-                    console.log(notice.sender, ' is not a user');
-                counter++;
-                cb();
-            })
-        else
-            User.getInfo(notice.receiver, function(err, data) {
-                if (err)
-                    console.log(err);
-                if (data.Count > 0)
-                    notices[counter].receiver = data.Items[0].attrs;
-                else
-                    console.log(notice.receiver, ' is not a user');
-                counter++;
-                cb();
-            })
-
-    }, function() {
-        callback(notices);
     });
 }
