@@ -1,14 +1,13 @@
 import React, { Component } from "react";
 import Post from "../Components/Post";
 import profile_default from '../Assets/profile.png';
+import Navigationbar from '../Components/Navbar'
 
 class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstname: this.props.location.state.firstname,
-      lastname: this.props.location.state.lastname,
-      userID: this.props.location.state.userID,
+      userInfo: this.props.location.state.userInfo,
       data: {},
       posts: []
       //default photo url:
@@ -16,40 +15,32 @@ class Profile extends Component {
   }
 
   componentDidMount() {
-    fetch("/user/getprofile/" + this.state.userID, {
+    fetch("/user/getprofile/" + this.state.userInfo.userID, {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        userID: this.state.userID
-      })
     })
     .then(res => res.json())
     .then(
       (result) => {
         // check if any field is undefined before display
-        this.setState({data: result});
+        this.setState({data: result.data});
+        if(this.state.data.hasOwnProperty('photo')) {
+          this.setState({photo: this.state.data.photo});
+        }
       },
       (error) => {
         alert("Error (loading profile)! Please try again.");
       }
     )
+
     // get own posts
-    fetch("/post/getownpost" + this.state.userID, {
+    fetch("/post/getownpost/" + this.state.userInfo.userID, {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        userID: this.state.userID
-      })
     })
     .then(res => res.json())
     .then(
-      (result) => {
+      (res) => {
         // check if any field is undefined before display
-        this.setState({posts: result});
+        this.setState({posts: res.data});
       },
       (error) => {
         alert("Error (loading posts)! Please try again.");
@@ -64,7 +55,7 @@ class Profile extends Component {
     var imagedata = document.querySelector('input[type="file"]').files[0];
     formdata.append("photo", imagedata);
     console.log(imagedata);
-    fetch("/user/uploadphoto/" + this.state.userID, {
+    fetch("/user/uploadphoto/" + this.state.userInfo.userID, {
       mode: "no-cors",
       method: "POST",
       body: formdata
@@ -72,7 +63,7 @@ class Profile extends Component {
       .then(res => res.json())
       .then(
         result => {
-          alert("Upload success");
+          this.setState({photo: result.data.photo});
         },
         error => {
           alert("Error! Please try again.");
@@ -83,8 +74,8 @@ class Profile extends Component {
   render() {
 
     let photo;
-    if(this.state.data.hasOwnProperty('photo')) {
-      photo = <img src={require(this.state.data['photo'])} className="profile_photo" alt="profile_photo" />
+    if(this.state.hasOwnProperty('photo')) {
+      photo = <img src={this.state.photo} className="profile_photo" alt="profile_photo" />
     } else {
       photo = <img src={profile_default} className="profile_photo" alt="profile_photo" />
     }
@@ -99,18 +90,16 @@ class Profile extends Component {
     );
 
     const my_own_posts = this.state.posts.map((post) =>
-      <Post info={post} userID={this.state.userID}/>
+      <Post info={post} userInfo={this.state.userInfo} />
     );
 
     return (
       <div>
-      /* --- Profile Photo --- */
+      <Navigationbar userInfo={this.state.userInfo} />
         <div className="photo">
           {photo}
         </div>
-      /* --- Display name --- */
-      <h3 id="name">{this.state.firstname} {this.state.lastname}</h3>
-      /* --- Personal Info --- */
+      <h3 id="name">{this.state.userInfo.firstname} {this.state.userInfo.lastname}</h3>
       <div className="info">
         {this.state.data.hasOwnProperty('affiliation') &&
           <h4>Affiliation: {this.state.data.affiliation}</h4>
@@ -123,7 +112,6 @@ class Profile extends Component {
         }
         <ul>{list}</ul>
       </div>
-      /* --- Upload photo form --- */
         <h2> Upload Photo </h2>
         <form
           className="photo_form"
@@ -135,7 +123,6 @@ class Profile extends Component {
           </label>{" "}
           <input type="submit" className="upload_button" value="Upload" />
         </form>{" "}
-      /* --- Posts --- */
       <div className="posts"><ul>{my_own_posts}</ul></div>
       </div>
     );
