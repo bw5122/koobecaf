@@ -42,7 +42,6 @@ var relationTable = {
     addFriend: relationTable_create,
     deleteFriend: relationTable_delete,
     getAll: relationTable_getAll,
-
 }
 
 module.exports = relationTable;

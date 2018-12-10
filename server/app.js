@@ -138,7 +138,7 @@ if (MODE != 'DEV' && cluster.isMaster) {
     var friend_router = require('./routers/friend');
     var test_router = require('./routers/test');
     var notice_router = require('./routers/notice');
-
+    var search_router = require('./routers/search');
 
     var chat_ctrl = require('./controllers/chat');
 
@@ -148,6 +148,7 @@ if (MODE != 'DEV' && cluster.isMaster) {
     app.use('/friend', friend_router);
     app.use('/test', test_router);
     app.use('/notice', notice_router);
+    app.use('/search', search_router);
 
 
     io.on('connection', function(socket) {

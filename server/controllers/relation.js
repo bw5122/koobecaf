@@ -90,14 +90,7 @@ var acceptFriend = function(req, res) {
     var request = req.body;
     var chatID;
     //just for testing 
-    var request = {
-            receiver: req.body.receiver,
-            sender: {
-                userID: req.body.sender,
-            },
-            noticeID: req.body.noticeID,
-        }
-        // create two edges in relation graph
+    // create two edges in relation graph
     console.log(request);
 
     var steps = [createChat, deleteRequest, sendSucces1, sendSucces2];
@@ -107,7 +100,7 @@ var acceptFriend = function(req, res) {
 
     async function createChat(cb) {
         var chat = {
-            members: [request.sender.userID, request.receiver],
+            members: [request.sender, request.receiver],
         }
         Chat.createChat(chat, function(err, data) {
             if (err) {
@@ -126,13 +119,13 @@ var acceptFriend = function(req, res) {
     }
     async function addRelation(cb) {
         var edge1 = {
-            userID: request.sender.userID,
+            userID: request.sender,
             objectID: request.receiver,
             type: 'friend',
             chatID: chatID,
         }
         var edge2 = {
-            objectID: request.sender.userID,
+            objectID: request.sender,
             userID: request.receiver,
             type: 'friend',
             chatID: chatID,
@@ -166,7 +159,7 @@ var acceptFriend = function(req, res) {
     async function sendSucces1(cb) {
         // send two notices to each others 
         var notice1 = {
-            sender: request.sender.userID,
+            sender: request.sender,
             receiver: request.receiver,
             type: 'private_new_friend',
         }
@@ -180,7 +173,7 @@ var acceptFriend = function(req, res) {
     }
     async function sendSucces2(cb) {
         var notice2 = {
-            receiver: request.sender.userID,
+            receiver: request.sender,
             sender: request.receiver,
             type: 'private_new_friend',
         }
@@ -216,7 +209,7 @@ var denyFriend = function(req, res) {
     async function sendDeny(cb) {
         // send two notices to each others 
         var notice1 = {
-            receiver: request.sender.userID,
+            receiver: request.sender,
             sender: request.receiver,
             type: 'private_deny_friend',
         }

@@ -4,5 +4,5 @@ var router = express.Router();
 var search_ctrl = require('../controllers/search');
 
 
-router.get('/searchfriend/:userID', search_ctrl.get_notice);
+router.get('/searchuser/:name', search_ctrl.search_user);
 module.exports = router;

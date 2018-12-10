@@ -5,8 +5,8 @@ var multerS3 = require('multer-s3');
 aws.config.loadFromPath('../../config.json');
 
 // Create the parameters for calling createBucket
-var photoBucket = "koobecaf-user-photo-copy";
-var imageBucket = "koobecaf-post-image-copy";
+var photoBucket = "koobecaf-user-photo";
+var imageBucket = "koobecaf-post-image";
 
 var photoBucketParamsPhoto = {
     Bucket: photoBucket
