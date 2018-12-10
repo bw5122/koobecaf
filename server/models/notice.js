@@ -31,7 +31,7 @@ var noticeTable_getPublicNotice = function(IDs, cb) {
 
 var noticeTable_getPrivateNotice = function(userID, cb) {
     console.log("Notice Table: getPrivateNotices " + userID);
-    Notice.query(userID).usingIndex('receiverIndex').descending().exec(cb);
+    Notice.query(userID).usingIndex('receiverIndex').descending().filter('type').contains('private').exec(cb);
 }
 
 var noticeTable_getFriendRequest = function(userID, cb) {

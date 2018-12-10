@@ -334,7 +334,7 @@ var constructPosts = function(posts) {
 
 var getUserInfo = async function(userID) {
     User.getInfo(userID, function(err, data) {
-        if (data.Items) {
+        if (data.Count > 0) {
             console.log(getUserInfo);
             console.log(data.Items[0].attrs);
             return data.Items[0].attrs;
@@ -358,7 +358,7 @@ var addUserToPosts = async function(posts, callback) {
                 forPost_cb();
             } else {
                 User.getInfo(post.postBy, function(err, data) {
-                    if (data.Items[0]) {
+                    if (data.Count > 0) {
                         users[data.Items[0].attrs.userID] = data.Items[0].attrs;
                         post['postBy'] = data.Items[0].attrs;
                         forPost_cb();
@@ -377,7 +377,7 @@ var addUserToPosts = async function(posts, callback) {
                     } else {
 
                         User.getInfo(comm.creator, function(err, data) {
-                            if (data.Items && data.Items[0]) {
+                            if (data.Count > 0) {
                                 users[data.Items[0].attrs.userID] = data.Items[0].attrs;
                                 comm['creator'] = data.Items[0].attrs;
                             }
@@ -395,7 +395,7 @@ var addUserToPosts = async function(posts, callback) {
                         like['creator'] = users[like.creator];
                     } else {
                         User.getInfo(like.creator, function(err, data) {
-                            if (data.Items && data.Items[0]) {
+                            if (data.Count > 0) {
                                 users[data.Items[0].attrs.userID] = data.Items[0].attrs;
                                 like['creator'] = data.Items[0].attrs;
                             }

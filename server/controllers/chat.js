@@ -45,7 +45,7 @@ var getChatHistory = function(chatID, callback) {
             var members_obj = {};
             async.each(members, function(member, cb) {
                 User.getInfo(member, function(err1, data1) {
-                    if (data1.Items[0]) {
+                    if (data1.Count > 0) {
                         if (!members_obj[data1.Items[0].attrs.userID])
                             members_obj[data1.Items[0].attrs.userID] = data1.Items[0].attrs;
                     }
@@ -103,7 +103,7 @@ var getHistory = function(req, res) {
         var members_obj = {};
         async.each(members, function(member, cb) {
             User.getInfo(member, function(err1, data1) {
-                if (data1.Items[0]) {
+                if (data.Count > 0) {
                     if (!members_obj[data1.Items[0].attrs.userID])
                         members_obj[data1.Items[0].attrs.userID] = data1.Items[0].attrs;
                 }
