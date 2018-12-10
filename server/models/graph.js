@@ -1,7 +1,29 @@
 var Graph = require('./database').Graph;
+//var copy = require('copy-dynamodb-table').copy;
 
 var config = require('../../../config.json');
-
+/*
+var graphTable_generateGraph = function() {
+    console.log("graph table: generateGraph");
+    copy({
+            config: config, // config for AWS
+            source: {
+                tableName: 'relations', // required
+            },
+            destination: {
+                tableName: 'graph', // required
+            },
+            log: true, // default false
+            create: true // create destination table if not exist
+        },
+        function(err, result) {
+            if (err) {
+                console.log(err)
+            }
+            console.log(result)
+        })
+}
+*/
 var graphTable_deleteTable = function() {
     Graph.deleteTable(function(err) {
         if (err) {
