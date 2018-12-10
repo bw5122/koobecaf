@@ -13,7 +13,8 @@ class Home extends Component {
       userInfo: this.props.location.state.userInfo,
       posts: [],
       newpost: '',
-      friendtags: []
+      friendtags: [],
+      reqID: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleCreatePost = this.handleCreatePost.bind(this);
@@ -25,6 +26,30 @@ class Home extends Component {
     const name = event.target.name;
     const value = event.target.value;
     this.setState({[name]: value});
+  }
+
+  handleSendFriendRequest(e) {
+    e.preventDefault();
+    fetch("/friend/sendfriendrequest", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        sender: this.state.userInfo.userID,
+        receiver: this.state.reqID
+      })
+    })
+    .then(res => res.json())
+    .then(
+      (res) => {
+        alert("Friend request sent");
+      },
+      (error) => {
+        console.log(error);
+        alert("error (send friend requests)");
+      }
+    )
   }
 
   handleCreatePost = e => {
@@ -132,6 +157,11 @@ class Home extends Component {
           </div>
         </div>
         <FriendList userInfo={this.state.userInfo}/>
+        <form className="temp" onSubmit={this.handleSendFriendRequest.bind(this)}>
+          <input type="text" name="reqID" placeholder="Please input friend userID" value={this.state.reqID.value}  onChange={this.handleChange} />
+          <br/>
+          <input type="submit" id="req_button" value="Send Request" />
+        </form>
         <PinnedSubheaderList/>
       </div>
     )

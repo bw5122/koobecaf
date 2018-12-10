@@ -27,11 +27,17 @@ class Notification extends Component {
         <p>xxx shared a post</p>
       )
     } else if(this.props.info.type === 'private_new_message') {
-
+      return(
+        <p>You have new message</p>
+      )
     } else if(this.props.info.type === 'private_new_friend') {
-
+      return(
+        <p>You have a new friend</p>
+      )
     } else if(this.props.info.type === 'private_deny_friend') {
-
+      return (
+        <p>xxx does not want to be friend with you</p>
+      )
     } else if(this.props.info.type === 'private_new_like') {
       return(
         <p>xxx liked your post</p>
