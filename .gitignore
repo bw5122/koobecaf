@@ -6,8 +6,11 @@ client/node_modules
 client/.pnp
 client/.pnp.js
 
-/server/node_modules
-
+server/node_modules
+server/config.json
+client/build
+server/build
+*.zip
 
 # testing
 /coverage
