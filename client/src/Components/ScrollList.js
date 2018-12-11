@@ -24,6 +24,30 @@ const styles = theme => ({
   },
 });
 
+class PinnedSubheaderList extends React.Component {
+  render() {
+    const { classes } = this.props;
+
+    return (
+      <List className={classes.root} subheader={<li />}>
+        {['Friends', 'Group Chats'].map(sectionId => (
+          <li key={`section-${sectionId}`} className={classes.listSection}>
+            <ul className={classes.ul}>
+              <ListSubheader>{`${sectionId}`}</ListSubheader>
+              {[0, 1, 2].map(item => (
+                <ListItem key={`item-${sectionId}-${item}`}>
+                  <ListItemText primary={`Item ${item}`} />
+                </ListItem>
+              ))}
+            </ul>
+          </li>
+        ))}
+      </List>
+    );
+  }
+}
+
+/*
 function PinnedSubheaderList(props) {
   const { classes } = props;
 
@@ -44,6 +68,7 @@ function PinnedSubheaderList(props) {
     </List>
   );
 }
+*/
 
 PinnedSubheaderList.propTypes = {
   classes: PropTypes.object.isRequired,

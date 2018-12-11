@@ -5,20 +5,49 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListSubheader from '@material-ui/core/ListSubheader';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
-import '../Styles/FriendList.css'
 import FriendListRow from './FriendListRow'
+import GroupChatCreator from './GroupChatCreator'
+
+const styles = theme => ({
+  root: {
+    width: '100%',
+    maxWidth: 250,
+    top: '65px',
+    bottom: '0px',
+    backgroundColor: theme.palette.background.paper,
+    position: 'fixed',
+    right: '0%',
+    overflow: 'auto',
+    maxHeight: 700,
+  },
+  inline: {
+    display: 'inline',
+  },
+  listSection: {
+    backgroundColor: 'inherit',
+  },
+  ul: {
+    backgroundColor: 'inherit',
+    padding: 0,
+  },
+});
 
 
-export default class FriendList extends Component {
+class FriendList extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
       friends: [],
+      chatRoomID: '',
+      friendInfoReady: false
     };
+    this.handleChatRoomRender = this.handleChatRoomRender.bind(this);
     this.loadFriendList();
+    console.log("friend list:", this.state.friends);
   }
 
   loadFriendList(){
@@ -33,89 +62,62 @@ export default class FriendList extends Component {
         alert("error: load chat history")
       else {
         this.setState({
-          friends: res.data
+          friends: res.data,
+          friendInfoReady: true
         })
+        console.log("res.data: ", res.data);
       }
     })
   }
 
-  render() {
+  handleChatRoomRender(chatID){
+      this.setState({
+          chatRoomID: chatID
+      })
+  }
 
+  render() {
+    const { classes } = this.props;
     const all_friends = this.state.friends.map((friend) =>
-      <FriendListRow friendInfo={friend} userInfo={this.props.userInfo}/>
+        <FriendListRow
+          friendInfo={friend}
+          userInfo={this.props.userInfo}
+          handleChatRoomRender={this.handleChatRoomRender}
+          allowRenderChatRoom = {(friend.chatID == this.state.chatRoomID)?true:false}
+        />
+
     );
+    //console.log("friend list:", this.state.friends);
 
     return(
-      <List className="root">
-        <div className="friend-list">
-        <ul>{all_friends}</ul>
-        </div>
+      <List className={classes.root} subheader={<li />}>
+          <li key={`section-1`} className={classes.listSection}>
+            <ul className={classes.ul}>
+              <ListSubheader>{'Friends'}</ListSubheader>
+              <div className="friend-list">
+              <ul>{all_friends}</ul>
+              </div>
+            </ul>
+          </li>
+          <li key={`section-2`} className={classes.listSection}>
+            <ul className={classes.ul}>
+              <ListSubheader>{'Group Chat'}</ListSubheader>
+              {[0, 1, 2].map(item => (
+                <ListItem key={`item-2-${item}`}>
+                  <ListItemText primary={`Item ${item}`} />
+                </ListItem>
+              ))}
+            </ul>
+          </li>
+          {(this.state.friendInfoReady) ? <GroupChatCreator userInfo={this.props.userInfo} friendsInfo={this.state.friends}/> : ''}
       </List>
         )
     }
 }
-
 /*
-function AlignItemsList(props) {
-  console.log("List constructor");
-  loadFriendList();
-  const { classes } = props;
-  return (
-    <List className={classes.root}>
-      <ListItem alignItems="flex-start">
-        <ListItemAvatar>
-          <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-        </ListItemAvatar>
-        <ListItemText
-          primary="Brunch this weekend?"
-          secondary={
-            <React.Fragment>
-              <Typography component="span" className={classes.inline} color="textPrimary">
-                Ali Connors
-              </Typography>
-              {" — I'll be in your neighborhood doing errands this…"}
-            </React.Fragment>
-          }
-        />
-      </ListItem>
-      <ListItem alignItems="flex-start">
-        <ListItemAvatar>
-          <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-        </ListItemAvatar>
-        <ListItemText
-          primary="Summer BBQ"
-          secondary={
-            <React.Fragment>
-              <Typography component="span" className={classes.inline} color="textPrimary">
-                to Scott, Alex, Jennifer
-              </Typography>
-              {" — Wish I could come, but I'm out of town this…"}
-            </React.Fragment>
-          }
-        />
-      </ListItem>
-      <ListItem alignItems="flex-start">
-        <ListItemAvatar>
-          <Avatar alt="Remy Sharp" src="/static/images/avatar/3.jpg" />
-        </ListItemAvatar>
-        <ListItemText
-          primary="Oui Oui"
-          secondary={
-            <React.Fragment>
-              <Typography component="span" className={classes.inline} color="textPrimary">
-                Sandra Adams
-              </Typography>
-              {' — Do you have Paris recommendations? Have you ever…'}
-            </React.Fragment>
-          }
-        />
-      </ListItem>
-    </List>
-  );
-}*/
-
-/*AlignItemsList.propTypes = {
-  classes: PropTypes.object.isRequired,
-};*/
-
-//sexport default withStyles(styles)(AlignItemsList);
+<List className={classes.root}>
+  <div className="friend-list">
+  <ul>{all_friends}</ul>
+  </div>
+</List>*/
+export default withStyles(styles)(FriendList);

@@ -18,21 +18,23 @@ export default class FriendListRow extends Component {
     super(props);
     this.state = {
       renderChatRoom: false,
-      chatID:''
     };
     this.renderChatRoom = this.renderChatRoom.bind(this);
   }
 
   renderChatRoom(){
-    console.log("chatoom");
+    /*console.log("chatoom");
     if(this.state.renderChatRoom){
       this.setState({renderChatRoom: false});
       console.log("here");
     }
     this.setState({renderChatRoom: true});
+    */
+    this.props.handleChatRoomRender(this.props.friendInfo.chatID);
   }
 
   render() {
+      console.log("render friendlist row");
       return(
         <ListItem alignItems="flex-start" onClick={this.renderChatRoom}>
           <ListItemAvatar>
@@ -42,7 +44,7 @@ export default class FriendListRow extends Component {
             primary={this.props.friendInfo.firstname}
           />
           <div className="chat-room">
-            {(this.state.renderChatRoom)? <ChatRoom chatID={this.state.chatID} userInfo={this.props.userInfo}/> : ''}
+            {(this.props.allowRenderChatRoom)? <ChatRoom friendInfo={this.props.friendInfo} chatID={this.props.friendInfo.chatID} userInfo={this.props.userInfo}/> : ''}
           </div>
         </ListItem>
           )

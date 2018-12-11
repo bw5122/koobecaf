@@ -3,7 +3,7 @@ import Post from '../Components/Post';
 import Navigationbar from '../Components/Navbar'
 import FriendList from '../Components/FriendList'
 import '../Styles/Home.css'
-import PinnedSubheaderList from '../Components/ScrollList'
+import GroupChatCreator from '../Components/GroupChatCreator'
 
 class Home extends Component {
   constructor(props) {
@@ -162,7 +162,6 @@ class Home extends Component {
           <br/>
           <input type="submit" id="req_button" value="Send Request" />
         </form>
-        <PinnedSubheaderList/>
       </div>
     )
   }

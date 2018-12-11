@@ -106,7 +106,7 @@ var getHistory = function(req, res) {
 
         async.each(members, function(member, cb) {
             User.getInfo(member, function(err1, data1) {
-                console.log(data1);
+
                 if (data1.Count > 0) {
                     members_obj[data1.Items[0].attrs.userID] = data1.Items[0].attrs;
                 }

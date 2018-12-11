@@ -1,7 +1,9 @@
 var Graph = require('./database').Graph;
 //var copy = require('copy-dynamodb-table').copy;
+let AWS = require('aws-sdk');
+AWS.config.update({region:'us-east-1'});
 
-var config = require('../../../config.json');
+//var config = require('../../../config.json');
 /*
 var graphTable_generateGraph = function() {
     console.log("graph table: generateGraph");

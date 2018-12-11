@@ -85,8 +85,9 @@ var Launcher = function (_Component) {
         'div',
         { className: classList.join(' '), onClick: this.handleClick.bind(this) },
         _react2.default.createElement(MessageCount, { count: this.props.newMessagesCount, isOpen: isOpen }),
-        _react2.default.createElement('img', { className: "sc-open-icon", src: _closeIcon2.default }),
-        _react2.default.createElement('img', { className: "sc-closed-icon", src: _logoNoBg2.default })
+        _react2.default.createElement('img', { className: "sc-open-icon", src: _closeIcon2.defualt}),
+        _react2.default.createElement('p', {className: "sc-friend-name-icon"}, this.props.friendInfo.firstname),
+        _react2.default.createElement('img', { className: "sc-closed-icon", src: this.props.friendInfo.photo })
       ),
       _react2.default.createElement(_ChatWindow2.default, {
         messageList: this.props.messageList,

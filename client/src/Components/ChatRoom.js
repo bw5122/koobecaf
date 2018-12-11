@@ -23,18 +23,9 @@ class Chatroom extends Component {
     }
 
     getChatHistory() {
-        /*chat_ctrl.get_chat_history(socket.handshake.query.chatID, function(data) {
-            console.log(data);
-            io.to(socket.id).emit('history', data);
-        });*/
-
-        ///gethistory/:chatID
         console.log("get chat history");
         fetch("/chat/gethistory/" + this.state.chatID, {
                 method: "GET",
-                /*  headers: {
-                    "Content-Type": "application/json"
-                  },*/
             })
             .then(res => res.json())
             .then(res => {
@@ -133,6 +124,7 @@ class Chatroom extends Component {
         const {
             chatHistory
         } = this.state;
+
         return ( <
             Launcher className = "chat-popup-window"
             agentProfile = {
@@ -147,8 +139,14 @@ class Chatroom extends Component {
             messageList = {
                 this.state.messageList
             }
+            friendInfo = {
+                this.props.friendInfo
+            }
             chatID = {
                 this.state.chatID
+            }
+            userInfo = {
+                this.props.userInfo
             }
             showEmoji /
             >
@@ -157,15 +155,3 @@ class Chatroom extends Component {
 }
 
 export default Chatroom;
-
-/*
-
-
-<div class="chat-popup" id="myForm">
-  <h1>Chat</h1>
-  <label for="msg"><b>Message</b></label>
-  <textarea placeholder="Type message.." name="msg" required></textarea>
-  <button type="submit" class="btn">Send</button>
-  <button type="button" class="btn cancel">Close</button>
-</div>
-*/
