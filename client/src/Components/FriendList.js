@@ -10,6 +10,8 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import FriendListRow from './FriendListRow'
 import GroupChatCreator from './GroupChatCreator'
+import GroupChatListRow from './GroupChatListRow'
+
 
 const styles = theme => ({
   root: {
@@ -42,11 +44,13 @@ class FriendList extends Component {
     super(props);
     this.state = {
       friends: [],
+      groupChats: [],
       chatRoomID: '',
       friendInfoReady: false
     };
     this.handleChatRoomRender = this.handleChatRoomRender.bind(this);
     this.loadFriendList();
+    this.loadGroupChats();
     console.log("friend list:", this.state.friends);
   }
 
@@ -72,7 +76,7 @@ class FriendList extends Component {
 
   loadGroupChats(){
     console.log("load group chats");
-    fetch("/friend/getfriend/" + this.props.userInfo.userID, {
+    fetch("/chat/getallgroupchat/" + this.props.userInfo.userID, {
       method: "GET",
     })
     .then(res => res.json())
@@ -81,11 +85,10 @@ class FriendList extends Component {
       if(res.err)
         alert("error: load chat history")
       else {
-        this.setState({
-          friends: res.data,
-          friendInfoReady: true
-        })
         console.log("res.data: ", res.data);
+        this.setState({
+          groupChats: res.data,
+        })
       }
     })
   }
@@ -108,6 +111,15 @@ class FriendList extends Component {
 
     );
     //console.log("friend list:", this.state.friends);
+    const all_groupchats = this.state.groupChats.map((chat) =>
+        <GroupChatListRow
+          chatInfo={chat}
+          userInfo={this.props.userInfo}
+          handleChatRoomRender={this.handleChatRoomRender}
+          allowRenderChatRoom = {(chat.chatID == this.state.chatRoomID)?true:false}
+        />
+
+    );
 
     return(
       <List className={classes.root} subheader={<li />}>
@@ -121,12 +133,10 @@ class FriendList extends Component {
           </li>
           <li key={`section-2`} className={classes.listSection}>
             <ul className={classes.ul}>
-              <ListSubheader>{'Group Chat'}</ListSubheader>
-              {[0, 1, 2].map(item => (
-                <ListItem key={`item-2-${item}`}>
-                  <ListItemText primary={`Item ${item}`} />
-                </ListItem>
-              ))}
+              <ListSubheader>{'Group Chats'}</ListSubheader>
+              <div className="group-chat-list">
+              <ul>{all_groupchats}</ul>
+              </div>
             </ul>
           </li>
           {(this.state.friendInfoReady) ? <GroupChatCreator userInfo={this.props.userInfo} friendsInfo={this.state.friends}/> : ''}
