@@ -143,12 +143,10 @@ class GroupChatCreator extends React.Component {
   };
 
   render() {
-    console.log("GroupChatCreator:", this.props.friendsInfo);
     return (
       <div>
-        <Typography variant="subtitle1">Selected: {this.state.selectedValue}</Typography>
         <br />
-        <Button onClick={this.handleClickOpen}>Open simple dialog</Button>
+        <Button onClick={this.handleClickOpen}>Create Group Chat</Button>
         <SimpleDialogWrapped
           selectedValue={this.state.selectedValue}
           open={this.state.open}

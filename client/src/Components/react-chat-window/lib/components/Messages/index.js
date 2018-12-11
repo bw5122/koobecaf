@@ -53,7 +53,7 @@ var Message = function (_Component) {
         'div',
         { className: contentClassList.join(" ") },
         _react2.default.createElement('div', { className: 'sc-message--avatar', style: {
-            backgroundImage: 'url(' + _chatIcon2.default + ')'
+            backgroundImage: 'url(' + this.props.message.photo + ')'
           } }),
         _react2.default.createElement('div', { className: 'sc-message--username', style: {}},
           this.props.message.firstname
