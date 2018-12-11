@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import { Redirect, withRouter } from 'react-router-dom';
-import { Dropdown, Button, Icon, Menu, Input} from 'semantic-ui-react'
-import Notification from '../Components/Notification'
-import FriendRequest from '../Components/FriendRequest'
-import '../Styles/Navbar.css'
+import { Dropdown, Button, Icon, Menu, Input} from 'semantic-ui-react';
+import Notification from '../Components/Notification';
+import FriendRequest from '../Components/FriendRequest';
+import FriendSearchBar from '../Components/FriendSearchBar';
+import '../Styles/Navbar.css';
 
 class Navigationbar extends Component {
   // props: {userInfo}
@@ -151,11 +152,9 @@ class Navigationbar extends Component {
           <Button id="logout_button" onClick={this.handleLogout} icon='log out' />
         </Menu.Item>
 
-        <Menu.Menu position='right'>
-          <Menu.Item>
-            <Input focus icon='search' placeholder='Search...' />
-          </Menu.Item>
-        </Menu.Menu>
+        <Menu.Item position='left'>
+          <FriendSearchBar />
+        </Menu.Item>
       </Menu>
     );
   }
