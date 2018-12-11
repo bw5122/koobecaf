@@ -12,7 +12,7 @@ import '../Styles/FriendList.css'
 
 
 
-export default class FriendListRow extends Component {
+export default class GroupChatListRow extends Component {
 
   constructor(props) {
     super(props);
@@ -23,21 +23,21 @@ export default class FriendListRow extends Component {
   }
 
   renderChatRoom(){
-    this.props.handleChatRoomRender(this.props.friendInfo.chatID);
+    this.props.handleChatRoomRender(this.props.chatInfo.chatID);
   }
 
   render() {
-      console.log("render friendlist row");
+      console.log("render chat list row");
       return(
         <ListItem alignItems="flex-start" onClick={this.renderChatRoom}>
           <ListItemAvatar>
-            <Avatar alt="Remy Sharp" src={this.props.friendInfo.photo} />
+            <Avatar alt="Remy Sharp" src={this.props.chatInfo.photo} />
           </ListItemAvatar>
           <ListItemText
-            primary={this.props.friendInfo.firstname}
+            primary={this.props.chatInfo.chatID}
           />
           <div className="chat-room">
-            {(this.props.allowRenderChatRoom)? <ChatRoom friendInfo={this.props.friendInfo} chatID={this.props.friendInfo.chatID} userInfo={this.props.userInfo}/> : ''}
+            {(this.props.allowRenderChatRoom)? <ChatRoom friendInfo={this.props.chatInfo} chatID={this.props.chatInfo.chatID} userInfo={this.props.userInfo}/> : ''}
           </div>
         </ListItem>
           )
