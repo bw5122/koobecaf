@@ -12,6 +12,7 @@ class Profile extends Component {
       posts: []
       //default photo url:
     };
+    this.updateProfilePage = this.updateProfilePage.bind(this);
   }
 
   componentDidMount() {
@@ -71,6 +72,22 @@ class Profile extends Component {
       );
   };
 
+  updateProfilePage() {
+    fetch("/post/getownpost/" + this.state.userInfo.userID, {
+      method: "GET",
+    })
+    .then(res => res.json())
+    .then(
+      (res) => {
+        this.setState({posts: res.data});
+      },
+      (error) => {
+        console.log(error);
+        alert("error (get all post)");
+      }
+    )
+  }
+
   render() {
 
     let photo;
@@ -90,7 +107,7 @@ class Profile extends Component {
     );
 
     const my_own_posts = this.state.posts.map((post) =>
-      <Post info={post} userInfo={this.state.userInfo} />
+      <Post info={post} userInfo={this.state.userInfo} updateHomePage={this.updateProfilePage}/>
     );
 
     return (
