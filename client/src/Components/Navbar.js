@@ -153,7 +153,7 @@ class Navigationbar extends Component {
         </Menu.Item>
 
         <Menu.Item position='left'>
-          <FriendSearchBar />
+          <FriendSearchBar userInfo={this.state.userInfo}/>
         </Menu.Item>
       </Menu>
     );

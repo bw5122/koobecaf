@@ -1,32 +1,47 @@
 import React, {Component} from 'react'
-import { Button, Card, Image } from 'semantic-ui-react'
+import { Button, Card, Image, Header, Description} from 'semantic-ui-react'
+import profile_default from '../Assets/profile.png';
 
 class FriendCard extends Component {
   constructor(props) {
     super(props);
+    this.state ={
+      info: this.props.info,
+      userInfo: this.props.userInfo
+    }
+    this.handleAddFriend = this.handleAddFriend.bind(this);
+  }
+
+  handleAddFriend() {
 
   }
 
   render() {
-    <Card>
-      <Card.Content>
-        <Image floated='right' size='mini' src='https://react.semantic-ui.com/images/avatar/large/steve.jpg' />
-        <Card.Header>Steve Sanders</Card.Header>
-        <Card.Meta>Friends of Elliot</Card.Meta>
-        <Card.Description>
-          Steve wants to add you to the group <strong>best friends</strong>
-        </Card.Description>
-      </Card.Content>
-      <Card.Content extra>
-        <div className='ui two buttons'>
-          <Button basic color='green'>
-            Approve
-          </Button>
-          <Button basic color='red'>
-            Decline
-          </Button>
-        </div>
-      </Card.Content>
-    </Card>
+    const interests = (this.props.info.interests) ? this.props.info.interests.map((ele) =>
+      <p>{ele}</p>
+    ) : [];
+    /*
+    {this.props.info.hasOwnProperty('photo') ? (
+      <Image floated='right' size='mini' src={this.props.info.photo} />
+    ) : (
+      <Image floated='right' size='mini' src={profile_default} />
+    )}
+    */
+    return(
+      <div>
+        {this.props.info.hasOwnProperty('photo') ? (
+          <Image floated='right' size='mini' src={this.props.info.photo} />
+        ) : (
+          <Image floated='right' size='mini' src={profile_default} />
+        )}
+        <h4>{this.props.info.firstname} {this.props.info.lastname}</h4>
+        {this.props.info.hasOwnProperty('affiliation') && (
+          <p>Affiliation: {this.props.info.affiliation}</p>
+        )}
+        <Button primary onClick={this.handleAddFriend}>Add Friend</Button>
+      </div>
+    )
   }
 }
+
+export default FriendCard;
