@@ -242,12 +242,12 @@ var deletePost = function(req, res) {
                     ID: ID,
                 }
                 Post.deletePost(temp, function(err) {
-                    res.send({
-                        error: err
-                    });
+
                 })
             }, function(err) {
-
+                res.send({
+                    error: err
+                });
             })
         }
     })

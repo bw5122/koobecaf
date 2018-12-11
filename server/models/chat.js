@@ -54,12 +54,18 @@ var chatTable_getInfo = function(chatID, cb) {
     Chat.query(chatID).exec(cb);
 }
 
+var chatTable_getAllChat = function(userID, cb) {
+    console.log("Chat Table: get all chat", userID);
+    Chat.scan().where('members').contains(userID).loadAll().exec(cb);
+}
+
 var chatTable = {
     getInfo: chatTable_getInfo,
     createChat: chatTable_createChat,
     deleteChat: chatTable_deleteChat,
     addMember: chatTable_addMember,
     removeMember: chatTable_deleteMember,
+    getAllChat: chatTable_getAllChat,
 }
 
 module.exports = chatTable;

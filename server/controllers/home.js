@@ -45,13 +45,17 @@ var logout = function(req, res) {
     var userID = req.body.userID;
     req.logout();
     User.updateProfile({
-        userID: userID,
-        status: 0,
-    }, function(err, data) {
-        if (err)
-            console.log(err);
+            userID: userID,
+            status: 0,
+        }, function(err, data) {
+            if (err)
+                console.log(err);
+        })
+        //res.redirect('/');
+    res.send({
+        error: 'logout',
+        data: null,
     })
-    res.redirect('/');
 }
 var signup = function(req, res) {
     console.log("User Controller: sign up");
