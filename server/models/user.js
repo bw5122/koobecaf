@@ -99,7 +99,7 @@ var userTable_getProfile = function(user, cb) {
 
 var userTable_getInfo = function(userID, cb) {
     console.log("userTable: get user info for ", userID);
-    User.query(userID).attributes(['userID', 'firstname', 'lastname', 'photo']).exec(cb);
+    User.query(userID).attributes(['userID', 'firstname', 'lastname', 'photo', 'gender', 'status']).exec(cb);
 }
 
 var userTable_getAllUser = function(cb) {
@@ -121,6 +121,11 @@ var userTable_searchByAffiliation = function(affi, cb) {
     User.scan().where('affiliation').contains(name).attributes(['userID', 'firstname', 'lastname', 'interests', 'affiliation', 'photo']).loadAll().exec(cb);
 }
 
+var userTable_searchByName = function(affi, cb) {
+    console.log("userTable: search affiliation for ", affi);
+    User.scan().where('fullname').contains(name).attributes(['userID', 'firstname', 'lastname', 'interests', 'affiliation', 'photo']).loadAll().exec(cb);
+}
+
 var userTable = {
     addUser: userTable_addUser,
     login: userTable_login,
@@ -132,7 +137,8 @@ var userTable = {
     getAllUser: userTable_getAllUser,
     searchByFirstname: userTable_searchByFirstname,
     searchByLastname: userTable_searchByLastname,
-    searchByAffiliation: userTable_searchByAffiliation
+    searchByAffiliation: userTable_searchByAffiliation,
+    searchUserByName: userTable_searchByName
 }
 
 module.exports = userTable;

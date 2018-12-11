@@ -64,8 +64,19 @@ var getNotice = function(req, res) {
     })
 }
 
+var deleteNotice = function(req, res) {
+    console.log("Notice Controller: delete notice ");
+    var notice = req.body;
+    Notice.deleteNotice(notice, function(err) {
+        console.log(err);
+        res.send({
+            error: err,
+        })
+    })
+}
 var notice_controller = {
     get_notice: getNotice,
+    delete_notice: deleteNotice,
     addUserToSender: addUserToSender,
 };
 

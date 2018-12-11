@@ -99,14 +99,16 @@ var getHistory = function(req, res) {
     var chatID = req.params.chatID;
     console.log("Chat Controller: get Chat History for " + chatID);
     Chat.getInfo(chatID, function(err, data) {
-        if (data.Ttems)
-            var members = data.Items[0].attrs.members;
+        var members = [];
+        if (data.Items)
+            members = data.Items[0].attrs.members;
         var members_obj = {};
+
         async.each(members, function(member, cb) {
             User.getInfo(member, function(err1, data1) {
-                if (data.Count > 0) {
-                    if (!members_obj[data1.Items[0].attrs.userID])
-                        members_obj[data1.Items[0].attrs.userID] = data1.Items[0].attrs;
+                console.log(data1);
+                if (data1.Count > 0) {
+                    members_obj[data1.Items[0].attrs.userID] = data1.Items[0].attrs;
                 }
                 cb();
             })
@@ -132,7 +134,6 @@ var getHistory = function(req, res) {
             })
         })
     })
-
 }
 
 var getAllGroupChat;

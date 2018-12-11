@@ -1,7 +1,6 @@
 var Post = require('../models/post');
 var User = require('../models/user');
 var Notice = require('../models/notice');
-var Schema = require('./checkInput');
 var Relation = require('../models/relation');
 var async = require("async");
 const uuidv1 = require('uuid/v1');
