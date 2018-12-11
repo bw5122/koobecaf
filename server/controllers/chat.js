@@ -100,7 +100,7 @@ var getHistory = function(req, res) {
     console.log("Chat Controller: get Chat History for " + chatID);
     Chat.getInfo(chatID, function(err, data) {
         var members = [];
-        if (data.Items)
+        if (data.Count > 0)
             members = data.Items[0].attrs.members;
         var members_obj = {};
 
@@ -136,7 +136,33 @@ var getHistory = function(req, res) {
     })
 }
 
-var getAllGroupChat;
+var getAllGroupChat = function(req, res) {
+    console.log("Chat controller: create Group Chat");
+    var userID = req.params.userID;
+    Chat.getAllChat(userID, function(err, data) {
+        if (err) {
+            console.log(err);
+            res.send({
+                error: err,
+                data: null
+            })
+        } else {
+            var chats = [];
+            if (data.Count > 0) {
+                chats = data.Items.reduce(function(c, n) {
+                    if (n.attrs.members.length > 2)
+                        c.push(n.attrs);
+                    return c;
+                }, [])
+
+            }
+            res.send({
+                error: err,
+                data: chats,
+            })
+        }
+    })
+};
 var chat_controller = {
     create_group_chat: createGroupChat,
     add_member: addMember,
@@ -144,7 +170,6 @@ var chat_controller = {
     get_all_group_chat: getAllGroupChat,
     get_history: getHistory,
     get_chat_history: getChatHistory,
-
 };
 
 module.exports = chat_controller;

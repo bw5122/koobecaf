@@ -2,12 +2,15 @@ var Chat = require('./database').Chat;
 
 var chatTable_createChat = function(chat, cb) {
     console.log("Chat Table: create Chat");
-    Chat.create(chat, function(err, chat) {
+    Chat.create(chat, function(err, chat1) {
         if (err)
             cb(err, null);
         else {
-            console.log('created new chat', chat.get('chatID'));
-            cb(null, chat.attrs);
+            //console.log('created new chat', chat1.get('chatID'));
+            if (!chat1.attrs)
+                cb(null, chat1);
+            else
+                cb(null, chat1.attrs);
         }
     });
 }
@@ -51,12 +54,18 @@ var chatTable_getInfo = function(chatID, cb) {
     Chat.query(chatID).exec(cb);
 }
 
+var chatTable_getAllChat = function(userID, cb) {
+    console.log("Chat Table: get all chat", userID);
+    Chat.scan().where('members').contains(userID).loadAll().exec(cb);
+}
+
 var chatTable = {
     getInfo: chatTable_getInfo,
     createChat: chatTable_createChat,
     deleteChat: chatTable_deleteChat,
     addMember: chatTable_addMember,
     removeMember: chatTable_deleteMember,
+    getAllChat: chatTable_getAllChat,
 }
 
 module.exports = chatTable;

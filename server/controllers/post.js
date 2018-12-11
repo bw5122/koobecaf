@@ -202,6 +202,9 @@ var getAllPost = function(req, res) {
                     posts1 = constructPosts(data.Items);
                     //console.log(posts1);
                     addUserToPosts(posts1, function(posts2) {
+                        posts2.sort(function(a, b) {
+                            return a.createdAt < b.createdAt
+                        })
                         res.send({
                             data: posts2,
                             error: null
@@ -239,12 +242,12 @@ var deletePost = function(req, res) {
                     ID: ID,
                 }
                 Post.deletePost(temp, function(err) {
-                    res.send({
-                        error: err
-                    });
+
                 })
             }, function(err) {
-
+                res.send({
+                    error: err
+                });
             })
         }
     })

@@ -73,7 +73,7 @@ var generateGraph = function(req, res) {
             }
             //console.log(interestEdges);
             var edges = friends.concat(affilEdges, interestEdges);
-            console.log(edges);
+            //console.log(edges);
             //put interest and affiliation into graph 
             Graph.create(edges, function(err1, data1) {
                 if (err1) {
