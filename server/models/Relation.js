@@ -20,7 +20,7 @@ var relationTable_create = function(relation, cb) {
 }
 
 var relationTable_delete = function(relation, cb) {
-    console.log("Relation Table: delete relation " + relation.type);
+    console.log("Relation Table: delete relation " + relation);
     Relation.destroy(relation, function(err) {
         console.log(err);
         cb(err);

@@ -14,7 +14,7 @@ var getFriend = function(req, res) {
                 data: null
             })
         } else {
-            console.log(data.Items);
+            //console.log(data.Items);
             var IDs = data.Items.map(obj => {
                 return obj.attrs.objectID;
             })
@@ -224,13 +224,44 @@ var denyFriend = function(req, res) {
 
 }
 
+/* sender and receiver */
+var deleteFriend = function(req, res) {
+    console.log("Relation controller: delete friend");
+    var relation1 = {
+        userID: req.body.userID,
+        objectID: req.body.objectID,
+    }
+    var relation2 = {
+        userID: req.body.objectID,
+        objectID: req.body.userID,
+    }
+    Relation.deleteFriend(relation1, function(err) {
+        if (err) {
+            console.log(err)
+            res.send({
+                error: err,
+            })
+            return;
+        }
+        Relation.deleteFriend(relation2, function(err2) {
+            console.log(err2);
+            res.send({
+                error: err2,
+            })
+        })
+    })
+
+}
+
+
 var relation_controller = {
     get_friend: getFriend,
     send_friend_request: sendFriendRequest,
     get_friend_request: getFriendRequest,
+    delete_friend: deleteFriend,
     add_friend: acceptFriend,
     deny_friend: denyFriend,
-
+    delete_friend: deleteFriend,
 };
 
 module.exports = relation_controller;

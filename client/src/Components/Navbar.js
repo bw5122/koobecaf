@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import { Redirect, withRouter } from 'react-router-dom';
-import { Dropdown, Button, Icon} from 'semantic-ui-react'
-import Notification from '../Components/Notification'
-import FriendRequest from '../Components/FriendRequest'
+import { Dropdown, Button, Icon, Menu, Input} from 'semantic-ui-react';
+import Notification from '../Components/Notification';
+import FriendRequest from '../Components/FriendRequest';
+import FriendSearchBar from '../Components/FriendSearchBar';
+import '../Styles/Navbar.css';
 
 class Navigationbar extends Component {
   // props: {userInfo}
@@ -74,6 +76,30 @@ class Navigationbar extends Component {
     )
   }
 
+  handleLogout = e => {
+    e.preventDefault();
+    fetch("/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        userID: this.state.userInfo.userID
+      })
+    })
+    .then(res => res.json())
+    .then(
+      (result) => {
+        this.props.history.push({
+          pathname:"/",
+        });
+      },
+      (error) => {
+        alert("Error (log out)! Please try again.");
+      }
+    )
+  }
+
   updateFriendRequests() {
     fetch("/friend/getfriendrequest/" + this.state.userInfo.userID, {
       method: "GET",
@@ -93,33 +119,43 @@ class Navigationbar extends Component {
   render() {
 
     return (
+      <Menu color='brown' inverted width={3}>
+        <Menu.Item>
+          <Button circular onClick={this.navigateToProfile} icon='user outline' />
+        </Menu.Item>
 
-      <div className="nav" display="hidden">
-        <button id="profile_button" onClick={this.navigateToProfile}>{this.props.userInfo.firstname}</button>
-        <button id="home_button" onClick={this.navigateToHome}>Home</button>
+        <Menu.Item>
+          <Button id="home_button" onClick={this.navigateToHome} icon='home' />
+        </Menu.Item>
 
-        <Button animated='vertical' onClick={this.navigateToHome}>
-          <Button.Content hidden>Home</Button.Content>
-          <Button.Content visible>
-            <Icon name='home' />
-          </Button.Content>
-        </Button>
-        <Dropdown text='Notifications ' icon='bell outline' labeled button className='notify_button' onClick={this.handleNotify}>
-          <Dropdown.Menu>
-            <Dropdown.Header content='New Notifications' />
-            {this.state.notifications.map(option => <Dropdown.Item key={option.noticeID}>
-              <Notification info={option} userInfo={this.state.userInfo} /> </Dropdown.Item>)}
-          </Dropdown.Menu>
-        </Dropdown>
+        <Menu.Item>
+          <Dropdown text='Notifications' icon='bell outline' labeled button id='notify_button' className='icon' onClick={this.handleNotify}>
+            <Dropdown.Menu>
+              <Dropdown.Header content='New Notifications' />
+              {this.state.notifications.map(option => <Dropdown.Item key={option.noticeID}>
+                <Notification info={option} userInfo={this.state.userInfo} /> </Dropdown.Item>)}
+            </Dropdown.Menu>
+          </Dropdown>
+        </Menu.Item>
 
-        <Dropdown text='Friend Requests ' icon='male' labeled button className='friend_button' onClick={this.handleFriendRequests}>
-          <Dropdown.Menu>
-            <Dropdown.Header content='New Friend Requests' />
-            {this.state.requests.map(option => <Dropdown.Item key={option.noticeID}>
-              <FriendRequest info={option} userInfo={this.state.userInfo} update={this.updateFriendRequests}/> </Dropdown.Item>)}
-          </Dropdown.Menu>
-        </Dropdown>
-      </div>
+        <Menu.Item>
+          <Dropdown button icon='heart' text='Friend Requests' floating labeled id='friend_button' className='icon' onClick={this.handleFriendRequests}>
+            <Dropdown.Menu>
+              <Dropdown.Header content='New Friend Requests' />
+              {this.state.requests.map(option => <Dropdown.Item key={option.noticeID}>
+                <FriendRequest info={option} userInfo={this.state.userInfo} /> </Dropdown.Item>)}
+            </Dropdown.Menu>
+          </Dropdown>
+        </Menu.Item>
+
+        <Menu.Item position='right'>
+          <Button id="logout_button" onClick={this.handleLogout} icon='log out' />
+        </Menu.Item>
+
+        <Menu.Item position='left'>
+          <FriendSearchBar userInfo={this.state.userInfo}/>
+        </Menu.Item>
+      </Menu>
     );
   }
 }
