@@ -109,7 +109,7 @@ var userTable_getAllUser = function(cb) {
 
 var userTable_searchByFirstname = function(name, cb) {
     console.log("userTable: search name for ", name);
-    User.scan().where(['firstname', 'contains']).contains(name).attributes(['userID', 'firstname', 'lastname', 'interests', 'affiliation', 'photo']).loadAll().exec(cb);
+    User.scan().where('firstname').contains(name).attributes(['userID', 'firstname', 'lastname', 'interests', 'affiliation', 'photo']).loadAll().exec(cb);
 }
 var userTable_searchByLastname = function(name, cb) {
     console.log("userTable: search name for ", name);
