@@ -109,9 +109,8 @@ class FriendList extends Component {
               ))}
             </ul>
           </li>
-          {(this.state.friendInfoReady) ? <GroupChatCreator friendsInfo={this.state.friends}/> : ''}
+          {(this.state.friendInfoReady) ? <GroupChatCreator userInfo={this.props.userInfo} friendsInfo={this.state.friends}/> : ''}
       </List>
-
         )
     }
 }

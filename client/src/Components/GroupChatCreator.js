@@ -40,6 +40,32 @@ class SimpleDialog extends React.Component {
     this.props.onClose(value);
   };
 
+  createGroupChat(){
+    let membersInfo = this.state.checked;
+    membersInfo.map(function(member){delete member['firstname']; delete member['lastname'];})
+    membersInfo.push(this.props.userInfo.userID);
+    console.log("membersInfo", membersInfo);
+    fetch("/chat/creategroupchat", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+          members: membersInfo
+      })
+    })
+    .then(res => res.json())
+    .then( res => {
+      console.log("shit");
+      if(res.err)
+        alert("error: load chat history")
+      else {
+        this.loadChatHistory(res.data);
+      }
+    })
+    this.handleListItemClick();
+  }
+
   handleToggle = value => () => {
     const { checked } = this.state;
     const currentIndex = checked.indexOf(value);
@@ -81,7 +107,7 @@ class SimpleDialog extends React.Component {
               </ListItem>
 
             ))}
-            <ListItem button onClick={() => this.handleListItemClick('addAccount')}>
+            <ListItem button onClick={() => this.createGroupChat()}>
               <ListItemAvatar>
                 <Avatar>
                   <AddIcon />
@@ -132,6 +158,7 @@ class GroupChatCreator extends React.Component {
           open={this.state.open}
           onClose={this.handleClose}
           friendsInfo={this.props.friendsInfo}
+          userInfo={this.props.userInfo}
         />
       </div>
     );
