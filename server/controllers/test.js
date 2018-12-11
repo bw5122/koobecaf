@@ -55,9 +55,6 @@ function makeChat() {
         }
 }
 
-
-
-
 function makeRelation() {
     var k = 0;
     counter = 0;
@@ -90,7 +87,7 @@ var init = function(req, res) {
             return obj.attrs.userID;
         })
         makeChat();
-        console.log(chats);
+        //console.log(chats);
         Chat.createChat(chats, function(err1, data1) {
             if (err1)
                 console.log(err1);

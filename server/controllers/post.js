@@ -202,6 +202,9 @@ var getAllPost = function(req, res) {
                     posts1 = constructPosts(data.Items);
                     //console.log(posts1);
                     addUserToPosts(posts1, function(posts2) {
+                        posts2.sort(function(a, b) {
+                            return a.createdAt < b.createdAt
+                        })
                         res.send({
                             data: posts2,
                             error: null
