@@ -3,7 +3,7 @@ import Post from '../Components/Post';
 import Navigationbar from '../Components/Navbar'
 import FriendList from '../Components/FriendList'
 import '../Styles/Home.css'
-import SimpleDialogDemo from '../Components/GroupChatCreator'
+import GroupChatCreator from '../Components/GroupChatCreator'
 
 class Home extends Component {
   constructor(props) {
@@ -157,14 +157,11 @@ class Home extends Component {
           </div>
         </div>
         <FriendList userInfo={this.state.userInfo}/>
-        <SimpleDialogDemo/>
         <form className="temp" onSubmit={this.handleSendFriendRequest.bind(this)}>
           <input type="text" name="reqID" placeholder="Please input friend userID" value={this.state.reqID.value}  onChange={this.handleChange} />
           <br/>
           <input type="submit" id="req_button" value="Send Request" />
         </form>
-        <PinnedSubheaderList/>
-
       </div>
     )
   }

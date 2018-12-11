@@ -15,6 +15,9 @@ import PersonIcon from '@material-ui/icons/Person';
 import AddIcon from '@material-ui/icons/Add';
 import Typography from '@material-ui/core/Typography';
 import blue from '@material-ui/core/colors/blue';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import Checkbox from '@material-ui/core/Checkbox';
+
 
 const emails = ['username@gmail.com', 'user02@gmail.com'];
 const styles = {
@@ -25,6 +28,10 @@ const styles = {
 };
 
 class SimpleDialog extends React.Component {
+  state = {
+    checked: [],
+  };
+
   handleClose = () => {
     this.props.onClose(this.props.selectedValue);
   };
@@ -33,23 +40,46 @@ class SimpleDialog extends React.Component {
     this.props.onClose(value);
   };
 
+  handleToggle = value => () => {
+    const { checked } = this.state;
+    const currentIndex = checked.indexOf(value);
+    const newChecked = [...checked];
+
+    if (currentIndex === -1) {
+      newChecked.push(value);
+    } else {
+      newChecked.splice(currentIndex, 1);
+    }
+
+    this.setState({
+      checked: newChecked,
+    });
+  };
+
   render() {
     const { classes, onClose, selectedValue, ...other } = this.props;
 
     return (
       <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" {...other}>
-        <DialogTitle id="simple-dialog-title">Set backup account</DialogTitle>
+        <DialogTitle id="simple-dialog-title">Choose friends to join the group chat</DialogTitle>
         <div>
           <List>
-            {emails.map(email => (
-              <ListItem button onClick={() => this.handleListItemClick(email)} key={email}>
+            {this.props.friendsInfo.map(friend => (
+              <ListItem button onClick={() => this.handleToggle(friend)} key={friend.userID}>
                 <ListItemAvatar>
                   <Avatar className={classes.avatar}>
                     <PersonIcon />
                   </Avatar>
                 </ListItemAvatar>
-                <ListItemText primary={email} />
+                <ListItemText primary={friend.firstname} />
+                <ListItemSecondaryAction>
+                  <Checkbox
+                    onChange={this.handleToggle(friend)}
+                    checked={this.state.checked.indexOf(friend) !== -1}
+                  />
+                </ListItemSecondaryAction>
               </ListItem>
+
             ))}
             <ListItem button onClick={() => this.handleListItemClick('addAccount')}>
               <ListItemAvatar>
@@ -57,7 +87,7 @@ class SimpleDialog extends React.Component {
                   <AddIcon />
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary="add account" />
+              <ListItemText primary="create group chat" />
             </ListItem>
           </List>
         </div>
@@ -74,10 +104,10 @@ SimpleDialog.propTypes = {
 
 const SimpleDialogWrapped = withStyles(styles)(SimpleDialog);
 
-class SimpleDialogDemo extends React.Component {
+class GroupChatCreator extends React.Component {
   state = {
     open: false,
-    selectedValue: emails[1],
+    selectedValue: emails[1]
   };
 
   handleClickOpen = () => {
@@ -91,6 +121,7 @@ class SimpleDialogDemo extends React.Component {
   };
 
   render() {
+    console.log("GroupChatCreator:", this.props.friendsInfo);
     return (
       <div>
         <Typography variant="subtitle1">Selected: {this.state.selectedValue}</Typography>
@@ -100,10 +131,13 @@ class SimpleDialogDemo extends React.Component {
           selectedValue={this.state.selectedValue}
           open={this.state.open}
           onClose={this.handleClose}
+          friendsInfo={this.props.friendsInfo}
         />
       </div>
     );
   }
 }
 
-export default SimpleDialogDemo;
+
+//s{this.state.open}
+export default GroupChatCreator;

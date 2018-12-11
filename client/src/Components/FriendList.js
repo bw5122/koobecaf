@@ -9,6 +9,7 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import FriendListRow from './FriendListRow'
+import GroupChatCreator from './GroupChatCreator'
 
 const styles = theme => ({
   root: {
@@ -41,10 +42,12 @@ class FriendList extends Component {
     super(props);
     this.state = {
       friends: [],
-      chatRoomID: ''
+      chatRoomID: '',
+      friendInfoReady: false
     };
     this.handleChatRoomRender = this.handleChatRoomRender.bind(this);
     this.loadFriendList();
+    console.log("friend list:", this.state.friends);
   }
 
   loadFriendList(){
@@ -59,8 +62,10 @@ class FriendList extends Component {
         alert("error: load chat history")
       else {
         this.setState({
-          friends: res.data
+          friends: res.data,
+          friendInfoReady: true
         })
+        console.log("res.data: ", res.data);
       }
     })
   }
@@ -82,6 +87,7 @@ class FriendList extends Component {
         />
 
     );
+    //console.log("friend list:", this.state.friends);
 
     return(
       <List className={classes.root} subheader={<li />}>
@@ -103,6 +109,7 @@ class FriendList extends Component {
               ))}
             </ul>
           </li>
+          {(this.state.friendInfoReady) ? <GroupChatCreator friendsInfo={this.state.friends}/> : ''}
       </List>
 
         )
