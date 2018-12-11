@@ -28,7 +28,7 @@ class FriendCard extends Component {
     )}
     */
     return(
-      <Card>
+      <div>
         {this.props.info.hasOwnProperty('photo') ? (
           <Image floated='right' size='mini' src={this.props.info.photo} />
         ) : (
@@ -39,7 +39,7 @@ class FriendCard extends Component {
           <p>Affiliation: {this.props.info.affiliation}</p>
         )}
         <Button primary onClick={this.handleAddFriend}>Add Friend</Button>
-      </Card>
+      </div>
     )
   }
 }
