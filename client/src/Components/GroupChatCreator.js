@@ -42,7 +42,8 @@ class SimpleDialog extends React.Component {
 
   createGroupChat(){
     let membersInfo = this.state.checked;
-    membersInfo.map(function(member){delete member['firstname']; delete member['lastname'];})
+    for(let i=0; i<membersInfo.length; i++)
+      membersInfo[i] = membersInfo[i].userID;
     membersInfo.push(this.props.userInfo.userID);
     console.log("membersInfo", membersInfo);
     fetch("/chat/creategroupchat", {
@@ -56,12 +57,7 @@ class SimpleDialog extends React.Component {
     })
     .then(res => res.json())
     .then( res => {
-      console.log("shit");
-      if(res.err)
-        alert("error: load chat history")
-      else {
-        this.loadChatHistory(res.data);
-      }
+      console.log("group chat is created!");
     })
     this.handleListItemClick();
   }
