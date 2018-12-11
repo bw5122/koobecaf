@@ -11,12 +11,17 @@ var createPost = function(req, res) {
     var post = req.body;
     post['postID'] = uuidv1();
     post['ID'] = post.postID;
+    var hashtags = post.hashtags;
+    if (hashtags)
+        delete post.hashtags;
     //If has hashtgs
-    if (post.hashtags) {
-        async.each(post.hashtags, function(event, cb) {
+    if (hashtags) {
+        console.log(hashtags);
+        async.each(hashtags, function(event, cb) {
             var event = {
                 postID: post.postID,
                 ID: 'event_' + uuidv1(),
+                postBy: post.postBy,
                 content: event,
                 type: post.type
             }
@@ -304,20 +309,22 @@ var constructPosts = function(posts) {
                 postBy: obj.attrs['postBy'],
                 comments: [],
                 likes: [],
+                events: [],
             });
             index = acc.length - 1;
         }
         if (obj.attrs.ID.startsWith("comment")) {
             // comments
             delete obj.attrs.postBy;
-            // delete obj.attrs.postID;
-            //console.log(obj.attrs);
             acc[index].comments.push(obj.attrs);
         } else if (obj.attrs.ID.startsWith("like")) {
             // likes
             delete obj.attrs.postBy;
-            // delete obj.attrs.postID;
             acc[index].likes.push(obj.attrs);
+        } else if (obj.attrs.ID.startsWith("event")) {
+            //event
+            delete obj.attrs.postBy;
+            acc[index].events.push(obj.attrs);
         } else {
             //post
             // console.log(obj.attrs);

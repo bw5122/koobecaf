@@ -1,5 +1,5 @@
 var User = require('../models/user');
-
+var Post = require('../models/post');
 var searchUser = function(req, res) {
     console.log('search controller: searchUser', req.params.name);
     var name = req.params.name;
@@ -46,10 +46,30 @@ var searchUser = function(req, res) {
     });
 }
 
+var searchPost = function(req, res) {
+    console.log("Search_controller");
+    var event = req.params.name;
+    Post.searchEvent(name, function(err, data) {
+        if (err) {
+            console.log(err)
+            res.send({
+                error: err,
+                data: null,
+            })
+            return;
+        }
+        var IDs = []
+        if (data.Count > 0)
+            IDs = data.Items.map(obj => {
+                return obj.attrs;
+            })
 
+    })
+}
 
 var search_controller = {
     search_user: searchUser,
+    search_post: searchPost,
 }
 
 module.exports = search_controller;

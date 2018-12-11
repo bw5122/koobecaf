@@ -60,6 +60,10 @@ var postTable_delete = function(post, cb) {
     })
 }
 
+var psotTable_searchEvent = function(event, cb) {
+    console.log("Post Table: search event", event);
+    Post.query(event).usingIndex('contentIndex').descending().loadAll().exec(cb);
+}
 var postTable = {
     createPost: postTable_create,
     getPostInfo: postTable_getPostInfo,
@@ -73,6 +77,7 @@ var postTable = {
     unlikePost: postTable_delete,
     deletePost: postTable_delete,
     addEvent: postTable_create,
+    searchEvent: psotTable_searchEvent,
 }
 
 module.exports = postTable;

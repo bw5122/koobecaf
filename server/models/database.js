@@ -69,6 +69,11 @@ var Post = dynamo.define('Post', {
         rangeKey: 'createdAt',
         name: 'postIDIndex',
         type: 'global',
+    }, {
+        hashKey: 'content',
+        rangeKey: 'createdAt',
+        name: 'contentIndex',
+        type: 'global',
     }]
 });
 
