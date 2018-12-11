@@ -23,13 +23,6 @@ export default class FriendListRow extends Component {
   }
 
   renderChatRoom(){
-    /*console.log("chatoom");
-    if(this.state.renderChatRoom){
-      this.setState({renderChatRoom: false});
-      console.log("here");
-    }
-    this.setState({renderChatRoom: true});
-    */
     this.props.handleChatRoomRender(this.props.friendInfo.chatID);
   }
 

@@ -6,8 +6,8 @@ var multerS3 = require('multer-s3');
 aws.config.update({region:'us-east-1'});
 
 // Create the parameters for calling createBucket
-var photoBucket = "koobecaf-user-photo";
-var imageBucket = "koobecaf-post-image";
+var photoBucket = "koobecaf-user-photo-2";
+var imageBucket = "koobecaf-post-image-2";
 
 var photoBucketParamsPhoto = {
     Bucket: photoBucket

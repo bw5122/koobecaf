@@ -70,6 +70,26 @@ class FriendList extends Component {
     })
   }
 
+  loadGroupChats(){
+    console.log("load group chats");
+    fetch("/friend/getfriend/" + this.props.userInfo.userID, {
+      method: "GET",
+    })
+    .then(res => res.json())
+    .then( res => {
+      console.log("shit");
+      if(res.err)
+        alert("error: load chat history")
+      else {
+        this.setState({
+          friends: res.data,
+          friendInfoReady: true
+        })
+        console.log("res.data: ", res.data);
+      }
+    })
+  }
+
   handleChatRoomRender(chatID){
       this.setState({
           chatRoomID: chatID
