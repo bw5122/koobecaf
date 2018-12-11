@@ -1,16 +1,10 @@
 import _ from 'lodash'
 //import faker from 'faker'
 import React, { Component } from 'react'
-import { Search, Grid, Header, Segment } from 'semantic-ui-react'
+import { Search, Grid, Header, Segment, Label} from 'semantic-ui-react'
+import FriendCard from '../Components/FriendCard';
 
-const source = _.times(5, () => ({
-  title: "Reilly and Sons",
-  description: "Function-based intangible pricing structure",
-  image: "https://s3.amazonaws.com/uifaces/faces/twitter/nyancecom/128.jpg",
-  price: "$96.99"
-}))
-
-export default class SearchExampleStandard extends Component {
+export default class FriendSearchBar extends Component {
   componentWillMount() {
     this.resetComponent()
   }
@@ -21,6 +15,7 @@ export default class SearchExampleStandard extends Component {
 
   handleSearchChange = (e, { value }) => {
     if(value.length < 1) {
+      this.resetComponent();
       return;
     }
     this.setState({ isLoading: true, value })
@@ -46,14 +41,13 @@ export default class SearchExampleStandard extends Component {
     }, 300)
   }
 
-  showFriendCards = (results) => {
-    const cards = results.map((item) =>
-      <p>Hey</p>
-    );
+  showFriendCards = (result) => {
     return(
-      {cards}
+      <FriendCard info={result} userInfo={this.props.userInfo} />
     )
   }
+
+  resultRenderer = (item) => <FriendCard info={item} />
 
   render() {
     const { isLoading, value, results } = this.state
@@ -68,7 +62,7 @@ export default class SearchExampleStandard extends Component {
             onSearchChange={_.debounce(this.handleSearchChange, 500, { leading: true })}
             results={results}
             value={value}
-            resultRenderer={this.showFriendCards.bind(this)}
+            resultRenderer={this.resultRenderer.bind(this)}
             {...this.props}
           />
         </Grid.Column>
