@@ -15,13 +15,13 @@ const styles = theme => ({
   root: {
     width: '100%',
     maxWidth: 250,
-    top: '50px',
+    top: '65px',
     bottom: '0px',
     backgroundColor: theme.palette.background.paper,
     position: 'fixed',
     right: '0%',
     overflow: 'auto',
-    maxHeight: 600,
+    maxHeight: 700,
   },
   inline: {
     display: 'inline',
