@@ -1,9 +1,17 @@
-import React, {Component} from 'react';
-import {Button, Icon, Input} from 'semantic-ui-react'
-import Image from 'react-image';
-import Moment from 'react-moment';
-import Comment from './Comment'
-import '../Styles/Post.css';
+import React, { Component } from "react";
+import {
+  Button,
+  Icon,
+  Comment,
+  Header,
+  Form,
+  TextArea,
+  Feed
+} from "semantic-ui-react";
+import Image from "react-image";
+import Moment from "react-moment";
+import CommentComponent from "./Comment";
+import "../Styles/Post.css";
 
 class Post extends Component {
   constructor(props) {
@@ -11,7 +19,7 @@ class Post extends Component {
     console.log(props.info.comments);
     this.state = {
       comments: props.info.comments,
-      newcomment: '',
+      newcomment: "",
       likes: props.info.likes, // list of user names
       liked: false
     };
@@ -24,21 +32,25 @@ class Post extends Component {
   componentDidMount() {
     const id = this.props.userInfo.userID;
     var b = false;
-    this.state.likes.map(function(like_obj){
-      if(like_obj.creator.userID == id) {
+    this.state.likes.map(function(like_obj) {
+      if (like_obj.creator.userID == id) {
         b = true;
       }
     });
-    this.setState({liked: b});
+    this.setState({
+      liked: b
+    });
   }
 
   handleChange(event) {
     const name = event.target.name;
     const value = event.target.value;
-    this.setState({[name]: value});
+    this.setState({
+      [name]: value
+    });
   }
 
-  handleNewComment = e =>{
+  handleNewComment = e => {
     e.preventDefault();
     fetch("/post/addcomment", {
       method: "POST",
@@ -54,14 +66,15 @@ class Post extends Component {
     })
       .then(res => res.json())
       .then(
-        (result) => {
+        result => {
           const id = result.data.creator;
           result.data.creator = {
             userID: id,
             firstname: this.props.userInfo.firstname,
-            lastname: this.props.userInfo.lastname
-          }
-          if(this.state.comments) {
+            lastname: this.props.userInfo.lastname,
+            photo: this.props.userInfo.photo
+          };
+          if (this.state.comments) {
             this.setState({
               comments: [...this.state.comments, result.data]
             });
@@ -70,13 +83,12 @@ class Post extends Component {
               comments: [result.data]
             });
           }
-
         },
-        (error) => {
+        error => {
           alert("Error (add comment)! Please try again.");
         }
       );
-  }
+  };
 
   handleDeleteComment(e) {
     //no data returned.
@@ -95,21 +107,21 @@ class Post extends Component {
         postID: this.props.info.postID
       })
     })
-    .then(res => res.json())
-    .then(
-      (res) => {
-        this.props.updateHomePage();
-        //console.log(this.state.post.size);
-      },
-      (error) => {
-        alert("error (create posts)");
-      }
-    )
+      .then(res => res.json())
+      .then(
+        res => {
+          this.props.updateHomePage();
+          //console.log(this.state.post.size);
+        },
+        error => {
+          alert("error (create posts)");
+        }
+      );
   }
 
   handleNewLike(e) {
     e.preventDefault();
-    if(this.state.liked) {
+    if (this.state.liked) {
       fetch("/post/unlikepost", {
         method: "DELETE",
         headers: {
@@ -121,22 +133,22 @@ class Post extends Component {
           creator: this.props.userInfo.userID
         })
       })
-      .then(res => res.json())
-      .then(
-        (res) => {
-          //remove user's like
-          var new_arr = this.state.likes.filter((like_obj) =>
-            like_obj.creator.userID !== this.props.userInfo.userID
-          )
-          this.setState({
-            likes: new_arr,
-            liked: !this.state.liked
-          });
-        },
-        (error) => {
-          alert("error (unlike)");
-        }
-      )
+        .then(res => res.json())
+        .then(
+          res => {
+            //remove user's like
+            var new_arr = this.state.likes.filter(
+              like_obj => like_obj.creator.userID !== this.props.userInfo.userID
+            );
+            this.setState({
+              likes: new_arr,
+              liked: !this.state.liked
+            });
+          },
+          error => {
+            alert("error (unlike)");
+          }
+        );
     } else {
       fetch("/post/likepost", {
         method: "POST",
@@ -149,70 +161,108 @@ class Post extends Component {
           creator: this.props.userInfo.userID
         })
       })
-      .then(res => res.json())
-      .then(
-        (res) => {
-          const id = res.data.creator;
-          res.data.creator = {
-            userID: id,
-            firstname: this.props.userInfo.firstname,
-            lastname: this.props.userInfo.lastname
+        .then(res => res.json())
+        .then(
+          res => {
+            const id = res.data.creator;
+            res.data.creator = {
+              userID: id,
+              firstname: this.props.userInfo.firstname,
+              lastname: this.props.userInfo.lastname
+            };
+            this.setState({
+              likes: [res.data, ...this.state.likes],
+              liked: !this.state.liked
+            });
+            //console.log(this.state.post.size);
+          },
+          error => {
+            alert("error (new like)");
           }
-          this.setState({
-            likes: [res.data, ...this.state.likes],
-            liked: !this.state.liked
-          });
-          //console.log(this.state.post.size);
-        },
-        (error) => {
-          alert("error (new like)");
-        }
-      )
+        );
     }
-
   }
 
   generateHeader() {
     switch (this.props.info.type) {
       case "post":
-        return <h3>{this.props.info.postBy.firstname} {this.props.info.postBy.lastname} posted:</h3>
+        return (
+          <h3>
+            {this.props.info.postBy.firstname} {this.props.info.postBy.lastname}
+            posted:
+          </h3>
+        );
         break;
 
       case "share":
-      //TODO: /post/getonepost
-        return <h3>{this.props.info.postBy.firstname} {this.props.info.postBy.lastname} shared:</h3>
+        //TODO: /post/getonepost
+        return (
+          <h3>
+            {this.props.info.postBy.firstname} {this.props.info.postBy.lastname}
+            shared:
+          </h3>
+        );
         break;
 
       default:
-
     }
   }
 
   render() {
-    const time = (this.props.info) ? (this.props.info).createdAt : '';
-    const all_comments = (this.state.comments) ? this.state.comments.map((ele) =>
-      <Comment info={ele} userInfo={this.props.userInfo}/>
-    ) : [];
+    const time = this.props.info ? this.props.info.createdAt : "";
+    const all_comments = this.state.comments
+      ? this.state.comments.map(ele => (
+          <CommentComponent info={ele} userInfo={this.props.userInfo} />
+        ))
+      : [];
     console.log(this.state.likes);
     const header = this.generateHeader();
     return (
       <div className="box">
-        {header}
-        <Moment date={time} />
-        <p>{this.props.info.content}</p>
-        {this.state.likes.length > 0 &&
-          <h4>{this.state.likes[0].creator.firstname} {this.state.likes[0].creator.lastname} and {this.state.likes.length - 1} friends like it</h4>
-        }
-
+        {header} <Moment date={time} /> <p> {this.props.info.content} </p>
+        {this.state.likes.length > 0 && (
+          <h4>
+            {this.state.likes[0].creator.firstname}
+            {this.state.likes[0].creator.lastname}
+            and {this.state.likes.length - 1}
+            friends like it
+          </h4>
+        )}
         <Button id="like_button" onClick={this.handleNewLike}>
-          {this.state.liked ? <Icon name='thumbs up' /> : <Icon name='thumbs up outline' />}
+          {this.state.liked ? (
+            <Icon name="thumbs up" />
+          ) : (
+            <Icon name="thumbs up outline" />
+          )}
         </Button>
-        <Button id="share_button" onClick={this.handleShare}>share</Button>
-        <ul id="comment_list">{all_comments}</ul>
-        <form className="createcomment" onSubmit={this.handleNewComment}>
-          <Input type="text" name="newcomment" placeholder="Write a comment..." id="newcomment" value={this.state.newcomment.value}  onChange={this.handleChange} maxLength="100" />
-          <Input type="submit" id="comment_button" value="Comment" />
-        </form>
+        <Button id="share_button" onClick={this.handleShare}>
+          share
+        </Button>
+        {/* <ul id="comment_list">{all_comments}</ul> */}
+        <Comment.Group>
+          <Header as="h3" dividing>
+            Comments
+          </Header>
+          {all_comments}
+          <Form className="createcomment" onSubmit={this.handleNewComment}>
+            <Form.Field required>
+              <TextArea
+                type="text"
+                name="newcomment"
+                placeholder="Write a comment..."
+                id="newcomment"
+                value={this.state.newcomment.value}
+                onChange={this.handleChange}
+                maxLength="100"
+                style={{ minHeight: 80, width: "90%", marginTop: "10px" }}
+              />
+            </Form.Field>
+            <Button type="submit" id="comment_button" value="Comment" primary>
+              <Icon name="edit" />
+              Add Comment
+            </Button>
+          </Form>
+        </Comment.Group>
       </div>
     );
   }

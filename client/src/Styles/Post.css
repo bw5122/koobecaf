@@ -1,23 +1,21 @@
 .box {
-  width: 50%;
-  background-color: white;
-  padding: 10px;
-  margin: 10px;
-  border-radius: 5px;
+    width: 60%;
+    background-color: white;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
 }
 
 .img {
-  width: 10px;
-  height: auto;
+    width: 10px;
+    height: auto;
 }
 
 #newcomment {
-  width: 70%;
-  border: 2px solid #888888;
-  border-radius: 4px;
-  padding: 5px 10px;
+    width: 70%;
+    border: 2px solid #888888;
+    border-radius: 4px;
+    padding: 5px 10px;
 }
 
-#like_button {
-
-}
+#like_button {}
