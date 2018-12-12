@@ -167,9 +167,8 @@ class Home extends Component {
               <input type="submit" id="create_button" value="Share" />
             </form>
             <div className="oldposts">
-              <Feed>
-                {/* <div>{all_posts}</div> */}>{all_posts}
-              </Feed>
+              {/* <div>{all_posts}</div> */}
+              {all_posts}
             </div>
           </div>
         </div>

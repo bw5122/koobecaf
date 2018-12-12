@@ -6,7 +6,8 @@ import {
   Header,
   Form,
   TextArea,
-  Feed
+  Feed,
+  Segment
 } from "semantic-ui-react";
 import Image from "react-image";
 import Moment from "react-moment";
@@ -103,6 +104,7 @@ class Post extends Component {
       },
       body: JSON.stringify({
         type: "share",
+        content: this.props.info.content,
         postBy: this.props.userInfo.userID,
         postID: this.props.info.postID
       })
@@ -186,22 +188,12 @@ class Post extends Component {
   generateHeader() {
     switch (this.props.info.type) {
       case "post":
-        return (
-          <h3>
-            {this.props.info.postBy.firstname} {this.props.info.postBy.lastname}
-            posted:
-          </h3>
-        );
+        return <span>created a post</span>;
         break;
 
       case "share":
         //TODO: /post/getonepost
-        return (
-          <h3>
-            {this.props.info.postBy.firstname} {this.props.info.postBy.lastname}
-            shared:
-          </h3>
-        );
+        return <span>shared a post</span>;
         break;
 
       default:
@@ -209,7 +201,9 @@ class Post extends Component {
   }
 
   render() {
-    const time = this.props.info ? this.props.info.createdAt : "";
+    const time = this.props.info
+      ? new Date(this.props.info.createdAt).toLocaleString()
+      : "";
     const all_comments = this.state.comments
       ? this.state.comments.map(ele => (
           <CommentComponent info={ele} userInfo={this.props.userInfo} />
@@ -217,52 +211,81 @@ class Post extends Component {
       : [];
     console.log(this.state.likes);
     const header = this.generateHeader();
+    let image;
+    if (this.props.info.image)
+      image = (
+        <a>
+          <img src={this.props.info.image} alt={this.props.info.postID} />
+        </a>
+      );
     return (
-      <div className="box">
-        {header} <Moment date={time} /> <p> {this.props.info.content} </p>
-        {this.state.likes.length > 0 && (
-          <h4>
-            {this.state.likes[0].creator.firstname}
-            {this.state.likes[0].creator.lastname}
-            and {this.state.likes.length - 1}
-            friends like it
-          </h4>
-        )}
-        <Button id="like_button" onClick={this.handleNewLike}>
-          {this.state.liked ? (
-            <Icon name="thumbs up" />
-          ) : (
-            <Icon name="thumbs up outline" />
-          )}
-        </Button>
-        <Button id="share_button" onClick={this.handleShare}>
-          share
-        </Button>
-        {/* <ul id="comment_list">{all_comments}</ul> */}
-        <Comment.Group>
-          <Header as="h3" dividing>
-            Comments
-          </Header>
-          {all_comments}
-          <Form className="createcomment" onSubmit={this.handleNewComment}>
-            <Form.Field required>
-              <TextArea
-                type="text"
-                name="newcomment"
-                placeholder="Write a comment..."
-                id="newcomment"
-                value={this.state.newcomment.value}
-                onChange={this.handleChange}
-                maxLength="100"
-                style={{ minHeight: 80, width: "90%", marginTop: "10px" }}
-              />
-            </Form.Field>
-            <Button type="submit" id="comment_button" value="Comment" primary>
-              <Icon name="edit" />
-              Add Comment
-            </Button>
-          </Form>
-        </Comment.Group>
+      <div class="box">
+        <Feed size="large">
+          <Feed.Event>
+            <Feed.Label image={this.props.info.postBy.photo} />
+            <Feed.Content>
+              <Feed.Summary>
+                <Feed.User>
+                  {this.props.info.postBy.firstname}{" "}
+                  {this.props.info.postBy.lastname}
+                </Feed.User>{" "}
+                {header}
+                <Feed.Date>{time}</Feed.Date>
+              </Feed.Summary>
+              <Feed.Extra text>{this.props.info.content}</Feed.Extra>
+              <Feed.Extra images>{image}</Feed.Extra>
+              <Feed.Meta>
+                <Feed.Like>
+                  <Icon name="like" />
+                  {this.state.likes.length + " likes"}
+                </Feed.Like>
+              </Feed.Meta>
+            </Feed.Content>
+          </Feed.Event>
+          <Button id="like_button" onClick={this.handleNewLike}>
+            {this.state.liked ? (
+              <div>
+                <Icon name="thumbs up" />
+                <span>Unlike</span>
+              </div>
+            ) : (
+              <div>
+                <Icon name="thumbs up outline" />
+                <span>like</span>
+              </div>
+            )}
+          </Button>
+          <Button id="share_button" onClick={this.handleShare}>
+            <Icon name="share" /> Share
+          </Button>
+          <Button id="show_comment_button">
+            <Icon name="comment" /> Comment
+          </Button>
+          <Comment.Group>
+            <Header as="h3" dividing>
+              Comments
+            </Header>
+            {all_comments}
+            <Form className="createcomment" onSubmit={this.handleNewComment}>
+              <Form.Field required>
+                <TextArea
+                  type="text"
+                  name="newcomment"
+                  placeholder="Write a comment..."
+                  id="newcomment"
+                  value={this.state.newcomment.value}
+                  onChange={this.handleChange}
+                  maxLength="100"
+                  style={{ minHeight: 80, width: "90%", marginTop: "10px" }}
+                />
+              </Form.Field>
+              <Button type="submit" id="comment_button" value="Comment" primary>
+                <Icon name="edit" />
+                Add Comment
+              </Button>
+            </Form>
+          </Comment.Group>
+        </Feed>
       </div>
     );
   }
