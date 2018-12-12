@@ -34,7 +34,7 @@ export default class GroupChatListRow extends Component {
             <Avatar alt="Remy Sharp" src={this.props.chatInfo.photo} />
           </ListItemAvatar>
           <ListItemText
-            primary={this.props.chatInfo.chatID}
+            primary={this.props.chatInfo.name}
           />
           <div className="chat-room">
             {(this.props.allowRenderChatRoom)? <ChatRoom friendInfo={this.props.chatInfo} chatID={this.props.chatInfo.chatID} userInfo={this.props.userInfo}/> : ''}
