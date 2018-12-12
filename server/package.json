@@ -13,7 +13,6 @@
         "aws-sdk": "^2.365.0",
         "body-parser": "^1.18.3",
         "cookie-parser": "^1.4.3",
-        "copy-dynamodb-table": "^2.0.14",
         "crypto-js": "^3.1.9-1",
         "dynamodb": "^1.1.2",
         "express": "^4.16.4",
