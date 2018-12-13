@@ -129,8 +129,8 @@ class Chatroom extends Component {
             Launcher className = "chat-popup-window"
             agentProfile = {
                 {
-                    teamName: 'react-live-chat',
-                    imageUrl: 'https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png'
+                    teamName: this.props.friendInfo.firstname,
+                    //imageUrl: this.props.friendInfo.photo
                 }
             }
             onMessageWasSent = {

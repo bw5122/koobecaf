@@ -1,7 +1,7 @@
 .sc-message {
   width: 300px;
   margin: auto;
-  padding-bottom: 10px;
+  padding-bottom: 15px;
   display: flex;
 }
 
@@ -11,9 +11,11 @@
 }
 
 .sc-message--username{
-  color: #e0e0eb;
+  color: #e0e0eb;;
   position: relative;
-  top: 10px;
+  top: -15px;
+  right: 0px;
+  left: 0px;
 }
 
 .sc-message--content.sent {
@@ -37,7 +39,7 @@
 }
 
 .sc-message--text {
-  padding: 17px 20px;
+  padding: 6px 10px;
   border-radius: 6px;
   font-weight: 300;
   font-size: 14px;
