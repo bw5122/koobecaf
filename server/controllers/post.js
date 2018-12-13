@@ -166,6 +166,16 @@ var getOwnPost = function(req, res) {
             posts1 = constructPosts(data.Items);
             //console.log(posts1);
             addUserToPosts(posts1, function(posts2) {
+                posts2.sort(function(a, b) {
+                    return a.createdAt < b.createdAt
+                })
+                posts2 = posts2.map(obj => {
+                    if (obj.comments.length > 0)
+                        obj.comments.sort(function(c, d) {
+                            return c.createdAt < d.createdAt
+                        })
+                    return obj;
+                })
                 res.send({
                     data: posts2,
                     error: null
@@ -209,6 +219,13 @@ var getAllPost = function(req, res) {
                     addUserToPosts(posts1, function(posts2) {
                         posts2.sort(function(a, b) {
                             return a.createdAt < b.createdAt
+                        })
+                        posts2 = posts2.map(obj => {
+                            if (obj.comments.length > 0)
+                                obj.comments.sort(function(c, d) {
+                                    return c.createdAt < d.createdAt
+                                })
+                            return obj;
                         })
                         res.send({
                             data: posts2,
@@ -318,6 +335,7 @@ function constructPosts(posts) {
         if (obj.attrs.ID.startsWith("comment")) {
             // comments
             delete obj.attrs.postBy;
+            //sorted
             acc[index].comments.push(obj.attrs);
         } else if (obj.attrs.ID.startsWith("like")) {
             // likes
