@@ -49,6 +49,8 @@ class FriendList extends Component {
       friendInfoReady: false
     };
     this.handleChatRoomRender = this.handleChatRoomRender.bind(this);
+    this.loadGroupChats = this.loadGroupChats.bind(this);
+    this.loadFriendList = this.loadFriendList.bind(this);
     this.loadFriendList();
     this.loadGroupChats();
     console.log("friend list:", this.state.friends);
@@ -139,7 +141,8 @@ class FriendList extends Component {
               </div>
             </ul>
           </li>
-          {(this.state.friendInfoReady) ? <GroupChatCreator userInfo={this.props.userInfo} friendsInfo={this.state.friends}/> : ''}
+          {(this.state.friendInfoReady) ? <GroupChatCreator userInfo={this.props.userInfo} friendsInfo={this.state.friends}
+                                                            refreshChats={this.loadGroupChats}/> : ''}
       </List>
         )
     }
