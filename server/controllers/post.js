@@ -166,6 +166,16 @@ var getOwnPost = function(req, res) {
             posts1 = constructPosts(data.Items);
             //console.log(posts1);
             addUserToPosts(posts1, function(posts2) {
+                posts2.sort(function(a, b) {
+                    return a.createdAt < b.createdAt
+                })
+                posts2 = posts2.map(obj => {
+                    if (obj.comments.length > 0)
+                        obj.comments.sort(function(c, d) {
+                            return c.createdAt > d.createdAt
+                        })
+                    return obj;
+                })
                 res.send({
                     data: posts2,
                     error: null
@@ -209,6 +219,13 @@ var getAllPost = function(req, res) {
                     addUserToPosts(posts1, function(posts2) {
                         posts2.sort(function(a, b) {
                             return a.createdAt < b.createdAt
+                        })
+                        posts2 = posts2.map(obj => {
+                            if (obj.comments.length > 0)
+                                obj.comments.sort(function(c, d) {
+                                    return c.createdAt > d.createdAt
+                                })
+                            return obj;
                         })
                         res.send({
                             data: posts2,
@@ -292,12 +309,14 @@ var post_controller = {
     delete_comment: deleteComment,
     like_post: likePost,
     unlike_post: unlikePost,
+    constructPosts: constructPosts,
+    addUserToPosts: addUserToPosts
 };
 
 module.exports = post_controller;
 
 /* other functions */
-var constructPosts = function(posts) {
+function constructPosts(posts) {
     var format_posts = posts.reduce(function(acc, obj) {
         var key = obj.attrs['postID'];
         let index = acc.findIndex(value => {
@@ -309,13 +328,14 @@ var constructPosts = function(posts) {
                 postBy: obj.attrs['postBy'],
                 comments: [],
                 likes: [],
-                events: [],
+                hashtags: [],
             });
             index = acc.length - 1;
         }
         if (obj.attrs.ID.startsWith("comment")) {
             // comments
             delete obj.attrs.postBy;
+            //sorted
             acc[index].comments.push(obj.attrs);
         } else if (obj.attrs.ID.startsWith("like")) {
             // likes
@@ -324,7 +344,7 @@ var constructPosts = function(posts) {
         } else if (obj.attrs.ID.startsWith("event")) {
             //event
             delete obj.attrs.postBy;
-            acc[index].events.push(obj.attrs);
+            acc[index].hashtags.push(obj.attrs.content);
         } else {
             //post
             // console.log(obj.attrs);
@@ -352,7 +372,7 @@ var getUserInfo = async function(userID) {
 }
 
 
-var addUserToPosts = async function(posts, callback) {
+async function addUserToPosts(posts, callback) {
     var users = {};
     async.each(posts, function(post, cb) {
         var dummy = [forPost, forComments, forLikes];

@@ -58,6 +58,7 @@ var Message = function (_Component) {
         _react2.default.createElement('div', { className: 'sc-message--username', style: {}},
           this.props.message.firstname
         ),
+
         this._renderMessageOfType(this.props.message.type)
       )
     );
