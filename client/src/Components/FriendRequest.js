@@ -28,7 +28,7 @@ class FriendRequest extends Component {
     .then(res => res.json())
     .then(
       (res) => {
-        this.props.update();
+        alert('You have a new friend!')
       },
       (error) => {
         console.log(error);
