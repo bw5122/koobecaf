@@ -46,6 +46,10 @@ class Notification extends Component {
       return(
         <p>xxx commented on your posts</p>
       )
+    } else {
+      return(
+        <p>No new nofication</p>
+      )
     }
   }
 }
