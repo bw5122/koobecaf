@@ -172,7 +172,7 @@ var getOwnPost = function(req, res) {
                 posts2 = posts2.map(obj => {
                     if (obj.comments.length > 0)
                         obj.comments.sort(function(c, d) {
-                            return c.createdAt < d.createdAt
+                            return c.createdAt > d.createdAt
                         })
                     return obj;
                 })
@@ -223,7 +223,7 @@ var getAllPost = function(req, res) {
                         posts2 = posts2.map(obj => {
                             if (obj.comments.length > 0)
                                 obj.comments.sort(function(c, d) {
-                                    return c.createdAt < d.createdAt
+                                    return c.createdAt > d.createdAt
                                 })
                             return obj;
                         })
