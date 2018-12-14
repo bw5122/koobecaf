@@ -40,7 +40,7 @@ class FriendRequest extends Component {
   handleDeny(e) {
     e.preventDefault();
     fetch("/friend/denyfriend", {
-      method: "POST",
+      method: "DELETE",
       headers: {
         "Content-Type": "application/json"
       },
@@ -53,7 +53,7 @@ class FriendRequest extends Component {
     .then(res => res.json())
     .then(
       (res) => {
-        this.props.update();
+      
       },
       (error) => {
         console.log(error);
