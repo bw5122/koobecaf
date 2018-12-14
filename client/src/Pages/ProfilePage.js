@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Button, Image } from 'semantic-ui-react';
 import Post from "../Components/Post";
 import profile_default from '../Assets/profile.png';
 import Navigationbar from '../Components/Navbar'
@@ -13,6 +14,7 @@ class Profile extends Component {
       //default photo url:
     };
     this.updateProfilePage = this.updateProfilePage.bind(this);
+    this.navigateToUpdateProfile = this.navigateToUpdateProfile.bind(this);
   }
 
   componentDidMount() {
@@ -88,13 +90,24 @@ class Profile extends Component {
     )
   }
 
+  navigateToUpdateProfile(e) {
+    e.preventDefault();
+    this.props.history.push({
+      pathname: "/updateprofile",
+      state: {
+        userInfo: this.state.userInfo,
+        data: this.state.data
+      }
+    });
+  }
+
   render() {
 
     let photo;
     if(this.state.hasOwnProperty('photo')) {
-      photo = <img src={this.state.photo} className="profile_photo" alt="profile_photo" />
+      photo = <Image src={this.state.photo} className="profile_photo" alt="profile_photo" />
     } else {
-      photo = <img src={profile_default} className="profile_photo" alt="profile_photo" />
+      photo = <Image src={profile_default} className="profile_photo" alt="profile_photo" />
     }
 
     let interests = [];
@@ -128,6 +141,7 @@ class Profile extends Component {
           <h4>Birthday: {this.state.data.birthday}</h4>
         }
         <ul>{list}</ul>
+        <Button primary onClick={this.navigateToUpdateProfile}>Update Profile</Button>
       </div>
         <h2> Upload Photo </h2>
         <form

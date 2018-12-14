@@ -12,8 +12,27 @@ class FriendCard extends Component {
     this.handleAddFriend = this.handleAddFriend.bind(this);
   }
 
-  handleAddFriend() {
-
+  handleAddFriend(e) {
+    e.preventDefault();
+    fetch("/friend/sendfriendrequest", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        sender: this.state.userInfo.userID,
+        receiver: this.state.info.userID
+      })
+    })
+    .then(res => res.json())
+    .then(
+      (res) => {
+        alert("Friend request sent");
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
   }
 
   render() {
@@ -38,7 +57,9 @@ class FriendCard extends Component {
         {this.props.info.hasOwnProperty('affiliation') && (
           <p>Affiliation: {this.props.info.affiliation}</p>
         )}
-        <Button primary onClick={this.handleAddFriend}>Add Friend</Button>
+        {this.props.add &&
+          <Button primary onClick={this.handleAddFriend}>Add Friend</Button>
+        }
       </div>
     )
   }
