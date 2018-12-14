@@ -92,7 +92,7 @@ var generateGraph = function(req, res) {
     })
 }
 
-var visualizeFriend = function(req, res) {
+var visualizeCenter = function(req, res) {
     var userID = req.params.userID;
     Relation.getFriend(userID, function(err, data) {
         if (err) {
@@ -215,10 +215,15 @@ var visualizeMoreFriend = function(req, res) {
         })
     })
 }
+
+var visualizer = function(req, res) {
+    res.render('friendvisualizer.ejs');
+}
 var graph_controller = {
     generate_graph: generateGraph,
-    visualize_friend: visualizeFriend,
+    visualize_center: visualizeCenter,
     visualize_morefriend: visualizeMoreFriend,
+    visualizer: visualizer,
 }
 
 module.exports = graph_controller;

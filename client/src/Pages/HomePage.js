@@ -4,6 +4,7 @@ import Post from "../Components/Post";
 import Navigationbar from "../Components/Navbar";
 import FriendList from "../Components/FriendList";
 import "../Styles/Home.css";
+import FriendVisualizer from "../Components/Visualizer/FriendVisualizer";
 import GroupChatCreator from "../Components/GroupChatCreator";
 
 class Home extends Component {
@@ -27,7 +28,9 @@ class Home extends Component {
   handleChange(event) {
     const name = event.target.name;
     const value = event.target.value;
-    this.setState({ [name]: value });
+    this.setState({
+      [name]: value
+    });
   }
 
   handleSendFriendRequest(e) {
@@ -83,7 +86,9 @@ class Home extends Component {
             .then(res => res.json())
             .then(
               res => {
-                this.setState({ posts: res.data });
+                this.setState({
+                  posts: res.data
+                });
                 console.log(this.state.posts);
               },
               error => {
@@ -105,7 +110,10 @@ class Home extends Component {
       .then(res => res.json())
       .then(
         res => {
-          this.setState({ posts: res.data, isLoading: false });
+          this.setState({
+            posts: res.data,
+            isLoading: false
+          });
           console.log(this.state.posts);
         },
         error => {
@@ -116,14 +124,19 @@ class Home extends Component {
   }
 
   updateHomePage() {
-    this.setState({ isLoading: true });
+    this.setState({
+      isLoading: true
+    });
     fetch("/post/getallpost/" + this.state.userInfo.userID, {
       method: "GET"
     })
       .then(res => res.json())
       .then(
         res => {
-          this.setState({ posts: res.data, isLoading: false });
+          this.setState({
+            posts: res.data,
+            isLoading: false
+          });
         },
         error => {
           console.log(error);
@@ -137,14 +150,7 @@ class Home extends Component {
       method: "GET"
     })
       .then(res => res.json())
-      .then(
-        res => {
-
-        },
-        error => {
-
-        }
-      );
+      .then(res => {}, error => {});
   }
 
   navigateToProfile() {}
@@ -161,12 +167,16 @@ class Home extends Component {
 
     return (
       <div className="homepage">
-        <Navigationbar userInfo={this.state.userInfo} />
+        <Navigationbar userInfo={this.state.userInfo} />{" "}
         <Dimmer active={this.state.isLoading} inverted>
-          <Loader> Loading </Loader>
-        </Dimmer>
+          <Loader> Loading </Loader>{" "}
+        </Dimmer>{" "}
         <div className="content">
-          <h3>This is {this.state.userInfo.firstname} home page! </h3>
+          <h3>
+            {" "}
+            This is {this.state.userInfo.firstname}
+            home page!{" "}
+          </h3>{" "}
           <div className="posts">
             <form className="createpost" onSubmit={this.handleCreatePost}>
               <input
@@ -180,14 +190,14 @@ class Home extends Component {
               />
               <br />
               <input type="submit" id="create_button" value="Share" />
-            </form>
+            </form>{" "}
             <div className="oldposts">
-              {/* <div>{all_posts}</div> */}
-              {all_posts}
-            </div>
-          </div>
-        </div>
-        <FriendList userInfo={this.state.userInfo} />
+              {" "}
+              {/* <div>{all_posts}</div> */} {all_posts}{" "}
+            </div>{" "}
+          </div>{" "}
+        </div>{" "}
+        <FriendList userInfo={this.state.userInfo} />{" "}
         <form
           className="temp"
           onSubmit={this.handleSendFriendRequest.bind(this)}
@@ -198,11 +208,11 @@ class Home extends Component {
             placeholder="Please input friend userID"
             value={this.state.reqID.value}
             onChange={this.handleChange}
-          />
+          />{" "}
           <br />
           <input type="submit" id="req_button" value="Send Request" />
-        </form>
-        <Button color='red' onClick={this.handleURL}>Test</Button>
+        </form>{" "}
+        <FriendVisualizer userInfo={this.state.userInfo} />
       </div>
     );
   }
