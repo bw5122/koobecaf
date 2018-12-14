@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Dimmer, Loader, Feed } from "semantic-ui-react";
+import { Dimmer, Loader, Feed, Button } from "semantic-ui-react";
 import Post from "../Components/Post";
 import Navigationbar from "../Components/Navbar";
 import FriendList from "../Components/FriendList";
@@ -132,6 +132,21 @@ class Home extends Component {
       );
   }
 
+  handleURL() {
+    fetch("" + this.state.userInfo.userID, {
+      method: "GET"
+    })
+      .then(res => res.json())
+      .then(
+        res => {
+
+        },
+        error => {
+
+        }
+      );
+  }
+
   navigateToProfile() {}
   render() {
     const username = this.props.location.state.username;
@@ -187,6 +202,7 @@ class Home extends Component {
           <br />
           <input type="submit" id="req_button" value="Send Request" />
         </form>
+        <Button color='red' onClick={this.handleURL}>Test</Button>
       </div>
     );
   }
