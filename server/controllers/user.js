@@ -57,6 +57,8 @@ var updateProfile = function(req, res) {
             data: null,
             err: "Missing parameters in request",
         });
+    var profile = req.body;
+    profile['fullname'] = profile.firstname + " " + profile.lastname
     User.updateProfile(req.body, function(err, data) {
         if (err) {
             console.log(err);

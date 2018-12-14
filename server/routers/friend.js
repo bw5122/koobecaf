@@ -9,5 +9,7 @@ router.post('/sendfriendrequest', friend_ctrl.send_friend_request);
 router.get('/getfriendrequest/:userID', friend_ctrl.get_friend_request);
 router.post('/acceptfriend', friend_ctrl.add_friend);
 router.get('/generaterelationgraph', graph_ctrl.generate_graph);
+router.get('/visualizefriend/:userID', graph_ctrl.visualize_friend);
+router.get('/visualizemorefriend/:userID/:friendID', graph_ctrl.visualize_morefriend);
 router.delete('/deletefriend', friend_ctrl.delete_friend);
 module.exports = router;

@@ -1,11 +1,11 @@
 var Graph = require('../models/graph');
 var User = require('../models/user');
-var Relations = require('../models/relation');
+var Relation = require('../models/relation');
 
 var generateGraph = function(req, res) {
     //Graph.generateGraph();
     // put friendship into graph
-    Relations.getAll(function(err, data) {
+    Relation.getAll(function(err, data) {
         if (err) {
             console.log(err);
             res.status(500).send({
@@ -92,8 +92,133 @@ var generateGraph = function(req, res) {
     })
 }
 
+var visualizeFriend = function(req, res) {
+    var userID = req.params.userID;
+    Relation.getFriend(userID, function(err, data) {
+        if (err) {
+            console.log(err);
+            res.send({
+                error: err,
+                data: null
+            })
+            return;
+        } else {
+            //console.log(data.Items);
+            var IDs = data.Items.map(obj => {
+                return obj.attrs.objectID;
+            })
+            console.log(IDs);
+            User.getInfo(userID, function(err1, data1) {
+                if (err1) {
+                    console.log(err);
+                    res.send({
+                        error: err1,
+                        data: null
+                    })
+                    return;
+                }
+                var tmp = data1.Items[0].attrs;
+                //console.log(tmp);
+                var mynode = {
+                    "id": tmp.userID,
+                    "name": tmp.firstname + " " + tmp.lastname,
+                    "data": [],
+                }
+                User.addUserInfo(IDs, function(users) {
+                    var children = users.map(obj => {
+                        var friend = {}
+                        friend = {
+                            "id": obj.userID,
+                            "name": obj.firstname + " " + obj.lastname,
+                            "data": {
+                                "type": "friend",
+                            }
+                        }
+                        return friend
+                    })
+                    mynode['children'] = children;
+                    res.send({
+                        data: mynode,
+                        error: null,
+                    })
+                })
+            })
+
+        }
+    })
+}
+
+var visualizeMoreFriend = function(req, res) {
+    console.log("Graph Controller: visulize more friend");
+    var user = {
+        userID: req.params.userID
+    };
+    var friendID = req.params.friendID;
+    var affiliation;
+    User.getProfile(user, function(err0, data0) {
+        if (err0) {
+            console.log(err0);
+            res.send(err0);
+            return;
+        }
+        affiliation = data0.affiliation;
+        Relation.getFriend(friendID, function(err, data) {
+            if (err) {
+                console.log(err);
+                res.send({
+                    error: err,
+                    data: null
+                })
+                return;
+            } else {
+                //console.log(data.Items);
+                var IDs = data.Items.map(obj => {
+                    return obj.attrs.objectID;
+                })
+                console.log(IDs);
+                User.getInfo(userID, function(err1, data1) {
+                    if (err1) {
+                        console.log(err);
+                        res.send({
+                            error: err1,
+                            data: null
+                        })
+                        return;
+                    }
+                    var tmp = data1.Items[0].attrs;
+                    //console.log(tmp);
+                    var mynode = {
+                        "id": tmp.userID,
+                        "name": tmp.firstname + " " + tmp.lastname,
+                        "data": [],
+                    }
+                    User.addUserInfo(IDs, function(users) {
+                        var children = users.map(obj => {
+                            var friend = {}
+                            friend = {
+                                "id": obj.userID,
+                                "name": obj.firstname + " " + obj.lastname,
+                                "data": {
+                                    "type": "friend",
+                                }
+                            }
+                            return friend
+                        })
+                        mynode['children'] = children;
+                        res.send({
+                            data: mynode,
+                            error: null,
+                        })
+                    })
+                })
+            }
+        })
+    })
+}
 var graph_controller = {
-    generate_graph: generateGraph
+    generate_graph: generateGraph,
+    visualize_friend: visualizeFriend,
+    visualize_morefriend: visualizeMoreFriend,
 }
 
 module.exports = graph_controller;
