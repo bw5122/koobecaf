@@ -1,5 +1,5 @@
 var User = require('../models/user');
-
+var SHA3 = require("crypto-js/sha3");
 /* sign up */
 var signUp = function(req, res) {
     console.log("User Controller: sign up");
@@ -101,11 +101,54 @@ var getProfile = function(req, res) {
     })
 }
 
+
+/* need username, oldpassword, newpassword */
+var changePassword = function(req, res) {
+    var user = req.body;
+    User.findUser(user, function(err, data) {
+        if (err) {
+            console.log(err);
+            res.send({
+                error: err,
+                data: null
+            })
+            return;
+        }
+        //console.log(data);
+        console.log
+        if (SHA3(user.oldpassword).toString() !== data.password) {
+            console.log("Incorrect password");
+            res.send({
+                error: "The old password is incorrect",
+                data: null
+            })
+            return;
+        }
+        var hashedPassword = SHA3(user.newpassword).toString();
+        var newuser = {
+            userID: data.userID,
+            password: hashedPassword,
+        }
+        User.updateProfile(newuser, function(err1, data1) {
+            if (err1) {
+                console.log(err1);
+                res.send({
+                    error: err1,
+                    data: null,
+                })
+            }
+            console.log(data1);
+        })
+    })
+
+}
+
 var user_controller = {
     sign_up: signUp,
     login: login,
     update_profile: updateProfile,
     get_profile: getProfile,
+    change_password: changePassword
 };
 
 module.exports = user_controller;

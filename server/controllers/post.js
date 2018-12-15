@@ -167,12 +167,12 @@ var getOwnPost = function(req, res) {
             //console.log(posts1);
             addUserToPosts(posts1, function(posts2) {
                 posts2.sort(function(a, b) {
-                    return a.createdAt < b.createdAt
+                    return new Date(a.createdAt).getTime() < new Date(b.createdAt).getTime()
                 })
                 posts2 = posts2.map(obj => {
                     if (obj.comments.length > 0)
                         obj.comments.sort(function(c, d) {
-                            return c.createdAt > d.createdAt
+                            return new Date(c.createdAt).getTime() > new Date(d.createdAt).getTime()
                         })
                     return obj;
                 })
@@ -218,12 +218,12 @@ var getAllPost = function(req, res) {
                     //console.log(posts1);
                     addUserToPosts(posts1, function(posts2) {
                         posts2.sort(function(a, b) {
-                            return a.createdAt < b.createdAt
+                            return new Date(a.createdAt).getTime() < new Date(b.createdAt).getTime()
                         })
                         posts2 = posts2.map(obj => {
                             if (obj.comments.length > 0)
                                 obj.comments.sort(function(c, d) {
-                                    return c.createdAt > d.createdAt
+                                    return new Date(c.createdAt).getTime() > new Date(d.createdAt).getTime()
                                 })
                             return obj;
                         })
