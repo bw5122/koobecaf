@@ -102,6 +102,11 @@ var userTable_getInfo = function(userID, cb) {
     User.query(userID).attributes(['userID', 'firstname', 'lastname', 'photo', 'gender', 'status']).exec(cb);
 }
 
+var userTable_getInfoWithAffiliation = function(userID, cb) {
+    console.log("userTable: get user info with same affiliation ", userID);
+    User.query(userID).attributes(['userID', 'firstname', 'lastname', 'affiliation']).exec(cb);
+}
+
 var userTable_getAllUser = function(cb) {
     console.log("userTable: get all users");
     User.scan().loadAll().attributes(['userID', 'interests', 'affiliation']).exec(cb);
@@ -134,11 +139,13 @@ var userTable = {
     getProfile: userTable_getProfile,
     getInfo: userTable_getInfo,
     addUserInfo: addUserInfo,
+    addUserInfoWithAffiliation: addUserInfoWithAffiliation,
     getAllUser: userTable_getAllUser,
     searchByFirstname: userTable_searchByFirstname,
     searchByLastname: userTable_searchByLastname,
     searchByAffiliation: userTable_searchByAffiliation,
-    searchUserByName: userTable_searchByName
+    searchUserByName: userTable_searchByName,
+    getInfoWithAffiliation: userTable_getInfoWithAffiliation
 }
 
 module.exports = userTable;
@@ -151,6 +158,20 @@ function addUserInfo(items, callback) {
     var counter = 0;
     async.each(items, function(item, cb) {
         userTable_getInfo(item, function(err, data) {
+            users[counter] = data.Items[0].attrs;
+            counter++;
+            cb();
+        })
+    }, function() {
+        callback(users);
+    });
+}
+
+function addUserInfoWithAffiliation(items, callback) {
+    var users = [];
+    var counter = 0;
+    async.each(items, function(item, cb) {
+        userTable_getInfoWithAffiliation(item, function(err, data) {
             users[counter] = data.Items[0].attrs;
             counter++;
             cb();

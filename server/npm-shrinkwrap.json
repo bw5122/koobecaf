@@ -449,6 +449,11 @@
             "resolved": "http://registry.npm.taobao.org/color-name/download/color-name-1.1.3.tgz",
             "integrity": "sha1-p9BVi9icQveV3UIyj3QIMcpTvCU="
         },
+        "commander": {
+            "version": "2.19.0",
+            "resolved": "https://registry.npmjs.org/commander/-/commander-2.19.0.tgz",
+            "integrity": "sha512-6tvAOO+D6OENvRAh524Dh9jcfKTYDQAqvqezbCW82xj5X0pSrcpxtvRKHLG0yBY6SD7PSDrJaj+0AiOcKVd1Xg=="
+        },
         "component-bind": {
             "version": "1.0.0",
             "resolved": "https://registry.npmjs.org/component-bind/-/component-bind-1.0.0.tgz",
@@ -663,6 +668,11 @@
                 "streamsearch": "0.1.2"
             }
         },
+        "dispatch-recursive": {
+            "version": "2.0.0",
+            "resolved": "https://registry.npmjs.org/dispatch-recursive/-/dispatch-recursive-2.0.0.tgz",
+            "integrity": "sha1-jkWIhrPB+DceD8cW0IKai9MuzCI="
+        },
         "dot-prop": {
             "version": "4.2.0",
             "resolved": "http://registry.npm.taobao.org/dot-prop/download/dot-prop-4.2.0.tgz",
@@ -729,10 +739,24 @@
                 }
             }
         },
+        "dynamodb-marshaler": {
+            "version": "2.0.0",
+            "resolved": "https://registry.npmjs.org/dynamodb-marshaler/-/dynamodb-marshaler-2.0.0.tgz",
+            "integrity": "sha1-7w1wiL4I4rZnnvFyeRZ+PM14Ryk=",
+            "requires": {
+                "dispatch-recursive": "^2.0.0",
+                "lodash": "^4.11.2"
+            }
+        },
         "ee-first": {
             "version": "1.1.1",
             "resolved": "https://registry.npmjs.org/ee-first/-/ee-first-1.1.1.tgz",
             "integrity": "sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0="
+        },
+        "ejs": {
+            "version": "2.6.1",
+            "resolved": "https://registry.npmjs.org/ejs/-/ejs-2.6.1.tgz",
+            "integrity": "sha512-0xy4A/twfrRCnkhfk8ErDi5DqdAsAqeGxht4xkCUrsvhhbQNs7E+4jV0CN7+NKIY0aHE72+XvqtBIXzD31ZbXQ=="
         },
         "encodeurl": {
             "version": "1.0.2",
@@ -2336,6 +2360,11 @@
                 "registry-url": "^3.0.3",
                 "semver": "^5.1.0"
             }
+        },
+        "papaparse": {
+            "version": "4.6.2",
+            "resolved": "https://registry.npmjs.org/papaparse/-/papaparse-4.6.2.tgz",
+            "integrity": "sha512-P/4p6S6wZyXAjcFPnJAjFn7lxMIkd+23prFELhcbfWswQfg7dG1XJfV8/lKvk5lu5BGSSJZFHSDMejjFcB1feg=="
         },
         "parseqs": {
             "version": "0.0.5",
