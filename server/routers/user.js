@@ -12,4 +12,5 @@ router.get('/getprofile/:userID', user_ctrl.get_profile);
 router.post('/uploadphoto/:userID', image_ctrl.upload_user_photo);
 router.get('/getnotice/:userID', notice_ctrl.get_notice);
 router.delete('/deletenotice', notice_ctrl.delete_notice);
+router.post('/changepassword', user_ctrl.change_password);
 module.exports = router;

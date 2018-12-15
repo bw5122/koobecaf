@@ -34,7 +34,9 @@ class Home extends Component {
   handleChange(event) {
     const name = event.target.name;
     const value = event.target.value;
-    this.setState({ [name]: value });
+    this.setState({
+      [name]: value
+    });
   }
 
   handleSendFriendRequest(e) {
@@ -90,7 +92,9 @@ class Home extends Component {
             .then(res => res.json())
             .then(
               res => {
-                this.setState({ posts: res.data });
+                this.setState({
+                  posts: res.data
+                });
                 console.log(this.state.posts);
               },
               error => {
@@ -112,7 +116,10 @@ class Home extends Component {
       .then(res => res.json())
       .then(
         res => {
-          this.setState({ posts: res.data, isLoading: false });
+          this.setState({
+            posts: res.data,
+            isLoading: false
+          });
           console.log(this.state.posts);
         },
         error => {
@@ -123,14 +130,19 @@ class Home extends Component {
   }
 
   updateHomePage() {
-    this.setState({ isLoading: true });
+    this.setState({
+      isLoading: true
+    });
     fetch("/post/getallpost/" + this.state.userInfo.userID, {
       method: "GET"
     })
       .then(res => res.json())
       .then(
         res => {
-          this.setState({ posts: res.data, isLoading: false });
+          this.setState({
+            posts: res.data,
+            isLoading: false
+          });
         },
         error => {
           console.log(error);
@@ -144,14 +156,7 @@ class Home extends Component {
       method: "GET"
     })
       .then(res => res.json())
-      .then(
-        res => {
-
-        },
-        error => {
-
-        }
-      );
+      .then(res => {}, error => {});
   }
 
   navigateToProfile() {}
@@ -168,23 +173,31 @@ class Home extends Component {
 
     return (
       <div className="homepage">
+
       <VisitorContext.Provider value={this.state.userInfo} >
 
         <Navigationbar userInfo={this.state.userInfo} />
+
         <Dimmer active={this.state.isLoading} inverted>
-          <Loader> Loading </Loader>
-        </Dimmer>
+          <Loader> Loading </Loader>{" "}
+        </Dimmer>{" "}
         <div className="content">
-          <h3>This is {this.state.userInfo.firstname} home page! </h3>
+          <h3>
+            {" "}
+            This is {this.state.userInfo.firstname}
+            home page!{" "}
+          </h3>{" "}
           <div className="posts">
+
             <CreatePost userInfo={this.state.userInfo} type='post' updatePage={this.updateHomePage.bind(this)}/>
+
             <div className="oldposts">
-              {/* <div>{all_posts}</div> */}
-              {all_posts}
-            </div>
-          </div>
-        </div>
-        <FriendList userInfo={this.state.userInfo} />
+              {" "}
+              {/* <div>{all_posts}</div> */} {all_posts}{" "}
+            </div>{" "}
+          </div>{" "}
+        </div>{" "}
+        <FriendList userInfo={this.state.userInfo} />{" "}
         <form
           className="temp"
           onSubmit={this.handleSendFriendRequest.bind(this)}
@@ -195,13 +208,25 @@ class Home extends Component {
             placeholder="Please input friend userID"
             value={this.state.reqID.value}
             onChange={this.handleChange}
-          />
+          />{" "}
           <br />
           <input type="submit" id="req_button" value="Send Request" />
+
         </form>
         <Button color='red' onClick={this.handleURL}>Test</Button>
 
       </VisitorContext.Provider>
+
+        </form>{" "}
+        <a
+          target="_blank"
+          href={
+            "http://localhost:5000/visualizer/" + this.state.userInfo.userID
+          }
+        >
+          See Friend Visualization
+        </a>
+
       </div>
     );
   }
