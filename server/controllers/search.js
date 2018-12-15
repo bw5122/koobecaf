@@ -59,12 +59,22 @@ var searchPost = function(req, res) {
             })
             return;
         }
+        else if(data.Count == 0)
+        {
+          res.send({
+            error:"no results",
+            data:null
+          })
+          return;
+        }
+        // console.log(data);
+        console.log("search event succeed")
         var IDs = []
         if (data.Count > 0)
             IDs = data.Items.map(obj => {
                 return obj.attrs.postID;
             })
-            //console.log(IDs);
+        console.log(IDs);
         Post.searchPost(IDs, function(err1, data1) {
             if (err1) {
                 console.log(err1);

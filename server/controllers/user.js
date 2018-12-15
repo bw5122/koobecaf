@@ -104,6 +104,7 @@ var getProfile = function(req, res) {
 
 /* need username, oldpassword, newpassword */
 var changePassword = function(req, res) {
+  console.log("User Controller: change password");
     var user = req.body;
     User.findUser(user, function(err, data) {
         if (err) {
