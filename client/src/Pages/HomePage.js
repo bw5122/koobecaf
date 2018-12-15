@@ -131,8 +131,11 @@ class Home extends Component {
 
   updateHomePage() {
     this.setState({
-      isLoading: true
+      isLoading: true,
+      posts: [],
     });
+    window.location.reload();
+    /*
     fetch("/post/getallpost/" + this.state.userInfo.userID, {
       method: "GET"
     })
@@ -149,6 +152,7 @@ class Home extends Component {
           alert("error (get all post)");
         }
       );
+      */
   }
 
   handleURL() {
@@ -189,7 +193,7 @@ class Home extends Component {
           </h3>{" "}
           <div className="posts">
 
-            <CreatePost userInfo={this.state.userInfo} type='post' visitor={this.state.userInfo} updatePage={this.updateHomePage.bind(this)}/>
+            <CreatePost userInfo={this.state.userInfo} type='post' visitor={this.state.userInfo} updatePage={this.updateHomePage}/>
 
             <div className="oldposts">
               {" "}
