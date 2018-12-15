@@ -21,7 +21,10 @@ class UpdateProfile extends Component {
       email: this.props.location.state.data.email,
       interests: this.props.location.state.data.interests,
       gender: this.props.location.state.data.gender,
-      text: ''
+      text: '',
+      oldpassword: '',
+      newpassword: '',
+      username: '',
     }
     this.handleUpdate = this.handleUpdate.bind(this);
     this.handlePreview = this.handlePreview.bind(this);
@@ -29,6 +32,8 @@ class UpdateProfile extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.addInterest = this.addInterest.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.changePassword = this.changePassword.bind(this);
+    this.handleUpload = this.handleUpload.bind(this);
   }
 
   componentDidMount() {
@@ -132,6 +137,31 @@ class UpdateProfile extends Component {
     }
   }
 
+  changePassword(e) {
+    e.preventDefault();
+    fetch("/user/changepassword/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        userID: this.state.userInfo.userID,
+        username: this.state.username,
+        oldpassword: this.state.oldpassword,
+        newpassword: this.state.newpassword
+      })
+    })
+      .then(res => res.json())
+      .then(
+        result => {
+          alert("Password changed.")
+        },
+        error => {
+          alert("Error! Please try again.");
+        }
+      );
+  }
+
   render() {
     //const { value } = this.state;
     const tags = this.state.interests.map((tag) =>
@@ -171,6 +201,18 @@ class UpdateProfile extends Component {
             </Form.Group>
           </Form>
         </Grid.Column>
+      </Grid.Row>
+      <Grid.Row>
+      <Grid.Column>
+        <Form>
+        <Form.Group widths='equal'>
+          <Form.Input fluid name='oldpassword' label='Old password' placeholder='Enter your old password' onChange={this.handleChange} />
+          <Form.Input fluid name='newpassword' label='New password' placeholder='Enter your new password' onChange={this.handleChange} />
+          <Form.Input fluid name='username' label='Username' placeholder='Enter username' onChange={this.handleChange} />
+        </Form.Group>
+        <Form.Button primary onClick={this.changePassword}>Change Password</Form.Button>
+        </Form>
+      </Grid.Column>
       </Grid.Row>
       </Grid>
     )
