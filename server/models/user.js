@@ -84,7 +84,7 @@ var userTable_updateProfile = function(user, cb) {
 var userTable_getProfile = function(user, cb) {
     console.log("userTable: updateProfile for ", user.userID);
     User.query(user.userID)
-        .attributes(['firstname', 'lastname', 'affiliation', 'birthday', 'interests', 'email', 'photo'])
+        .attributes(['firstname', 'lastname', 'affiliation', 'birthday', 'interests', 'email', 'photo', 'gender'])
         .exec(function(err, data) {
             if (err)
                 cb(err, null);

@@ -1,12 +1,21 @@
 import React, { Component } from "react";
-import { Button, Image, Form, Grid, Label, Input, Icon} from 'semantic-ui-react';
-import Navigationbar from '../Components/Navbar'
+import {
+  Button,
+  Image,
+  Form,
+  Grid,
+  Label,
+  Input,
+  Segment,
+  Icon
+} from "semantic-ui-react";
+import Navigationbar from "../Components/Navbar";
 
 const options = [
-  { key: 'm', text: 'Male', value: 'male' },
-  { key: 'f', text: 'Female', value: 'female' },
-  { key: 'o', text: 'Other', value: 'other' }
-]
+  { key: "m", text: "Male", value: "male" },
+  { key: "f", text: "Female", value: "female" },
+  { key: "o", text: "Other", value: "other" }
+];
 
 class UpdateProfile extends Component {
   constructor(props) {
@@ -21,28 +30,26 @@ class UpdateProfile extends Component {
       email: this.props.location.state.data.email,
       interests: this.props.location.state.data.interests,
       gender: this.props.location.state.data.gender,
-      text: '',
-      oldpassword: '',
-      newpassword: '',
-      username: '',
-    }
+      text: ""
+    };
     this.handleUpdate = this.handleUpdate.bind(this);
     this.handlePreview = this.handlePreview.bind(this);
-    this.updateInterests = this.updateInterests.bind(this, this.state.interests);
+    this.updateInterests = this.updateInterests.bind(
+      this,
+      this.state.interests
+    );
     this.handleChange = this.handleChange.bind(this);
     this.addInterest = this.addInterest.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
-    this.changePassword = this.changePassword.bind(this);
     this.handleUpload = this.handleUpload.bind(this);
   }
 
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
   handleChange(event) {
     const name = event.target.name;
     const value = event.target.value;
-    this.setState({[name]: value});
+    this.setState({ [name]: value });
   }
 
   handleSelect(option) {
@@ -50,7 +57,7 @@ class UpdateProfile extends Component {
     alert(value);
     this.setState({
       gender: value
-    })
+    });
   }
 
   handleUpdate = e => {
@@ -71,25 +78,25 @@ class UpdateProfile extends Component {
         gender: this.state.gender
       })
     })
-    .then(res => res.json())
-    .then(
-      (result) => {
-        this.setState({data: result.data});
-        if(this.state.data.hasOwnProperty('photo')) {
-          this.setState({preview: this.state.data.photo});
+      .then(res => res.json())
+      .then(
+        result => {
+          this.setState({ data: result.data });
+          if (this.state.data.hasOwnProperty("photo")) {
+            this.setState({ preview: this.state.data.photo });
+          }
+        },
+        error => {
+          console.log(error);
+          alert("error (update profile)");
         }
-      },
-      (error) => {
-        console.log(error);
-        alert("error (update profile)");
-      }
-    )
-  }
+      );
+  };
 
   handlePreview(event) {
     this.setState({
       preview: URL.createObjectURL(event.target.files[0])
-    })
+    });
   }
 
   handleUpload(e) {
@@ -106,7 +113,7 @@ class UpdateProfile extends Component {
       .then(res => res.json())
       .then(
         result => {
-          this.setState({photo: result.data.photo});
+          this.setState({ photo: result.data.photo });
         },
         error => {
           alert("Error! Please try again.");
@@ -117,7 +124,7 @@ class UpdateProfile extends Component {
   updateInterests(list) {
     this.setState({
       interests: list
-    })
+    });
   }
 
   addInterest() {
@@ -129,93 +136,108 @@ class UpdateProfile extends Component {
   handleDelete(e, data) {
     var array = [...this.state.interests];
     var index = array.indexOf(data.value);
-    if(index !== -1) {
+    if (index !== -1) {
       array.splice(index, 1);
       this.setState({
         interests: array
-      })
+      });
     }
-  }
-
-  changePassword(e) {
-    e.preventDefault();
-    fetch("/user/changepassword/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        userID: this.state.userInfo.userID,
-        username: this.state.username,
-        oldpassword: this.state.oldpassword,
-        newpassword: this.state.newpassword
-      })
-    })
-      .then(res => res.json())
-      .then(
-        result => {
-          alert("Password changed.")
-        },
-        error => {
-          alert("Error! Please try again.");
-        }
-      );
   }
 
   render() {
     //const { value } = this.state;
-    const tags = this.state.interests.map((tag) =>
-      <Label onClick={this.handleDelete} value={tag}>{tag}<Icon name='delete' /></Label>
-    )
+    const tags = this.state.interests.map(tag => (
+      <Label onClick={this.handleDelete} value={tag}>
+        {tag}
+        <Icon name="delete" />
+      </Label>
+    ));
     return (
-      <Grid>
-      <Grid.Row columns={1}>
-        <Navigationbar width={"100%"} userInfo={this.state.userInfo} />
-      </Grid.Row>
-      <Grid.Row>
-        <Grid.Column floated='left' width={8}>
-          <Form>
-            <Form.Group widths='equal'>
-              <Form.Input fluid name='firstname' label='First name' placeholder='First name' onChange={this.handleChange} />
-              <Form.Input fluid name='lastname' label='Last name' placeholder='Last name' onChange={this.handleChange} />
-              <Form.Select fluid name='gender' label='Gender' options={options} placeholder='Gender' onChange={this.handleSelect.bind(this)} />
-            </Form.Group>
-            <Form.Group widths='equal'>
-              <Form.Input fluid name='email' label='Email' placeholder='example@gmail.com' onChange={this.handleChange} />
-              <Form.Input fluid name='affiliation' label='Affiliation' placeholder='Affiliation' onChange={this.handleChange} />
-            </Form.Group>
-            <div>{tags}</div><br/>
-            <Input type='text' name='text' onChange={this.handleChange} placeholder='What are you interested in?' action>
-              <input />
-              <Button onClick={this.addInterest}>Add</Button>
-            </Input>
-            <Form.Button primary onClick={this.handleUpdate}>Update</Form.Button>
-          </Form>
-        </Grid.Column>
-        <Grid.Column  width={6}>
-          <Form>
-            <Image src={this.state.preview} size='medium' fluid/>
-            <Form.Group>
-              <Form.Input type='file' onChange={this.handlePreview} />
-              <Form.Button onClick={this.handleUpload}>Upload</Form.Button>
-            </Form.Group>
-          </Form>
-        </Grid.Column>
-      </Grid.Row>
-      <Grid.Row>
-      <Grid.Column>
-        <Form>
-        <Form.Group widths='equal'>
-          <Form.Input fluid name='oldpassword' label='Old password' placeholder='Enter your old password' onChange={this.handleChange} />
-          <Form.Input fluid name='newpassword' label='New password' placeholder='Enter your new password' onChange={this.handleChange} />
-          <Form.Input fluid name='username' label='Username' placeholder='Enter username' onChange={this.handleChange} />
-        </Form.Group>
-        <Form.Button primary onClick={this.changePassword}>Change Password</Form.Button>
-        </Form>
-      </Grid.Column>
-      </Grid.Row>
-      </Grid>
-    )
+      <div>
+        <Navigationbar
+          width={"100%"}
+          userInfo={this.state.userInfo}
+          display={"block"}
+        />
+        <Grid centered container>
+          <Grid.Row columns={1} />
+          <Grid.Row>
+            <Grid.Column floated="left" width={8}>
+              <Form>
+                <Form.Group widths="equal">
+                  <Form.Input
+                    fluid
+                    name="firstname"
+                    label="First name"
+                    placeholder="First name"
+                    onChange={this.handleChange}
+                  />
+                  <Form.Input
+                    fluid
+                    name="lastname"
+                    label="Last name"
+                    placeholder="Last name"
+                    onChange={this.handleChange}
+                  />
+                  <Form.Select
+                    fluid
+                    name="gender"
+                    label="Gender"
+                    options={options}
+                    placeholder="Gender"
+                    onChange={this.handleSelect.bind(this)}
+                  />
+                </Form.Group>
+                <Form.Group widths="equal">
+                  <Form.Input
+                    fluid
+                    name="email"
+                    label="Email"
+                    placeholder="example@gmail.com"
+                    onChange={this.handleChange}
+                  />
+                  <Form.Input
+                    fluid
+                    name="affiliation"
+                    label="Affiliation"
+                    placeholder="Affiliation"
+                    onChange={this.handleChange}
+                  />
+                </Form.Group>
+                <div>{tags}</div>
+                <br />
+                <Input
+                  type="text"
+                  name="text"
+                  onChange={this.handleChange}
+                  placeholder="What are you interested in?"
+                  action
+                >
+                  <input />
+                  <Button onClick={this.addInterest}>Add</Button>
+                </Input>
+                <Form.Button
+                  style={{ marginTop: "20px" }}
+                  primary
+                  onClick={this.handleUpdate}
+                >
+                  Update
+                </Form.Button>
+              </Form>
+            </Grid.Column>
+            <Grid.Column width={6}>
+              <Form>
+                <Image src={this.state.preview} size="medium" fluid />
+                <Form.Group>
+                  <Form.Input type="file" onChange={this.handlePreview} />
+                  <Form.Button onClick={this.handleUpload}>Upload</Form.Button>
+                </Form.Group>
+              </Form>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </div>
+    );
   }
 }
 
