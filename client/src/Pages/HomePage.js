@@ -189,7 +189,7 @@ class Home extends Component {
           </h3>{" "}
           <div className="posts">
 
-            <CreatePost userInfo={this.state.userInfo} type='post' updatePage={this.updateHomePage.bind(this)}/>
+            <CreatePost userInfo={this.state.userInfo} type='post' visitor={this.state.userInfo} updatePage={this.updateHomePage.bind(this)}/>
 
             <div className="oldposts">
               {" "}
@@ -216,8 +216,6 @@ class Home extends Component {
         <Button color='red' onClick={this.handleURL}>Test</Button>
 
       </VisitorContext.Provider>
-
-        </form>{" "}
         <a
           target="_blank"
           href={

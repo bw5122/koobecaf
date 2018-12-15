@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Form, Input, Label, Icon, TextArea, Segment } from "semantic-ui-react";
+import { Button, Form, Input, Label, Icon, TextArea, Segment, Image} from "semantic-ui-react";
 
 class CreatePost extends Component {
   constructor(props) {
@@ -15,6 +15,7 @@ class CreatePost extends Component {
     this.addEvent = this.addEvent.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleCreatePost = this.handleCreatePost.bind(this);
+    this.handlePreview = this.handlePreview.bind(this);
   }
 
   handleChange(event) {
@@ -61,15 +62,37 @@ class CreatePost extends Component {
         hashtags: this.state.events,
       })
     })
+    .then(res => res.json())
+    .then(
+    (result) => {
+      var formdata = new FormData();
+      var imagedata = document.querySelector('input[type="file"]').files[0];
+      formdata.append("image", imagedata);
+      fetch("/post/uploadimage/" + result.data.postID, {
+        mode: "no-cors",
+        method: "POST",
+        body: formdata
+      })
       .then(res => res.json())
       .then(
-      (res) => {
+        result => {
           this.props.updatePage();
-      },
-      (error) => {
-          alert("error (create posts)");
+        },
+        error => {
+          alert("Error! Please try again.");
         }
       );
+    },
+    (error) => {
+        alert("error (create posts)");
+      }
+    );
+  }
+
+  handlePreview(event) {
+    this.setState({
+      preview: URL.createObjectURL(event.target.files[0])
+    })
   }
 
   render() {
@@ -101,6 +124,11 @@ class CreatePost extends Component {
           />
         </Form.Field>
       </Form.Group>
+        <Image src={this.state.preview} size='medium' fluid/>
+        <Form.Group>
+          <Form.Input type='file' onChange={this.handlePreview} />
+        </Form.Group>
+
       {this.props.type==='post' &&
         <Form.Group>
           <Input type='text' name='text' onChange={this.handleChange} placeholder='Add tags to your post!' action>
