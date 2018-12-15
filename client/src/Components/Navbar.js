@@ -1,6 +1,14 @@
 import React, { Component } from "react";
 import { Redirect, withRouter } from "react-router-dom";
-import { Dropdown, Button, Icon, Menu, Input, Sticky } from "semantic-ui-react";
+import {
+  Dropdown,
+  Button,
+  Icon,
+  Menu,
+  Input,
+  Sticky,
+  List
+} from "semantic-ui-react";
 import Notification from "../Components/Notification";
 import FriendRequest from "../Components/FriendRequest";
 import FriendSearchBar from "../Components/FriendSearchBar";
@@ -13,7 +21,7 @@ class Navigationbar extends Component {
     this.state = {
       userInfo: this.props.userInfo,
       notifications: [],
-      requests: [],
+      requests: []
     };
     this.navigateToHome = this.navigateToHome.bind(this);
     this.navigateToProfile = this.navigateToProfile.bind(this);
@@ -119,75 +127,85 @@ class Navigationbar extends Component {
   render() {
     return (
       <Sticky>
-      <Menu color="brown" inverted width={3}>
-        <Menu.Item>
-          <Button
-            circular
-            onClick={this.navigateToProfile}
-            icon="user outline"
-          />
-        </Menu.Item>
+        <Menu color="brown" inverted width={3}>
+          <Menu.Item>
+            <Button
+              circular
+              onClick={this.navigateToProfile}
+              icon="user outline"
+            />
+          </Menu.Item>
 
-        <Menu.Item>
-          <Button id="home_button" onClick={this.navigateToHome} icon="home" />
-        </Menu.Item>
+          <Menu.Item>
+            <Button
+              id="home_button"
+              onClick={this.navigateToHome}
+              icon="home"
+            />
+          </Menu.Item>
 
-        <Menu.Item>
-          <Dropdown
-            text="Notifications"
-            icon="bell outline"
-            labeled
-            button
-            id="notify_button"
-            className="icon"
-            onClick={this.handleNotify}
-          >
-            <Dropdown.Menu>
-              <Dropdown.Header content="New Notifications" />
-              {this.state.notifications !== null &&
-                this.state.notifications.map(option => (
-                <Dropdown.Item key={option.noticeID}>
-                  <Notification info={option} userInfo={this.state.userInfo} />{" "}
-                </Dropdown.Item>
-              ))}
-            </Dropdown.Menu>
-          </Dropdown>
-        </Menu.Item>
+          <Menu.Item>
+            <Dropdown
+              text="Notifications"
+              icon="bell outline"
+              labeled
+              button
+              id="notify_button"
+              className="icon"
+              onClick={this.handleNotify}
+            >
+              <Dropdown.Menu>
+                <Dropdown.Header content="New Notifications" />
+                {this.state.notifications !== null &&
+                  this.state.notifications.map(option => (
+                    <Dropdown.Item key={option.noticeID}>
+                      <Notification
+                        info={option}
+                        userInfo={this.state.userInfo}
+                      />{" "}
+                    </Dropdown.Item>
+                  ))}
+              </Dropdown.Menu>
+            </Dropdown>
+          </Menu.Item>
 
-        <Menu.Item>
-          <Dropdown
-            button
-            icon="heart"
-            text="Friend Requests"
-            floating
-            labeled
-            id="friend_button"
-            className="icon"
-            onClick={this.handleFriendRequests}
-          >
-            <Dropdown.Menu>
-              <Dropdown.Header content="New Friend Requests" />
-              {this.state.requests.map(option => (
-                <Dropdown.Item key={option.noticeID}>
-                  <FriendRequest info={option} userInfo={this.state.userInfo} />{" "}
-                </Dropdown.Item>
-              ))}
-            </Dropdown.Menu>
-          </Dropdown>
-        </Menu.Item>
+          <Menu.Item>
+            <Dropdown
+              button
+              icon="heart"
+              text="Friend Requests"
+              floating
+              labeled
+              id="friend_button"
+              className="icon"
+              onClick={this.handleFriendRequests}
+            >
+              <Dropdown.Menu>
+                <Dropdown.Header content="New Friend Requests" />
+                {this.state.requests.map(option => (
+                  <Dropdown.Item key={option.noticeID}>
+                    <FriendRequest
+                      info={option}
+                      userInfo={this.state.userInfo}
+                    />{" "}
+                  </Dropdown.Item>
+                ))}
+              </Dropdown.Menu>
+            </Dropdown>
+          </Menu.Item>
 
-        <Menu.Item position="right">
-          <Button
-            id="logout_button"
-            onClick={this.handleLogout}
-            icon="log out"
-          />
-        </Menu.Item>
+          <Menu.Item position="right">
+            <Button
+              id="logout_button"
+              onClick={this.handleLogout}
+              icon="log out"
+            />
+          </Menu.Item>
 
-        <Menu.Item position="left">
-          <FriendSearchBar userInfo={this.state.userInfo} />
-        </Menu.Item>
-      </Menu>
+          <Menu.Item position="left">
+            <FriendSearchBar userInfo={this.state.userInfo} />
+          </Menu.Item>
+        </Menu>
       </Sticky>
     );
   }
