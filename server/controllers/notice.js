@@ -84,11 +84,13 @@ module.exports = notice_controller;
 
 async function addUserToSender(requests, callback) {
     var counter = 0;
+    console.log(requests);
     async.each(requests, function(request, cb) {
         console.log(request.sender);
         User.getInfo(request.sender, function(err, data) {
             if (err)
                 console.log(err);
+            console.log(data);
             if (data.Count > 0)
                 requests[counter].sender = data.Items[0].attrs;
             else

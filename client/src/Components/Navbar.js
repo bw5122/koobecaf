@@ -12,6 +12,7 @@ import {
 import Notification from "../Components/Notification";
 import FriendRequest from "../Components/FriendRequest";
 import FriendSearchBar from "../Components/FriendSearchBar";
+import EventSearchBar from "../Components/EventSearchBar";
 import "../Styles/Navbar.css";
 
 class Navigationbar extends Component {
@@ -45,7 +46,8 @@ class Navigationbar extends Component {
     this.props.history.push({
       pathname: "/profile",
       state: {
-        userInfo: this.props.userInfo
+        userInfo: this.props.userInfo,
+        visitor: this.props.userInfo
       }
     });
   };
@@ -204,6 +206,9 @@ class Navigationbar extends Component {
 
           <Menu.Item position="left">
             <FriendSearchBar userInfo={this.state.userInfo} />
+          </Menu.Item>
+          <Menu.Item position="right">
+            <EventSearchBar userInfo={this.state.userInfo} />
           </Menu.Item>
         </Menu>
       </Sticky>
