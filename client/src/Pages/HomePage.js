@@ -4,7 +4,6 @@ import Post from "../Components/Post";
 import Navigationbar from "../Components/Navbar";
 import FriendList from "../Components/FriendList";
 import "../Styles/Home.css";
-import FriendVisualizer from "../Components/Visualizer/FriendVisualizer";
 import GroupChatCreator from "../Components/GroupChatCreator";
 
 class Home extends Component {
@@ -212,7 +211,14 @@ class Home extends Component {
           <br />
           <input type="submit" id="req_button" value="Send Request" />
         </form>{" "}
-        <FriendVisualizer userInfo={this.state.userInfo} />
+        <a
+          target="_blank"
+          href={
+            "http://localhost:5000/visualizer/" + this.state.userInfo.userID
+          }
+        >
+          See Friend Visualization
+        </a>
       </div>
     );
   }

@@ -12,6 +12,6 @@ router.delete('/denyfriend', friend_ctrl.deny_friend);
 router.get('/generaterelationgraph', graph_ctrl.generate_graph);
 router.get('/visualizer/center/:userID', graph_ctrl.visualize_center);
 router.get('/visualizer/friend/:userID/:friendID', graph_ctrl.visualize_morefriend);
-router.get('/visualizer', graph_ctrl.visualizer);
+router.get('/visualizer/:userID', graph_ctrl.visualizer);
 router.delete('/deletefriend', friend_ctrl.delete_friend);
 module.exports = router;

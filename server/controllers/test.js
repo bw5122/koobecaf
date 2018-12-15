@@ -9,7 +9,7 @@ var async = require("async");
 
 /* Initialize some Users */
 var users = [];
-for (var i = 0; i < 7; i++) {
+for (var i = 0; i < 10; i++) {
     users[i] = {
         username: 'user_' + i,
         firstname: 'firstname_' + i,
@@ -31,7 +31,7 @@ var IDs;
 var posts = [];
 
 function makePost() {
-    for (var i = 0; i < 7; i++) {
+    for (var i = 0; i < 10; i++) {
         posts[i] = {
             postID: uuidv1(),
             postBy: IDs[i],
@@ -46,8 +46,8 @@ var chats = [];
 
 function makeChat() {
     counter = 0;
-    for (var i = 0; i < 5; i++)
-        for (var j = i + 1; j < 5; j++) {
+    for (var i = 0; i < 7; i++)
+        for (var j = i + 3; j < 7; j++) {
             chats[counter] = {
                 members: [IDs[i], IDs[j]]
             }
@@ -58,8 +58,8 @@ function makeChat() {
 function makeRelation() {
     var k = 0;
     counter = 0;
-    for (var i = 0; i < 5; i++) {
-        for (var j = i + 1; j < 5; j++) {
+    for (var i = 0; i < 7; i++) {
+        for (var j = i + 3; j < 7; j++) {
             //console.log(i, (i + j) % 5);
             relations[k] = {
                 userID: IDs[i],
@@ -82,7 +82,7 @@ function makeRelation() {
 
 var init = function(req, res) {
     User.create(users, function(err, data) {
-        console.log('created 7 test users in DynamoDB');
+        console.log('created 10 test users in DynamoDB');
         IDs = data.map(obj => {
             return obj.attrs.userID;
         })

@@ -53,12 +53,14 @@ if (MODE != 'DEV' && cluster.isMaster) {
     app.use(passport.initialize());
     app.use(passport.session());
     app.use(express.static(path.join(__dirname, '/build')));
-
-    /* for user login */
+    app.use('/static', express.static('static'))
+        /* for user login */
     var home_ctrl = require('./controllers/home');
+    var graph_ctrl = require('./controllers/graph');
     app.post('/login', home_ctrl.login);
     app.post('/logout', home_ctrl.logout);
     app.post('/signup', home_ctrl.signup);
+    app.get('/visualizer/:userID', graph_ctrl.visualizer);
 
     // routers
     var user_router = require('./routers/user');

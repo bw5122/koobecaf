@@ -1,5 +1,6 @@
 $(document).ready(function() {
-    $.getJSON('/friendvisualization', function(json) {
+    console.log(userID);
+    $.getJSON('/friend/visualizer/center/' + userID, function(json) {
         console.log(json)
         var infovis = document.getElementById('infovis');
         var w = infovis.offsetWidth - 50,
@@ -37,8 +38,9 @@ $(document).ready(function() {
             onCreateLabel: function(domElement, node) {
                 domElement.innerHTML = node.name;
                 domElement.style.cursor = "pointer";
+
                 domElement.onclick = function() {
-                    $.getJSON('/getFriends/' + node.id, function(json) {
+                    $.getJSON('/friend/visualizer/friend/' + userID + "/" + node.id || userID, function(json) {
                         ht.op.sum(json, {
                             type: "fade:seq",
                             fps: 30,

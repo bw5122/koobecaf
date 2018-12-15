@@ -137,10 +137,7 @@ var visualizeCenter = function(req, res) {
                         return friend
                     })
                     mynode['children'] = children;
-                    res.send({
-                        data: mynode,
-                        error: null,
-                    })
+                    res.send(mynode)
                 })
             })
 
@@ -176,7 +173,7 @@ var visualizeMoreFriend = function(req, res) {
                     return obj.attrs.objectID;
                 })
                 console.log(IDs);
-                User.getInfo(userID, function(err1, data1) {
+                User.getInfo(friendID, function(err1, data1) {
                     if (err1) {
                         console.log(err);
                         res.send({
@@ -192,7 +189,11 @@ var visualizeMoreFriend = function(req, res) {
                         "name": tmp.firstname + " " + tmp.lastname,
                         "data": [],
                     }
-                    User.addUserInfo(IDs, function(users) {
+                    User.addUserInfoWithAffiliation(IDs, function(users) {
+
+                        users = users.filter(obj => obj.affiliation == affiliation);
+                        console.log(affiliation);
+                        console.log(users);
                         var children = users.map(obj => {
                             var friend = {}
                             friend = {
@@ -204,11 +205,9 @@ var visualizeMoreFriend = function(req, res) {
                             }
                             return friend
                         })
+
                         mynode['children'] = children;
-                        res.send({
-                            data: mynode,
-                            error: null,
-                        })
+                        res.send(mynode)
                     })
                 })
             }
@@ -217,7 +216,9 @@ var visualizeMoreFriend = function(req, res) {
 }
 
 var visualizer = function(req, res) {
-    res.render('friendvisualizer.ejs');
+    res.render('friendvisualizer.ejs', {
+        userID: req.params.userID
+    });
 }
 var graph_controller = {
     generate_graph: generateGraph,
