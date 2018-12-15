@@ -7,7 +7,8 @@ import {
   Form,
   TextArea,
   Feed,
-  Segment
+  Segment,
+  Label
 } from "semantic-ui-react";
 import Image from "react-image";
 import Moment from "react-moment";
@@ -22,7 +23,8 @@ class Post extends Component {
       comments: props.info.comments,
       newcomment: "",
       likes: props.info.likes, // list of user names
-      liked: false
+      liked: false,
+      tags: props.info.hashtags,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleNewComment = this.handleNewComment.bind(this);
@@ -196,6 +198,10 @@ class Post extends Component {
         return <span>shared a post</span>;
         break;
 
+      case "message":
+        return <span><Icon name='arrow right' />{this.props.userInfo.firstname} {this.props.userInfo.lastname}</span>;
+        break;
+      
       default:
     }
   }
@@ -207,6 +213,11 @@ class Post extends Component {
     const all_comments = this.state.comments
       ? this.state.comments.map(ele => (
           <CommentComponent info={ele} userInfo={this.props.userInfo} />
+        ))
+      : [];
+    const all_tags = this.state.tags
+      ? this.state.tags.map(tag => (
+          <Label value={tag}>#{tag}</Label>
         ))
       : [];
     console.log(this.state.likes);
@@ -232,6 +243,7 @@ class Post extends Component {
                 {header}
                 <Feed.Date>{time}</Feed.Date>
               </Feed.Summary>
+              {all_tags}
               <Feed.Extra text>{this.props.info.content}</Feed.Extra>
               <Feed.Extra images>{image}</Feed.Extra>
               <Feed.Meta>

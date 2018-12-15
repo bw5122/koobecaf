@@ -1,10 +1,13 @@
 import React, { Component } from "react";
-import { Dimmer, Loader, Feed, Button } from "semantic-ui-react";
+import { Dimmer, Loader, Feed, Button, Form, Input } from "semantic-ui-react";
 import Post from "../Components/Post";
 import Navigationbar from "../Components/Navbar";
 import FriendList from "../Components/FriendList";
 import "../Styles/Home.css";
 import GroupChatCreator from "../Components/GroupChatCreator";
+import CreatePost from "../Components/CreatePost";
+
+const VisitorContext = React.createContext();
 
 class Home extends Component {
   constructor(props) {
@@ -16,12 +19,16 @@ class Home extends Component {
       newpost: "",
       friendtags: [],
       reqID: "",
-      isLoading: true
+      isLoading: true,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleCreatePost = this.handleCreatePost.bind(this);
     this.homeRef = React.createRef();
     this.updateHomePage = this.updateHomePage.bind(this);
+  }
+
+  refreshPage() {
+    window.location.reload();
   }
 
   handleChange(event) {
@@ -149,9 +156,9 @@ class Home extends Component {
 
   navigateToProfile() {}
   render() {
-    const username = this.props.location.state.username;
-    const posts = this.state.posts;
-    const all_posts = posts.map(post => (
+    var username = this.props.location.state.username;
+    var posts = this.state.posts;
+    var all_posts = posts.map(post => (
       <Post
         info={post}
         userInfo={this.state.userInfo}
@@ -161,6 +168,8 @@ class Home extends Component {
 
     return (
       <div className="homepage">
+      <VisitorContext.Provider value={this.state.userInfo} >
+
         <Navigationbar userInfo={this.state.userInfo} />
         <Dimmer active={this.state.isLoading} inverted>
           <Loader> Loading </Loader>
@@ -168,19 +177,7 @@ class Home extends Component {
         <div className="content">
           <h3>This is {this.state.userInfo.firstname} home page! </h3>
           <div className="posts">
-            <form className="createpost" onSubmit={this.handleCreatePost}>
-              <input
-                type="text"
-                name="newpost"
-                placeholder="What's on your mind?"
-                id="newpost"
-                value={this.state.newpost.value}
-                onChange={this.handleChange}
-                maxLength="200"
-              />
-              <br />
-              <input type="submit" id="create_button" value="Share" />
-            </form>
+            <CreatePost userInfo={this.state.userInfo} type='post' updatePage={this.updateHomePage.bind(this)}/>
             <div className="oldposts">
               {/* <div>{all_posts}</div> */}
               {all_posts}
@@ -203,6 +200,8 @@ class Home extends Component {
           <input type="submit" id="req_button" value="Send Request" />
         </form>
         <Button color='red' onClick={this.handleURL}>Test</Button>
+
+      </VisitorContext.Provider>
       </div>
     );
   }
