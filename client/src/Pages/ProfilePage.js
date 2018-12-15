@@ -2,13 +2,15 @@ import React, { Component } from "react";
 import { Button, Image } from 'semantic-ui-react';
 import Post from "../Components/Post";
 import profile_default from '../Assets/profile.png';
-import Navigationbar from '../Components/Navbar'
+import Navigationbar from '../Components/Navbar';
+import CreatePost from "../Components/CreatePost";
 
 class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = {
       userInfo: this.props.location.state.userInfo,
+      visitor: this.props.location.state.visitor,
       data: {},
       posts: []
       //default photo url:
@@ -105,9 +107,9 @@ class Profile extends Component {
 
     let photo;
     if(this.state.hasOwnProperty('photo')) {
-      photo = <Image src={this.state.photo} className="profile_photo" alt="profile_photo" />
+      photo = <Image size='medium' src={this.state.photo} className="profile_photo" alt="profile_photo" />
     } else {
-      photo = <Image src={profile_default} className="profile_photo" alt="profile_photo" />
+      photo = <Image size='medium' src={profile_default} className="profile_photo" alt="profile_photo" />
     }
 
     let interests = [];
@@ -125,7 +127,7 @@ class Profile extends Component {
 
     return (
       <div>
-      <Navigationbar userInfo={this.state.userInfo} />
+      <Navigationbar userInfo={this.state.visitor} />
         <div className="photo">
           {photo}
         </div>
@@ -143,6 +145,7 @@ class Profile extends Component {
         <ul>{list}</ul>
         <Button primary onClick={this.navigateToUpdateProfile}>Update Profile</Button>
       </div>
+      {/*}
         <h2> Upload Photo </h2>
         <form
           className="photo_form"
@@ -153,7 +156,8 @@ class Profile extends Component {
             <input type="file" name="photo" />
           </label>{" "}
           <input type="submit" className="upload_button" value="Upload" />
-        </form>{" "}
+        </form>{" "} */}
+      <CreatePost userInfo={this.state.userInfo} visitor={this.state.visitor} type='message' updatePage={this.updateProfilePage} />
       <div className="posts"><ul>{my_own_posts}</ul></div>
       </div>
     );

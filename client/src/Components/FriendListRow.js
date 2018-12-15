@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { Redirect, withRouter } from "react-router-dom";
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
@@ -11,8 +12,7 @@ import ChatRoom from './ChatRoom'
 import '../Styles/FriendList.css'
 
 
-
-export default class FriendListRow extends Component {
+class FriendListRow extends Component {
 
   constructor(props) {
     super(props);
@@ -20,20 +20,32 @@ export default class FriendListRow extends Component {
       renderChatRoom: false,
     };
     this.renderChatRoom = this.renderChatRoom.bind(this);
+    this.visitProfile = this.visitProfile.bind(this);
   }
 
   renderChatRoom(){
     this.props.handleChatRoomRender(this.props.friendInfo.chatID);
   }
 
+  visitProfile = e => {
+    e.preventDefault();
+    this.props.history.push({
+      pathname: "/profile",
+      state: {
+        userInfo: this.props.friendInfo,
+        visitor: this.props.userInfo
+      }
+    });
+  };
+
   render() {
       console.log("render friendlist row");
       return(
-        <ListItem alignItems="flex-start" onClick={this.renderChatRoom}>
+        <ListItem alignItems="flex-start" >
           <ListItemAvatar>
-            <Avatar alt="Remy Sharp" src={this.props.friendInfo.photo} />
+            <Avatar alt="Remy Sharp" src={this.props.friendInfo.photo} onClick={this.renderChatRoom} />
           </ListItemAvatar>
-          <ListItemText
+          <ListItemText onClick={this.visitProfile}
             primary={this.props.friendInfo.firstname}
           />
           <div className="chat-room">
@@ -44,6 +56,7 @@ export default class FriendListRow extends Component {
   }
 }
 
+export default withRouter(FriendListRow);
 /*
 
 secondary={

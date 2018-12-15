@@ -35,6 +35,7 @@ class FriendCard extends Component {
     )
   }
 
+
   render() {
     const interests = (this.props.info.interests) ? this.props.info.interests.map((ele) =>
       <p>{ele}</p>

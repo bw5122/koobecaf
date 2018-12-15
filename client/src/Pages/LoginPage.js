@@ -50,8 +50,8 @@ class LoginForm extends Component {
     })
       .then(res => res.json())
       .then(res => {
-        if (res.err) {
-          console.log(res.err);
+        if (res.error) {
+          console.log(res.error);
           alert("username or password incorrect");
         } else {
           this.props.history.push({
