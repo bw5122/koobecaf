@@ -217,9 +217,7 @@ var getAllPost = function(req, res) {
                     posts1 = constructPosts(data.Items);
                     //console.log(posts1);
                     addUserToPosts(posts1, function(posts2) {
-                        posts2.sort(function(a, b) {
-                            return a.createdAt < b.createdAt
-                        })
+
                         posts2 = posts2.map(obj => {
                             if (obj.comments.length > 0)
                                 obj.comments.sort(function(c, d) {
@@ -227,6 +225,11 @@ var getAllPost = function(req, res) {
                                 })
                             return obj;
                         })
+                        console.log(posts2)
+                        posts2.sort(function(a, b) {
+                            return a.createdAt < b.createdAt
+                        })
+                        console.log(posts2)
                         res.send({
                             data: posts2,
                             error: null
