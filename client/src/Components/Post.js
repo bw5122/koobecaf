@@ -14,6 +14,7 @@ import Image from "react-image";
 import Moment from "react-moment";
 import CommentComponent from "./Comment";
 import "../Styles/Post.css";
+import profile_default from "../Assets/profile.png";
 
 class Post extends Component {
   constructor(props) {
@@ -288,11 +289,25 @@ class Post extends Component {
           <img src={this.props.info.image} alt={this.props.info.postID} />
         </a>
       );
+    let photo;
+    if(this.props.info.type === 'message') {
+      if(this.props.info.creator.hasOwnProperty('photo')) {
+        photo = this.props.info.creator.photo;
+      } else {
+        photo = profile_default;
+      }
+    } else {
+      if(this.props.info.postBy.hasOwnProperty('photo')) {
+        photo = this.props.info.postBy.photo;
+      } else {
+        photo = profile_default;
+      }
+    }
     return (
       <div class="box">
         <Feed size="large">
           <Feed.Event>
-            <Feed.Label image={this.props.info.postBy.photo} />
+            <Feed.Label image={photo} />
             <Feed.Content>
               <Feed.Summary>
                 <Feed.User>

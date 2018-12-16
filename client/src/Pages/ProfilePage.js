@@ -74,6 +74,12 @@ class Profile extends Component {
           alert("Error (loading posts)! Please try again.");
         }
       );
+
+    this.interval = setInterval(() => this.refreshPage(), 5000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   handlePhotoUpload = e => {
@@ -130,19 +136,21 @@ class Profile extends Component {
     if (this.state.hasOwnProperty("photo")) {
       photo = (
         <Image
+          name="users"
+          circular
           size="medium"
+          centered
           src={this.state.photo}
-          className="profile_photo"
-          alt="profile_photo"
         />
       );
     } else {
       photo = (
         <Image
+          name="users"
+          circular
           size="medium"
+          centered
           src={profile_default}
-          className="profile_photo"
-          alt="profile_photo"
         />
       );
     }
@@ -180,13 +188,7 @@ class Profile extends Component {
           <Grid>
             <Grid.Column width={1} />
             <Grid.Column width={4}>
-              <Image
-                name="users"
-                circular
-                size="medium"
-                centered
-                src={profile_default}
-              />
+              {photo}
             </Grid.Column>
             <Grid.Column width={1} />
             <Grid.Column width={4}>
@@ -201,12 +203,9 @@ class Profile extends Component {
               <Button primary onClick={this.navigateToUpdateProfile}>
                 Add Friend
               </Button>
-              <Button
-                disabled={disableUpload}
-                onClick={this.navigateToUpdateProfile}
-              >
-                Update Profile
-              </Button>
+              {this.state.userInfo.userID === this.state.visitor.userID &&
+                <Button onClick={this.navigateToUpdateProfile}>Update Profile</Button>
+              }
             </Grid.Column>
             <Grid.Column width={2} />
           </Grid>
@@ -221,26 +220,9 @@ class Profile extends Component {
           />
           {my_own_posts}
         </div>
-        {this.state.userInfo.userID === this.state.visitor.userID &&
-          <Button primary onClick={this.navigateToUpdateProfile}>Update Profile</Button>
-        }
 
       </div>
-      {/*}
-        <h2> Upload Photo </h2>
-        <form
-          className="photo_form"
-          onSubmit={this.handlePhotoUpload.bind(this)}
-        >
-          <label className="file_upload">
-            Choose from file:
-            <input type="file" name="photo" />
-          </label>{" "}
-          <input type="submit" className="upload_button" value="Upload" />
-        </form>{" "} */}
-      <CreatePost userInfo={this.state.userInfo} visitor={this.state.visitor} type='message' updatePage={this.updateProfilePage} />
-      <div className="posts"><ul>{my_own_posts}</ul></div>
-      </div>
+
     );
   }
 }
