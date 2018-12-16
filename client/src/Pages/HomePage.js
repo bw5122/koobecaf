@@ -6,6 +6,7 @@ import FriendList from "../Components/FriendList";
 import "../Styles/Home.css";
 import GroupChatCreator from "../Components/GroupChatCreator";
 import CreatePost from "../Components/CreatePost";
+import FriendRecommendation from "../Components/FriendRecommendation";
 
 const VisitorContext = React.createContext();
 
@@ -147,7 +148,7 @@ class Home extends Component {
           alert("error (get all post)");
         }
       );
-      this.interval = setInterval(() => this.refreshPage(), 5000);
+      this.interval = setInterval(() => this.refreshPage(), 10000);
   }
 
   componentWillUnmount() {
@@ -159,25 +160,22 @@ class Home extends Component {
       isLoading: true,
       posts: [],
     });
-    window.location.reload();
-    /*
     fetch("/post/getallpost/" + this.state.userInfo.userID, {
       method: "GET"
     })
       .then(res => res.json())
-      .then(
-        res => {
+      .then( res => {
+        if(res.error) {
+          console.log(res.error);
+          alert("error (get all post)");
+        } else {
           this.setState({
             posts: res.data,
             isLoading: false
           });
-        },
-        error => {
-          console.log(error);
-          alert("error (get all post)");
         }
-      );
-      */
+      });
+
   }
 
   handleURL() {
@@ -186,6 +184,34 @@ class Home extends Component {
     })
       .then(res => res.json())
       .then(res => {}, error => {});
+  }
+
+  handleCSV() {
+    fetch("/friend/exportCSV", {
+      method: "GET"
+    })
+      .then(res => res.json())
+      .then(res => {
+        if(res.error) {
+          alert('csv error')
+        } else {
+          alert('csv success')
+        }
+      });
+  }
+
+  handleGraph() {
+    fetch("/friend/generaterelationgraph", {
+      method: "GET"
+    })
+      .then(res => res.json())
+      .then(res => {
+        if(res.error) {
+          alert('graph error')
+        } else {
+          alert('graph success')
+        }
+      });
   }
 
   navigateToProfile() {}
@@ -227,23 +253,10 @@ class Home extends Component {
             </div>{" "}
           </div>{" "}
         </div>{" "}
-        <FriendList updateFriendList={this.updateFriendList} refresh={this.state.refreshFriends} userInfo={this.state.userInfo} />{" "}
-        <form
-          className="temp"
-          onSubmit={this.handleSendFriendRequest.bind(this)}
-        >
-          <input
-            type="text"
-            name="reqID"
-            placeholder="Please input friend userID"
-            value={this.state.reqID.value}
-            onChange={this.handleChange}
-          />{" "}
-          <br />
-          <input type="submit" id="req_button" value="Send Request" />
 
-        </form>
-        <Button color='red' onClick={this.handleURL}>Test</Button>
+        <FriendList userInfo={this.state.userInfo} />{" "}
+
+
 
       </VisitorContext.Provider>
         <a
@@ -253,8 +266,10 @@ class Home extends Component {
           }
         >
           See Friend Visualization
-        </a>
-
+        </a><br/>
+        <Button color='red' onClick={this.handleCSV.bind(this)}>CSV</Button>
+        <Button color='red' onClick={this.handleGraph.bind(this)}>Graph</Button>
+        <FriendRecommendation userInfo={this.state.userInfo} />
       </div>
     );
   }

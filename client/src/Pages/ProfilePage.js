@@ -207,9 +207,6 @@ class Profile extends Component {
               <h4>Gender: {gender}</h4>
               <h4>Email: {this.state.data.email}</h4>
               <h4>Interest: {list}</h4>
-              <Button primary onClick={this.navigateToUpdateProfile}>
-                Add Friend
-              </Button>
               {this.state.userInfo.userID === this.state.visitor.userID &&
                 <Button onClick={this.navigateToUpdateProfile}>Update Profile</Button>
               }

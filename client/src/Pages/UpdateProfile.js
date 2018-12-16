@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Redirect, withRouter } from "react-router-dom";
 import {
   Button,
   Image,
@@ -79,18 +80,27 @@ class UpdateProfile extends Component {
       })
     })
       .then(res => res.json())
-      .then(
-        result => {
+      .then( res => {
+        if(res.error) {
+          console.log(res.error);
+          alert("error (update profile)");
+        } else {
+          this.props.history.push({
+            pathname: "/profile",
+            state: {
+              userInfo: res.data,
+              visitor: res.data
+            }
+          });
+        }
+          /*
           this.setState({ data: result.data });
           if (this.state.data.hasOwnProperty("photo")) {
             this.setState({ preview: this.state.data.photo });
           }
-        },
-        error => {
-          console.log(error);
-          alert("error (update profile)");
-        }
-      );
+          */
+
+      });
   };
 
   handlePreview(event) {
@@ -208,4 +218,4 @@ class UpdateProfile extends Component {
   }
 }
 
-export default UpdateProfile;
+export default withRouter(UpdateProfile);

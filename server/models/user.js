@@ -72,7 +72,6 @@ var userTable_updateProfile = function(user, cb) {
         else {
             var userinfo = usr.attrs;
             delete userinfo.username;
-            delete userinfo.userID;
             delete userinfo.password;
             delete userinfo.updatedAt;
             delete userinfo.createdAt;
