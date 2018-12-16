@@ -58,15 +58,14 @@ class Navigationbar extends Component {
       method: "GET"
     })
       .then(res => res.json())
-      .then(
-        result => {
+      .then(res => {
+        if(res.error) {
           // check if any field is undefined before display
-          this.setState({ notifications: result.data });
-        },
-        error => {
           alert("Error (get notifications)! Please try again.");
+        } else  {
+          this.setState({ notifications: res.data });
         }
-      );
+      });
   };
 
   handleFriendRequests = e => {
@@ -189,6 +188,7 @@ class Navigationbar extends Component {
                     <FriendRequest
                       info={option}
                       userInfo={this.state.userInfo}
+                      updateFriendList={this.props.updateFriendList}
                     />{" "}
                   </Dropdown.Item>
                 ))}

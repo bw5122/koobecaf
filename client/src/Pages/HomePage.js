@@ -6,6 +6,7 @@ import FriendList from "../Components/FriendList";
 import "../Styles/Home.css";
 import GroupChatCreator from "../Components/GroupChatCreator";
 import CreatePost from "../Components/CreatePost";
+import FriendRecommendation from "../Components/FriendRecommendation";
 
 const VisitorContext = React.createContext();
 
@@ -20,15 +21,29 @@ class Home extends Component {
       friendtags: [],
       reqID: "",
       isLoading: true,
+      refreshFriends: 0
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleCreatePost = this.handleCreatePost.bind(this);
     this.homeRef = React.createRef();
     this.updateHomePage = this.updateHomePage.bind(this);
+    this.refreshPage = this.refreshPage.bind(this);
+    this.updateFriendList = this.updateFriendList.bind(this);
   }
 
   refreshPage() {
-    window.location.reload();
+    fetch("/post/getallpost/" + this.state.userInfo.userID, {
+      method: "GET"
+    })
+      .then(res => res.json())
+      .then(res =>{
+        if(res.error) {
+          alert('error: refresh page')
+        } else {
+          this.setState({posts: res.data, refreshFriends: this.state.refreshFriends++},
+          () => console.log(this.state.posts))
+        }
+      });
   }
 
   handleChange(event) {
@@ -37,6 +52,12 @@ class Home extends Component {
     this.setState({
       [name]: value
     });
+  }
+
+  updateFriendList(){
+    this.setState({
+      refreshFriends: this.state.refreshFriends++
+    })
   }
 
   handleSendFriendRequest(e) {
@@ -127,6 +148,11 @@ class Home extends Component {
           alert("error (get all post)");
         }
       );
+      this.interval = setInterval(() => this.refreshPage(), 10000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   updateHomePage() {
@@ -134,25 +160,22 @@ class Home extends Component {
       isLoading: true,
       posts: [],
     });
-    window.location.reload();
-    /*
     fetch("/post/getallpost/" + this.state.userInfo.userID, {
       method: "GET"
     })
       .then(res => res.json())
-      .then(
-        res => {
+      .then( res => {
+        if(res.error) {
+          console.log(res.error);
+          alert("error (get all post)");
+        } else {
           this.setState({
             posts: res.data,
             isLoading: false
           });
-        },
-        error => {
-          console.log(error);
-          alert("error (get all post)");
         }
-      );
-      */
+      });
+
   }
 
   handleURL() {
@@ -163,6 +186,34 @@ class Home extends Component {
       .then(res => {}, error => {});
   }
 
+  handleCSV() {
+    fetch("/friend/exportCSV", {
+      method: "GET"
+    })
+      .then(res => res.json())
+      .then(res => {
+        if(res.error) {
+          alert('csv error')
+        } else {
+          alert('csv success')
+        }
+      });
+  }
+
+  handleGraph() {
+    fetch("/friend/generaterelationgraph", {
+      method: "GET"
+    })
+      .then(res => res.json())
+      .then(res => {
+        if(res.error) {
+          alert('graph error')
+        } else {
+          alert('graph success')
+        }
+      });
+  }
+
   navigateToProfile() {}
   render() {
     var username = this.props.location.state.username;
@@ -171,16 +222,17 @@ class Home extends Component {
       <Post
         info={post}
         userInfo={this.state.userInfo}
-        updateHomePage={this.updateHomePage}
+        visitor={this.state.userInfo}
+        updatePage={this.updateHomePage}
+        own={post.postBy.userID === this.state.userInfo.userID}
       />
     ));
-
     return (
       <div className="homepage">
 
       <VisitorContext.Provider value={this.state.userInfo} >
 
-        <Navigationbar userInfo={this.state.userInfo} />
+        <Navigationbar updateFriendList={this.updateFriendList} userInfo={this.state.userInfo} />
 
         <Dimmer active={this.state.isLoading} inverted>
           <Loader> Loading </Loader>{" "}
@@ -188,7 +240,7 @@ class Home extends Component {
         <div className="content">
           <h3>
             {" "}
-            This is {this.state.userInfo.firstname}
+            This is {this.state.userInfo.firstname}{" "}
             home page!{" "}
           </h3>{" "}
           <div className="posts">
@@ -197,27 +249,14 @@ class Home extends Component {
 
             <div className="oldposts">
               {" "}
-              {/* <div>{all_posts}</div> */} {all_posts}{" "}
+              {all_posts}{" "}
             </div>{" "}
           </div>{" "}
         </div>{" "}
-        <FriendList userInfo={this.state.userInfo} />{" "}
-        <form
-          className="temp"
-          onSubmit={this.handleSendFriendRequest.bind(this)}
-        >
-          <input
-            type="text"
-            name="reqID"
-            placeholder="Please input friend userID"
-            value={this.state.reqID.value}
-            onChange={this.handleChange}
-          />{" "}
-          <br />
-          <input type="submit" id="req_button" value="Send Request" />
 
-        </form>
-        <Button color='red' onClick={this.handleURL}>Test</Button>
+        <FriendList userInfo={this.state.userInfo} />{" "}
+
+
 
       </VisitorContext.Provider>
         <a
@@ -227,8 +266,10 @@ class Home extends Component {
           }
         >
           See Friend Visualization
-        </a>
-
+        </a><br/>
+        <Button color='red' onClick={this.handleCSV.bind(this)}>CSV</Button>
+        <Button color='red' onClick={this.handleGraph.bind(this)}>Graph</Button>
+        <FriendRecommendation userInfo={this.state.userInfo} />
       </div>
     );
   }
