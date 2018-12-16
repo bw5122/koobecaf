@@ -163,9 +163,21 @@ var getAllGroupChat = function(req, res) {
         }
     })
 };
+
+var deleteMember = function(req, res) {
+    console.log("chat_controller delete Member");
+    var chat = req.body;
+    Chat.removeMember(chat, function(err, data) {
+        res.send({
+            error: err,
+        })
+    })
+}
+
 var chat_controller = {
     create_group_chat: createGroupChat,
     add_member: addMember,
+    delete_member: deleteMember,
     add_message: addMessage,
     get_all_group_chat: getAllGroupChat,
     get_history: getHistory,

@@ -27,9 +27,15 @@ var graphTable_create = function(edges, cb) {
     });
 }
 
+var grathTable_getAll = function(cb) {
+    console.log("Graph Table: get all");
+    Graph.scan().loadAll().exec(cb);
+}
+
 var graphTable = {
     deleteTable: graphTable_deleteTable,
     create: graphTable_create,
+    getAll: grathTable_getAll
 }
 
 module.exports = graphTable;

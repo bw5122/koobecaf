@@ -18,4 +18,5 @@ router.delete('/deletefriend', friend_ctrl.delete_friend);
 
 router.get('/generaterecommendation', recommendation_ctrl.create);
 router.get('/getrecommendation/:userID', recommendation_ctrl.get_recommendation);
+router.get('/exportcsv', recommendation_ctrl.export_csv);
 module.exports = router;
