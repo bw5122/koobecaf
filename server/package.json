@@ -16,6 +16,7 @@
         "cookie-parser": "^1.4.3",
         "crypto-js": "^3.1.9-1",
         "dynamodb": "^1.1.2",
+        "dynamodb-csv": "0.0.1",
         "dynamodb-marshaler": "^2.0.0",
         "ejs": "^2.6.1",
         "express": "^4.16.4",
@@ -29,6 +30,7 @@
         "passport": "^0.4.0",
         "passport-local": "^1.0.0",
         "path": "^0.12.7",
+        "s3": "^4.4.0",
         "socket.io": "^2.2.0",
         "util": "^0.11.1",
         "uuid": "^3.3.2"

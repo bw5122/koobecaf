@@ -6,8 +6,8 @@ aws.config.loadFromPath('../../config.json');
 // aws.config.update({region:'us-east-1'});
 
 // Create the parameters for calling createBucket
-var photoBucket = "koobecaf-user-photo-copy";
-var imageBucket = "koobecaf-post-image-copy";
+var photoBucket = "koobecaf-user-photo";
+var imageBucket = "koobecaf-post-image";
 
 var photoBucketParamsPhoto = {
     Bucket: photoBucket

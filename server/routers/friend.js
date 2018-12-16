@@ -3,7 +3,7 @@ var router = express.Router();
 
 var friend_ctrl = require('../controllers/relation');
 var graph_ctrl = require('../controllers/graph');
-
+var recommendation_ctrl = require('../controllers/recommendation');
 router.get('/getfriend/:userID', friend_ctrl.get_friend);
 router.post('/sendfriendrequest', friend_ctrl.send_friend_request);
 router.get('/getfriendrequest/:userID', friend_ctrl.get_friend_request);
@@ -13,5 +13,9 @@ router.get('/generaterelationgraph', graph_ctrl.generate_graph);
 router.get('/visualizer/center/:userID', graph_ctrl.visualize_center);
 router.get('/visualizer/friend/:userID/:friendID', graph_ctrl.visualize_morefriend);
 router.get('/visualizer/:userID', graph_ctrl.visualizer);
+
 router.delete('/deletefriend', friend_ctrl.delete_friend);
+
+router.get('/generaterecommendation', recommendation_ctrl.create);
+router.get('/getrecommendation/:userID', recommendation_ctrl.get_recommendation);
 module.exports = router;

@@ -385,6 +385,15 @@ async function addUserToPosts(posts, callback) {
         }, cb);
         //add name to postBy
         async function forPost(forPost_cb) {
+            if (post.creator) {
+                console.log('Has Creator!!!')
+                User.getInfo(post.creator, function(err, data) {
+                    if (data.Count > 0) {
+                        users[data.Items[0].attrs.userID] = data.Items[0].attrs;
+                        post['creator'] = data.Items[0].attrs;
+                    }
+                })
+            }
             if (users[post.postBy]) {
                 post['postBy'] = users[post.postBy];
                 forPost_cb();
@@ -398,6 +407,7 @@ async function addUserToPosts(posts, callback) {
                 })
             }
         }
+
         //add name to all comments
         async function forComments(forComment_cb) {
             if (post.comments.length > 0) {
