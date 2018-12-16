@@ -49,7 +49,7 @@ class FriendListRow extends Component {
             primary={this.props.friendInfo.firstname}
           />
           <div className="chat-room">
-            {(this.props.allowRenderChatRoom)? <ChatRoom friendInfo={this.props.friendInfo} chatID={this.props.friendInfo.chatID} userInfo={this.props.userInfo}/> : ''}
+            {(this.props.allowRenderChatRoom)? <ChatRoom type={"individual"} friendInfo={this.props.friendInfo} chatID={this.props.friendInfo.chatID} userInfo={this.props.userInfo}/> : ''}
           </div>
         </ListItem>
           )

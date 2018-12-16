@@ -37,7 +37,7 @@ export default class GroupChatListRow extends Component {
             primary={this.props.chatInfo.name}
           />
           <div className="chat-room">
-            {(this.props.allowRenderChatRoom)? <ChatRoom friendInfo={this.props.chatInfo} chatID={this.props.chatInfo.chatID} userInfo={this.props.userInfo}/> : ''}
+            {(this.props.allowRenderChatRoom)? <ChatRoom type={"group"} friendInfo={this.props.chatInfo} chatID={this.props.chatInfo.chatID} userInfo={this.props.userInfo}/> : ''}
           </div>
         </ListItem>
           )

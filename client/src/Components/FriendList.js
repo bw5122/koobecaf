@@ -124,26 +124,28 @@ class FriendList extends Component {
     );
 
     return(
-      <List className={classes.root} subheader={<li />}>
-          <li key={`section-1`} className={classes.listSection}>
-            <ul className={classes.ul}>
-              <ListSubheader>{'Friends'}</ListSubheader>
-              <div className="friend-list">
-              <ul>{all_friends}</ul>
-              </div>
-            </ul>
-          </li>
-          <li key={`section-2`} className={classes.listSection}>
-            <ul className={classes.ul}>
-              <ListSubheader>{'Group Chats'}</ListSubheader>
-              <div className="group-chat-list">
-              <ul>{all_groupchats}</ul>
-              </div>
-            </ul>
-          </li>
-          {(this.state.friendInfoReady) ? <GroupChatCreator userInfo={this.props.userInfo} friendsInfo={this.state.friends}
-                                                            refreshChats={this.loadGroupChats}/> : ''}
-      </List>
+      <div className={classes.root}>
+        <List subheader={<li />}>
+            <li key={`section-1`} className={classes.listSection}>
+              <ul className={classes.ul}>
+                <ListSubheader>{'Friends'}</ListSubheader>
+                <div className="friend-list">
+                <ul>{all_friends}</ul>
+                </div>
+              </ul>
+            </li>
+            <li key={`section-2`} className={classes.listSection}>
+              <ul className={classes.ul}>
+                <ListSubheader>{'Group Chats'}</ListSubheader>
+                <div className="group-chat-list">
+                <ul>{all_groupchats}</ul>
+                </div>
+              </ul>
+            </li>
+        </List>
+        {(this.state.friendInfoReady) ? <GroupChatCreator className={"group-chat-creator"} userInfo={this.props.userInfo} friendsInfo={this.state.friends}
+                                                        refreshChats={this.loadGroupChats}/> : ''}
+      </div>
         )
     }
 }

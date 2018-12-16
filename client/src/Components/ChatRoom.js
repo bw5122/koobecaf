@@ -116,20 +116,22 @@ class Chatroom extends Component {
         })
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-
-    }
-
     render() {
         const {
             chatHistory
         } = this.state;
+        let info;
+        if(this.props.type == "group")
+          info = this.props.friendInfo.name;
+        else {
+          info = this.props.friendInfo.fristname;
+        }
 
         return ( <
             Launcher className = "chat-popup-window"
             agentProfile = {
                 {
-                    teamName: this.props.friendInfo.firstname,
+                    teamName: info,
                     //imageUrl: this.props.friendInfo.photo
                 }
             }
@@ -138,6 +140,9 @@ class Chatroom extends Component {
             }
             messageList = {
                 this.state.messageList
+            }
+            type = {
+              this.props.type
             }
             friendInfo = {
                 this.props.friendInfo
