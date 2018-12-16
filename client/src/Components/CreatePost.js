@@ -18,7 +18,8 @@ class CreatePost extends Component {
       visitor: this.props.visitor,
       post: "",
       events: [],
-      text: ""
+      text: "",
+      hasImage: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.addEvent = this.addEvent.bind(this);
@@ -74,6 +75,13 @@ class CreatePost extends Component {
       .then(res => res.json())
       .then(
         result => {
+          if (!this.state.hasImage) {
+            this.props.updatePage();
+            return;
+          }
+          this.setState({
+            hasImage: false
+          });
           var formdata = new FormData();
           var imagedata = document.querySelector('input[type="file"]').files[0];
           formdata.append("image", imagedata);
@@ -85,10 +93,10 @@ class CreatePost extends Component {
             .then(res => res.json())
             .then(
               result => {
-                this.props.updatePage();
+                this.props.updatePage(e);
               },
               error => {
-                alert("Error! Please try again.");
+                alert("error (create posts)");
               }
             );
         },
@@ -100,7 +108,8 @@ class CreatePost extends Component {
 
   handlePreview(event) {
     this.setState({
-      preview: URL.createObjectURL(event.target.files[0])
+      preview: URL.createObjectURL(event.target.files[0]),
+      hasImage: true
     });
   }
 
@@ -115,11 +124,19 @@ class CreatePost extends Component {
     switch (this.props.type) {
       case "post":
         placeholder = "What's on your mind?";
+        break;
+
       case "message":
         placeholder = "Say something to your friend.";
+        break;
     }
+    const seg_style = {
+      width: "60%",
+      height: "inherit"
+    };
+
     return (
-      <Segment style={{ width: "62%" }}>
+      <Segment style={seg_style}>
         <Form>
           {tags}
           <Form.Group widths="equal">
