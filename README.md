@@ -74,8 +74,11 @@ Zhiwei Wang zwangcj@seas.upenn.edu
 
 # Tech Stack
 -Front-end: React framework
+
 -Back-end: node.js
+
 -Chat: socket.io
+
 -FriendRecommendation: Mapreduce
 
 # List of source files
