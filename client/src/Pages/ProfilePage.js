@@ -165,6 +165,12 @@ class Profile extends Component {
         {item}
       </Label>
     ));
+    let own;
+    if(this.state.userInfo.userID === this.state.visitor.userID) {
+      own = true;
+    } else {
+      own = false;
+    }
 
     const my_own_posts = this.state.posts.map(post => (
       <Post
@@ -172,6 +178,7 @@ class Profile extends Component {
         userInfo={this.state.userInfo}
         visitor={this.state.visitor}
         updateHomePage={this.updateProfilePage}
+        own = {own}
       />
     ));
     var gender;
