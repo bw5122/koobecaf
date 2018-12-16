@@ -73,6 +73,7 @@ Zhiwei Wang zwangcj@seas.upenn.edu
 5. Go to url localhost:3000 to see the page
 
 # List of source files
+```
 .
 ├── client
 │   ├── README.md
@@ -249,7 +250,7 @@ Zhiwei Wang zwangcj@seas.upenn.edu
     │       └── jit.js
     └── views
         └── friendvisualizer.ejs
- 
+ ```
 
 
 
