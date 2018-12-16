@@ -1,44 +1,75 @@
 # Full name and SEAS login
 Weirong Chen wrchen7@seas.upenn.edu
+
 Han Yan hyan99@seas.upenn.edu
+
 Zhiwei Wang zwangcj@seas.upenn.edu
 
 # Description of feature
 1.Sign up for new accounts
+
 2.Update profile info
+
 3.User Home Page
+
 4.Individual and group Chat(message consistency, emoji support)
+
 5.Friend Recommendations with MapReduce (load data from S3 to dynamoDB)
+
 6.Create and delete posts
+
 7.Add comment
+
 8.Share posts
+
 9.Notification 
+
 10.Friend request(accept and deny)
+
 11.Add / delete friends
+
 12.Send public messages
+
 13.Dynamic search field for users
+
 14.Friendship visualization
+
 15.Login session
+
 16.Auto refresh of home page and profile page (every 10 seconds)
+
 17.Change password
 
 # Extra credit claimed
 1.Notifications (dynamically generated. Activities that can be notified include: post, share, public message, comment, like, new friend, rejected friend request, new profile photo)
+
 2.“Like” buttons (display how many users have liked the post, support “unlike”)
+
 3.Hashtag for posts and events
+
 4.Friend requests with Add/Deny functionality
+
 5.Privacy control: users can only see posts posted by their friends. Public messages only visible to receiver.
+
 6.Profile picture and gender selection
+
 7.Post with images
+
 8.Share posts
+
 9.Search for events
+
 10.View other users’ profile pages
 
 # Instruction for running the project
 1.cd in to “/client”, run ```npm install```
+
 2.cd in to “/server”, run ```npm install```
+
 3. In “/server”, run ```node app``` to start the server
+
 4. In “/client”, run ```npm start``` to start the react server
+
 5. Go to url localhost:3000 to see the page
 
 # List of source files
@@ -223,16 +254,16 @@ Zhiwei Wang zwangcj@seas.upenn.edu
 
 
 # Declaration of the submission
-##Did you personally write _all_ the code you are submitting
+## Did you personally write _all_ the code you are submitting
 (other than code from the course web page)?
   [v] Yes 
   [ ] No
 
-##Did you copy any code from the Internet, or from classmates?
+## Did you copy any code from the Internet, or from classmates?
   [ ] Yes
   [v] No
 
-##Did you collaborate with anyone on this assignment?
+## Did you collaborate with anyone on this assignment?
   [ ] Yes
   [v] No
 
