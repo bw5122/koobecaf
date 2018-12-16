@@ -1,7 +1,6 @@
 var Recommendation = require('../models/recommendation');
 var Graph = require("../models/graph");
 var fs = require('fs');
-var dynamodb_csv = require('dynamodb-csv');
 var User = require('../models/user');
 var s3 = require('s3');
 var config = require('../config.json');
