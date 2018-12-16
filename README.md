@@ -72,6 +72,12 @@ Zhiwei Wang zwangcj@seas.upenn.edu
 
 5. Go to url localhost:3000 to see the page
 
+# Tech Stack
+-Front-end: React framework
+-Back-end: node.js
+-Chat: socket.io
+-FriendRecommendation: Mapreduce
+
 # List of source files
 ```
 .
