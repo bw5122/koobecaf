@@ -12,10 +12,10 @@ import {
 import Navigationbar from "../Components/Navbar";
 
 const options = [
-  { key: "m", text: "Male", value: "male" },
-  { key: "f", text: "Female", value: "female" },
-  { key: "o", text: "Other", value: "other" }
-];
+  { key: 'm', text: 'Male', value: 'M' },
+  { key: 'f', text: 'Female', value: 'F' },
+  { key: 'o', text: 'Other', value: 'O' }
+]
 
 class UpdateProfile extends Component {
   constructor(props) {
@@ -52,8 +52,8 @@ class UpdateProfile extends Component {
     this.setState({ [name]: value });
   }
 
-  handleSelect(option) {
-    const value = option.value;
+  handleSelect(event) {
+    const value = event.target.value;
     alert(value);
     this.setState({
       gender: value
@@ -146,98 +146,65 @@ class UpdateProfile extends Component {
 
   render() {
     //const { value } = this.state;
-    const tags = this.state.interests.map(tag => (
-      <Label onClick={this.handleDelete} value={tag}>
-        {tag}
-        <Icon name="delete" />
-      </Label>
-    ));
+    const tags = (this.state.interests !== undefined) ? (this.state.interests.map((tag) =>
+      <Label onClick={this.handleDelete} value={tag}>{tag}<Icon name='delete' /></Label>
+    )) : []
     return (
-      <div>
-        <Navigationbar
-          width={"100%"}
-          userInfo={this.state.userInfo}
-          display={"block"}
-        />
-        <Grid centered container>
-          <Grid.Row columns={1} />
-          <Grid.Row>
-            <Grid.Column floated="left" width={8}>
-              <Form>
-                <Form.Group widths="equal">
-                  <Form.Input
-                    fluid
-                    name="firstname"
-                    label="First name"
-                    placeholder="First name"
-                    onChange={this.handleChange}
-                  />
-                  <Form.Input
-                    fluid
-                    name="lastname"
-                    label="Last name"
-                    placeholder="Last name"
-                    onChange={this.handleChange}
-                  />
-                  <Form.Select
-                    fluid
-                    name="gender"
-                    label="Gender"
-                    options={options}
-                    placeholder="Gender"
-                    onChange={this.handleSelect.bind(this)}
-                  />
-                </Form.Group>
-                <Form.Group widths="equal">
-                  <Form.Input
-                    fluid
-                    name="email"
-                    label="Email"
-                    placeholder="example@gmail.com"
-                    onChange={this.handleChange}
-                  />
-                  <Form.Input
-                    fluid
-                    name="affiliation"
-                    label="Affiliation"
-                    placeholder="Affiliation"
-                    onChange={this.handleChange}
-                  />
-                </Form.Group>
-                <div>{tags}</div>
-                <br />
-                <Input
-                  type="text"
-                  name="text"
-                  onChange={this.handleChange}
-                  placeholder="What are you interested in?"
-                  action
-                >
-                  <input />
-                  <Button onClick={this.addInterest}>Add</Button>
-                </Input>
-                <Form.Button
-                  style={{ marginTop: "20px" }}
-                  primary
-                  onClick={this.handleUpdate}
-                >
-                  Update
-                </Form.Button>
-              </Form>
-            </Grid.Column>
-            <Grid.Column width={6}>
-              <Form>
-                <Image src={this.state.preview} size="medium" fluid />
-                <Form.Group>
-                  <Form.Input type="file" onChange={this.handlePreview} />
-                  <Form.Button onClick={this.handleUpload}>Upload</Form.Button>
-                </Form.Group>
-              </Form>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </div>
-    );
+      <Grid>
+      <Grid.Row columns={1}>
+        <Navigationbar width={"100%"} userInfo={this.state.userInfo} />
+      </Grid.Row>
+      <Grid.Row>
+        <Grid.Column floated='left' width={8}>
+          <Form>
+            <Form.Group widths='equal'>
+              <Form.Input fluid name='firstname' label='First name' placeholder='First name' onChange={this.handleChange} />
+              <Form.Input fluid name='lastname' label='Last name' placeholder='Last name' onChange={this.handleChange} />
+              <Label>
+                Gender:
+                <select class='semantic ui' value={this.state.gender} name='gender' onChange={this.handleChange} >
+                  <option value="M">Male</option>
+                  <option value="F">Female</option>
+                  <option value="O">Other</option>
+                </select>
+              </Label>
+            </Form.Group>
+            <Form.Group widths='equal'>
+              <Form.Input fluid name='email' label='Email' placeholder='example@gmail.com' onChange={this.handleChange} />
+              <Form.Input fluid name='affiliation' label='Affiliation' placeholder='Affiliation' onChange={this.handleChange} />
+            </Form.Group>
+            <div>{tags}</div><br/>
+            <Input type='text' name='text' onChange={this.handleChange} placeholder='What are you interested in?' action>
+              <input />
+              <Button onClick={this.addInterest}>Add</Button>
+            </Input>
+            <Form.Button primary onClick={this.handleUpdate}>Update</Form.Button>
+          </Form>
+        </Grid.Column>
+        <Grid.Column  width={6}>
+          <Form>
+            <Image src={this.state.preview} size='medium' fluid/>
+            <Form.Group>
+              <Form.Input type='file' onChange={this.handlePreview} />
+              <Form.Button onClick={this.handleUpload}>Upload</Form.Button>
+            </Form.Group>
+          </Form>
+        </Grid.Column>
+      </Grid.Row>
+      <Grid.Row>
+      <Grid.Column>
+        <Form>
+        <Form.Group widths='equal'>
+          <Form.Input fluid name='oldpassword' label='Old password' placeholder='Enter your old password' onChange={this.handleChange} />
+          <Form.Input fluid name='newpassword' label='New password' placeholder='Enter your new password' onChange={this.handleChange} />
+          <Form.Input fluid name='username' label='Username' placeholder='Enter username' onChange={this.handleChange} />
+        </Form.Group>
+        <Form.Button primary onClick={this.changePassword}>Change Password</Form.Button>
+        </Form>
+      </Grid.Column>
+      </Grid.Row>
+      </Grid>
+    )
   }
 }
 

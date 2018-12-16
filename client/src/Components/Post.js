@@ -14,22 +14,23 @@ import Image from "react-image";
 import Moment from "react-moment";
 import CommentComponent from "./Comment";
 import "../Styles/Post.css";
+import profile_default from "../Assets/profile.png";
 
 class Post extends Component {
   constructor(props) {
     super(props);
     console.log(props.info.comments);
     this.state = {
-      comments: props.info.comments,
+      comments: this.props.info.comments,
       newcomment: "",
-      likes: props.info.likes, // list of user names
-      liked: false,
-      tags: props.info.hashtags,
+      likes: this.props.info.likes, // list of user names
+      tags: this.props.info.hashtags,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleNewComment = this.handleNewComment.bind(this);
     this.handleNewLike = this.handleNewLike.bind(this);
     this.handleShare = this.handleShare.bind(this);
+    this.handleDeletePost = this.handleDeletePost.bind(this);
   }
 
   componentDidMount() {
@@ -41,7 +42,23 @@ class Post extends Component {
       }
     });
     this.setState({
-      liked: b
+      liked: b,
+    });
+  }
+
+  componentWillReceiveProps(props) {
+    const id = this.props.userInfo.userID;
+    var b = false;
+    this.state.likes.map(function(like_obj) {
+      if (like_obj.creator.userID == id) {
+        b = true;
+      }
+    });
+    this.setState({
+      comments: this.props.info.comments,
+      liked: b,
+      likes: this.props.info.likes,
+      tags: this.props.info.hashtags
     });
   }
 
@@ -64,7 +81,7 @@ class Post extends Component {
         type: "comment",
         postID: this.props.info.postID,
         content: this.state.newcomment,
-        creator: this.props.userInfo.userID
+        creator: this.props.visitor.userID
       })
     })
       .then(res => res.json())
@@ -73,9 +90,9 @@ class Post extends Component {
           const id = result.data.creator;
           result.data.creator = {
             userID: id,
-            firstname: this.props.userInfo.firstname,
-            lastname: this.props.userInfo.lastname,
-            photo: this.props.userInfo.photo
+            firstname: this.props.visitor.firstname,
+            lastname: this.props.visitor.lastname,
+            photo: this.props.visitor.photo
           };
           if (this.state.comments) {
             this.setState({
@@ -97,6 +114,29 @@ class Post extends Component {
     //no data returned.
   }
 
+  handleDeletePost(e) {
+    e.preventDefault();
+    fetch("/post/deletepost", {
+      method: "delete",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        postID: this.props.info.postID
+      })
+    })
+    .then(res => res.json())
+    .then(res => {
+      if(res.error){
+        this.props.updatePage();
+        //console.log(this.state.post.size);
+        alert("error (delete posts)");
+      } else {
+        this.props.updatePage();
+      }
+    });
+  }
+
   handleShare(e) {
     e.preventDefault();
     fetch("/post/createpost", {
@@ -107,14 +147,14 @@ class Post extends Component {
       body: JSON.stringify({
         type: "share",
         content: this.props.info.content,
-        postBy: this.props.userInfo.userID,
+        postBy: this.props.visitor.userID,
         postID: this.props.info.postID
       })
     })
       .then(res => res.json())
       .then(
         res => {
-          this.props.updateHomePage();
+          this.props.updatePage();
           //console.log(this.state.post.size);
         },
         error => {
@@ -201,7 +241,26 @@ class Post extends Component {
       case "message":
         return <span><Icon name='arrow right' />{this.props.userInfo.firstname} {this.props.userInfo.lastname}</span>;
         break;
-      
+
+      default:
+    }
+  }
+
+  generateFeedUser() {
+    switch (this.props.info.type) {
+      case "post":
+        return (this.props.info.postBy.firstname + ' ' + this.props.info.postBy.lastname);
+        break;
+
+      case "share":
+        //TODO: /post/getonepost
+        return (this.props.info.postBy.firstname + ' ' + this.props.info.postBy.lastname);
+        break;
+
+      case "message":
+        return (this.props.info.creator.firstname + ' ' + this.props.info.creator.lastname);
+        break;
+
       default:
     }
   }
@@ -211,8 +270,8 @@ class Post extends Component {
       ? new Date(this.props.info.createdAt).toLocaleString()
       : "";
     const all_comments = this.state.comments
-      ? this.state.comments.map(ele => (
-          <CommentComponent info={ele} userInfo={this.props.userInfo} />
+      ? this.state.comments.map((ele,index) => (
+          <CommentComponent key={index} info={ele} userInfo={this.props.userInfo} />
         ))
       : [];
     const all_tags = this.state.tags
@@ -222,6 +281,7 @@ class Post extends Component {
       : [];
     console.log(this.state.likes);
     const header = this.generateHeader();
+    const subject = this.generateFeedUser();
     let image;
     if (this.props.info.image)
       image = (
@@ -229,16 +289,29 @@ class Post extends Component {
           <img src={this.props.info.image} alt={this.props.info.postID} />
         </a>
       );
+    let photo;
+    if(this.props.info.type === 'message') {
+      if(this.props.info.creator.hasOwnProperty('photo')) {
+        photo = this.props.info.creator.photo;
+      } else {
+        photo = profile_default;
+      }
+    } else {
+      if(this.props.info.postBy.hasOwnProperty('photo')) {
+        photo = this.props.info.postBy.photo;
+      } else {
+        photo = profile_default;
+      }
+    }
     return (
       <div class="box">
         <Feed size="large">
           <Feed.Event>
-            <Feed.Label image={this.props.info.postBy.photo} />
+            <Feed.Label image={photo} />
             <Feed.Content>
               <Feed.Summary>
                 <Feed.User>
-                  {this.props.info.postBy.firstname}{" "}
-                  {this.props.info.postBy.lastname}
+                  {subject}
                 </Feed.User>{" "}
                 {header}
                 <Feed.Date>{time}</Feed.Date>
@@ -273,6 +346,11 @@ class Post extends Component {
           <Button id="show_comment_button">
             <Icon name="comment" /> Comment
           </Button>
+          {this.props.own &&
+            <Button id="delete_post" onClick={this.handleDeletePost}>
+              <Icon name='delete' /> delete
+            </Button>
+          }
           <Comment.Group>
             <Header as="h3" dividing>
               Comments
