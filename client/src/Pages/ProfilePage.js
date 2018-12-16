@@ -27,6 +27,21 @@ class Profile extends Component {
     this.navigateToUpdateProfile = this.navigateToUpdateProfile.bind(this);
   }
 
+  refreshPage() {
+    fetch("/post/getownpost/" + this.state.userInfo.userID, {
+      method: "GET"
+    })
+      .then(res => res.json())
+      .then(res =>{
+        if(res.error) {
+          alert('error: refresh page')
+        } else {
+          this.setState({posts: res.data},
+          () => console.log(this.state.posts))
+        }
+      });
+  }
+
   componentDidMount() {
     fetch("/user/getprofile/" + this.state.userInfo.userID, {
       method: "GET"
@@ -59,6 +74,12 @@ class Profile extends Component {
           alert("Error (loading posts)! Please try again.");
         }
       );
+
+    this.interval = setInterval(() => this.refreshPage(), 5000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   handlePhotoUpload = e => {
@@ -115,19 +136,21 @@ class Profile extends Component {
     if (this.state.hasOwnProperty("photo")) {
       photo = (
         <Image
+          name="users"
+          circular
           size="medium"
+          centered
           src={this.state.photo}
-          className="profile_photo"
-          alt="profile_photo"
         />
       );
     } else {
       photo = (
         <Image
+          name="users"
+          circular
           size="medium"
+          centered
           src={profile_default}
-          className="profile_photo"
-          alt="profile_photo"
         />
       );
     }
@@ -147,6 +170,7 @@ class Profile extends Component {
       <Post
         info={post}
         userInfo={this.state.userInfo}
+        visitor={this.state.visitor}
         updateHomePage={this.updateProfilePage}
       />
     ));
@@ -164,13 +188,7 @@ class Profile extends Component {
           <Grid>
             <Grid.Column width={1} />
             <Grid.Column width={4}>
-              <Image
-                name="users"
-                circular
-                size="medium"
-                centered
-                src={profile_default}
-              />
+              {photo}
             </Grid.Column>
             <Grid.Column width={1} />
             <Grid.Column width={4}>
@@ -185,12 +203,9 @@ class Profile extends Component {
               <Button primary onClick={this.navigateToUpdateProfile}>
                 Add Friend
               </Button>
-              <Button
-                disabled={disableUpload}
-                onClick={this.navigateToUpdateProfile}
-              >
-                Update Profile
-              </Button>
+              {this.state.userInfo.userID === this.state.visitor.userID &&
+                <Button onClick={this.navigateToUpdateProfile}>Update Profile</Button>
+              }
             </Grid.Column>
             <Grid.Column width={2} />
           </Grid>
@@ -205,7 +220,9 @@ class Profile extends Component {
           />
           {my_own_posts}
         </div>
+
       </div>
+
     );
   }
 }
