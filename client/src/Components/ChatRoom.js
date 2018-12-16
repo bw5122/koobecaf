@@ -89,7 +89,7 @@ class Chatroom extends Component {
     }
 
     createSocket() {
-        this.state.socket = io("http://localhost:5000", {
+        this.state.socket = io("http://nets212-14-koobecaf.us-east-1.elasticbeanstalk.com", {
             query: {
                 chatID: this.state.chatID,
             },
@@ -123,14 +123,14 @@ class Chatroom extends Component {
         } = this.state;
 
         var teamName;
-        if(this.props.type == "group")
-          teamName = this.props.friendInfo.name;
+        if (this.props.type == "group")
+            teamName = this.props.friendInfo.name;
         else {
-          console.log("individual type!")
-          teamName = this.props.friendInfo.firstname;
+            console.log("individual type!")
+            teamName = this.props.friendInfo.firstname;
         }
 
-        console.log("teamname: "+teamName);
+        console.log("teamname: " + teamName);
 
         return ( <
             Launcher className = "chat-popup-window"
@@ -147,7 +147,7 @@ class Chatroom extends Component {
                 this.state.messageList
             }
             type = {
-              this.props.type
+                this.props.type
             }
 
             friendInfo = {

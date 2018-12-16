@@ -36,12 +36,17 @@ class Home extends Component {
       method: "GET"
     })
       .then(res => res.json())
-      .then(res =>{
-        if(res.error) {
-          alert('error: refresh page')
+      .then(res => {
+        if (res.error) {
+          alert("error: refresh page");
         } else {
-          this.setState({posts: res.data, refreshFriends: this.state.refreshFriends++},
-          () => console.log(this.state.posts))
+          this.setState(
+            {
+              posts: res.data,
+              refreshFriends: this.state.refreshFriends++
+            },
+            () => console.log(this.state.posts)
+          );
         }
       });
   }
@@ -54,10 +59,10 @@ class Home extends Component {
     });
   }
 
-  updateFriendList(){
+  updateFriendList() {
     this.setState({
       refreshFriends: this.state.refreshFriends++
-    })
+    });
   }
 
   handleSendFriendRequest(e) {
@@ -148,7 +153,7 @@ class Home extends Component {
           alert("error (get all post)");
         }
       );
-      this.interval = setInterval(() => this.refreshPage(), 10000);
+    this.interval = setInterval(() => this.refreshPage(), 10000);
   }
 
   componentWillUnmount() {
@@ -158,14 +163,14 @@ class Home extends Component {
   updateHomePage() {
     this.setState({
       isLoading: true,
-      posts: [],
+      posts: []
     });
     fetch("/post/getallpost/" + this.state.userInfo.userID, {
       method: "GET"
     })
       .then(res => res.json())
-      .then( res => {
-        if(res.error) {
+      .then(res => {
+        if (res.error) {
           console.log(res.error);
           alert("error (get all post)");
         } else {
@@ -175,7 +180,6 @@ class Home extends Component {
           });
         }
       });
-
   }
 
   handleURL() {
@@ -192,10 +196,10 @@ class Home extends Component {
     })
       .then(res => res.json())
       .then(res => {
-        if(res.error) {
-          alert('csv error')
+        if (res.error) {
+          alert("csv error");
         } else {
-          alert('csv success')
+          alert("csv success");
         }
       });
   }
@@ -206,10 +210,10 @@ class Home extends Component {
     })
       .then(res => res.json())
       .then(res => {
-        if(res.error) {
-          alert('graph error')
+        if (res.error) {
+          alert("graph error");
         } else {
-          alert('graph success')
+          alert("graph success");
         }
       });
   }
@@ -229,47 +233,47 @@ class Home extends Component {
     ));
     return (
       <div className="homepage">
-
-      <VisitorContext.Provider value={this.state.userInfo} >
-
-        <Navigationbar updateFriendList={this.updateFriendList} userInfo={this.state.userInfo} />
-
-        <Dimmer active={this.state.isLoading} inverted>
-          <Loader> Loading </Loader>{" "}
-        </Dimmer>{" "}
-        <div className="content">
-          <h3>
-            {" "}
-            This is {this.state.userInfo.firstname}{" "}
-            home page!{" "}
-          </h3>{" "}
-          <div className="posts">
-
-            <CreatePost userInfo={this.state.userInfo} type='post' visitor={this.state.userInfo} updatePage={this.updateHomePage}/>
-
-            <div className="oldposts">
-              {" "}
-              {all_posts}{" "}
+        <VisitorContext.Provider value={this.state.userInfo}>
+          <Navigationbar
+            updateFriendList={this.updateFriendList}
+            userInfo={this.state.userInfo}
+          />
+          <Dimmer active={this.state.isLoading} inverted>
+            <Loader> Loading </Loader>{" "}
+          </Dimmer>{" "}
+          <div className="content">
+            <h3> This is {this.state.userInfo.firstname} home page! </h3>{" "}
+            <div className="posts">
+              <CreatePost
+                userInfo={this.state.userInfo}
+                type="post"
+                visitor={this.state.userInfo}
+                updatePage={this.updateHomePage}
+              />
+              <div className="oldposts"> {all_posts} </div>{" "}
             </div>{" "}
           </div>{" "}
-        </div>{" "}
-
-        <FriendList userInfo={this.state.userInfo} />{" "}
-
-
-
-      </VisitorContext.Provider>
+          <FriendList userInfo={this.state.userInfo} />{" "}
+        </VisitorContext.Provider>{" "}
         <a
           target="_blank"
           href={
-            "http://localhost:5000/visualizer/" + this.state.userInfo.userID
+            "http://nets212-14-koobecaf.us-east-1.elasticbeanstalk.com/visualizer/" +
+            this.state.userInfo.userID
           }
         >
-          See Friend Visualization
-        </a><br/>
-        <Button color='red' onClick={this.handleCSV.bind(this)}>CSV</Button>
-        <Button color='red' onClick={this.handleGraph.bind(this)}>Graph</Button>
-        <FriendRecommendation userInfo={this.state.userInfo} />
+          See Friend Visualization{" "}
+        </a>
+        <br />
+        <Button color="red" onClick={this.handleCSV.bind(this)}>
+          {" "}
+          CSV{" "}
+        </Button>{" "}
+        <Button color="red" onClick={this.handleGraph.bind(this)}>
+          {" "}
+          Graph{" "}
+        </Button>{" "}
+        <FriendRecommendation userInfo={this.state.userInfo} />{" "}
       </div>
     );
   }

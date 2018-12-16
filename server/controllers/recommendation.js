@@ -4,7 +4,7 @@ var fs = require('fs');
 var dynamodb_csv = require('dynamodb-csv');
 var User = require('../models/user');
 var s3 = require('s3');
-var config = require('../../../config.json');
+var config = require('../config.json');
 var client = s3.createClient({
     maxAsyncS3: 20,
     s3RetryCount: 3,

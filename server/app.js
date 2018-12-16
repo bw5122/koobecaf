@@ -1,11 +1,8 @@
-// MODE
-const MODE = "DEV";
-
 // Include the cluster module
 var cluster = require('cluster');
 
 // Code to run if we're in the master process
-if (MODE != 'DEV' && cluster.isMaster) {
+if (cluster.isMaster) {
 
     // Count the machine's CPUs
     var cpuCount = require('os').cpus().length;
@@ -28,7 +25,7 @@ if (MODE != 'DEV' && cluster.isMaster) {
 } else {
     var express = require('express');
     var app = express();
-    var port = process.env.PORT || 5000;
+    var port = process.env.PORT || 3000;
     var path = require('path');
     var http = require('http').Server(app);
     var io = require('socket.io')(http);
@@ -52,7 +49,7 @@ if (MODE != 'DEV' && cluster.isMaster) {
     }));
     app.use(passport.initialize());
     app.use(passport.session());
-    app.use(express.static(path.join(__dirname, '/build')));
+    app.use('/', express.static(path.join(__dirname, '/build')));
     app.use('/static', express.static('static'))
         /* for user login */
     var home_ctrl = require('./controllers/home');
