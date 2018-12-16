@@ -1,0 +1,107 @@
+## Input/output Detail
+-A sample input file is shown in "/in"
+-A sample output file is shown in "/"
+
+## Detail of all stages of the Mapreduce job
+###init
+-Mapper
+input:	lineno	<interest/affiliation, userID, type>
+	lineno	<userID, interest/affiliation, type>
+	lineno	<userID A, userID B, type>
+	lineno	<userID B, userID A, type>
+output:	userID/int/aff, idType	<userID/interest/affliatoin, type>
+
+-Reducer
+input:	userID/int/aff,idType	ajacency list: [<userID/interest/affliatoin, type>]
+output:	userID/int/aff,idType	ajacency list: [<userID/interest/affliatoin, type>]  \t weightsList: [<userID/int/aff,type,weight=0>]
+
+###iter
+-Mapper1
+input:	userID/int/aff; idType	ajacency list: [<userID/interest/affliatoin, type>]  \t weightsList: [userID/int/aff, type, weight]
+opearations:
+1. go through the weightsList, find the one with the same ID, if it's user type, then add weight 1 to it	
+2. for each vertex in adjacency list, send weights to them form each in-degree source	
+		
+output:	receiver(<userID/interest/aff, idType>)	<userID/int/aff, added weight, type>
+	sender(<userID/interest/aff, idType>)	"adj" + "\t" + ajacency list: [<userID/interest/affliatoin, type>] 
+
+-Reducer1
+input:	userID/int/aff; idType	乱序：ajacency list: [<userID/interest/affliatoin, type>]  weightsList: [userID/int/aff, type, weight,]
+operations:
+1. use hashtable to calculate the sum of weight from each source	
+2. filter out the adj list through traversing	
+output:	userID/int/aff, idType	ajacency list: [<userID/interest/affliatoin, type>]  \t weightsList: [<userID/int/aff, type, weight>]
+
+-Mapper2 (Normalization)
+input:	userID/int/aff, idType	ajacency list: [<userID/interest/affliatoin, type>]  \t weightsList: [<userID/int/aff, type, weight,>]
+Opeation:
+1. Inform every vertex in my weight list what's the weight I get from them right now	
+2. Keep the ajacency list	
+		
+output:	for each vertex in weightsList send:
+		userID/int/aff, type	target vertex <userID/int/aff, weight, type>
+	target vertex <userID/int/aff,type>	ajacency list: [<userID/interest/affliatoin, type>]
+
+
+-Reducer2 (Normalization)
+input:	userID/int/aff, type	all vertexes who received weights List: [<userID/int/aff, type, weight>]，ajacency list: [<userID/interest/affliatoin, type>] 
+operations:	
+1. sum all the weights from all vertex list and normalize them	
+2. send back all the weights info to the target vertexes	
+3. send the adj list of the source vertex	
+
+output:	target vertex <userID/int/aff,type>	source: <userID/int/aff, type, weight>
+	sender vertex <userID/int/aff,type>	ajacency list: [<userID/interest/affliatoin, type>]
+
+-Mapper3
+input:	target vertex <userID/int/aff,type>	source: <userID/int/aff, type, weight>
+	sender vertex <userID/int/aff,type>	ajacency list: [<userID/interest/affliatoin, type>]
+output:	target vertex <userID/int/aff,type>	source: <userID/int/aff, type, weight>
+	sender vertex <userID/int/aff,type>	ajacency list: [<userID/interest/affliatoin, type>]
+
+-Reducer3
+input:	userID/int/aff; idType	乱序：ajacency list: [<userID/interest/affliatoin, type>]  weightsList: [userID/int/aff, type, weight]
+operations:
+1. filter out the adj list through traversing	
+2. Reforming the weights list together	
+
+output:	userID/int/aff; idType	ajacency list: [<userID/interest/affliatoin, type>]  \t weightsList: [userID/int/aff, type, weight]
+
+
+###diff
+-Mapper1
+input:	userID/int/aff; idType	ajacency list: [<userID/interest/affliatoin, type>]  \t weightsList: [userID/int/aff, type, weight]
+output:	userID/int/aff; idType	weightsList: [userID/int/aff, type, weight]
+
+-Reducer1
+input	userID/int/aff; idType	two weightsList: [userID/int/aff, type, weight]
+operations:	
+1. use hashtable to calculate diff of each source	
+2. findout the maximum diff	
+output:	dummy	maximum diff
+
+-Mapper2
+input:	userID/int/aff; idType	[userID/int/aff, type, maxDiff]
+output:	dummy	Maxdiff
+
+-Reducer2
+input:	dummy	list of max diff
+output:	max diff	
+(maximum diff is set to 0.01 here)
+
+
+###finish
+-Mapper
+input:	userID/int/aff; idType	ajacency list: [<userID/interest/affliatoin, type>]  \t weightsList: [userID/int/aff, type, weight]
+operation:
+1. eliminiate all int/aff type vertexes, not sent them to reducer
+
+-Reducer
+input:	target vertex <userID/int/aff,type>	list of vertexes who get weights from the target: <userID, weight>
+operation: 
+1. filter out existing friendships	
+2. sort the weights
+output:	userID	list of userID (recommended friends)
+
+
+	
