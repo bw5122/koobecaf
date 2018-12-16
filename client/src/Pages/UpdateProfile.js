@@ -12,17 +12,10 @@ import {
 import Navigationbar from "../Components/Navbar";
 
 const options = [
-<<<<<<< HEAD
   { key: 'm', text: 'Male', value: 'M' },
   { key: 'f', text: 'Female', value: 'F' },
   { key: 'o', text: 'Other', value: 'O' }
 ]
-=======
-  { key: "m", text: "Male", value: "male" },
-  { key: "f", text: "Female", value: "female" },
-  { key: "o", text: "Other", value: "other" }
-];
->>>>>>> origin/master
 
 class UpdateProfile extends Component {
   constructor(props) {
@@ -153,7 +146,6 @@ class UpdateProfile extends Component {
 
   render() {
     //const { value } = this.state;
-<<<<<<< HEAD
     const tags = (this.state.interests !== undefined) ? (this.state.interests.map((tag) =>
       <Label onClick={this.handleDelete} value={tag}>{tag}<Icon name='delete' /></Label>
     )) : []
@@ -213,100 +205,6 @@ class UpdateProfile extends Component {
       </Grid.Row>
       </Grid>
     )
-=======
-    const tags = this.state.interests.map(tag => (
-      <Label onClick={this.handleDelete} value={tag}>
-        {tag}
-        <Icon name="delete" />
-      </Label>
-    ));
-    return (
-      <div>
-        <Navigationbar
-          width={"100%"}
-          userInfo={this.state.userInfo}
-          display={"block"}
-        />
-        <Grid centered container>
-          <Grid.Row columns={1} />
-          <Grid.Row>
-            <Grid.Column floated="left" width={8}>
-              <Form>
-                <Form.Group widths="equal">
-                  <Form.Input
-                    fluid
-                    name="firstname"
-                    label="First name"
-                    placeholder="First name"
-                    onChange={this.handleChange}
-                  />
-                  <Form.Input
-                    fluid
-                    name="lastname"
-                    label="Last name"
-                    placeholder="Last name"
-                    onChange={this.handleChange}
-                  />
-                  <Form.Select
-                    fluid
-                    name="gender"
-                    label="Gender"
-                    options={options}
-                    placeholder="Gender"
-                    onChange={this.handleSelect.bind(this)}
-                  />
-                </Form.Group>
-                <Form.Group widths="equal">
-                  <Form.Input
-                    fluid
-                    name="email"
-                    label="Email"
-                    placeholder="example@gmail.com"
-                    onChange={this.handleChange}
-                  />
-                  <Form.Input
-                    fluid
-                    name="affiliation"
-                    label="Affiliation"
-                    placeholder="Affiliation"
-                    onChange={this.handleChange}
-                  />
-                </Form.Group>
-                <div>{tags}</div>
-                <br />
-                <Input
-                  type="text"
-                  name="text"
-                  onChange={this.handleChange}
-                  placeholder="What are you interested in?"
-                  action
-                >
-                  <input />
-                  <Button onClick={this.addInterest}>Add</Button>
-                </Input>
-                <Form.Button
-                  style={{ marginTop: "20px" }}
-                  primary
-                  onClick={this.handleUpdate}
-                >
-                  Update
-                </Form.Button>
-              </Form>
-            </Grid.Column>
-            <Grid.Column width={6}>
-              <Form>
-                <Image src={this.state.preview} size="medium" fluid />
-                <Form.Group>
-                  <Form.Input type="file" onChange={this.handlePreview} />
-                  <Form.Button onClick={this.handleUpload}>Upload</Form.Button>
-                </Form.Group>
-              </Form>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </div>
-    );
->>>>>>> origin/master
   }
 }
 
