@@ -190,7 +190,7 @@ class Home extends Component {
         userInfo={this.state.userInfo}
         visitor={this.state.userInfo}
         updatePage={this.updateHomePage}
-        own={true}
+        own={post.postBy.userID === this.state.userInfo.userID}
       />
     ));
     return (
