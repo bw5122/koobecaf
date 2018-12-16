@@ -140,7 +140,7 @@ class Home extends Component {
           alert("error (get all post)");
         }
       );
-      //this.interval = setInterval(() => this.refreshPage(), 5000);
+      this.interval = setInterval(() => this.refreshPage(), 10000);
   }
 
   componentWillUnmount() {
@@ -176,6 +176,34 @@ class Home extends Component {
     })
       .then(res => res.json())
       .then(res => {}, error => {});
+  }
+
+  handleCSV() {
+    fetch("/friend/exportCSV", {
+      method: "GET"
+    })
+      .then(res => res.json())
+      .then(res => {
+        if(res.error) {
+          alert('csv error')
+        } else {
+          alert('csv success')
+        }
+      });
+  }
+
+  handleGraph() {
+    fetch("/friend/generaterelationgraph", {
+      method: "GET"
+    })
+      .then(res => res.json())
+      .then(res => {
+        if(res.error) {
+          alert('graph error')
+        } else {
+          alert('graph success')
+        }
+      });
   }
 
   navigateToProfile() {}
@@ -219,7 +247,7 @@ class Home extends Component {
         </div>{" "}
         <FriendList userInfo={this.state.userInfo} />{" "}
 
-        <Button color='red' onClick={this.handleURL}>Test</Button>
+
 
       </VisitorContext.Provider>
         <a
@@ -229,7 +257,9 @@ class Home extends Component {
           }
         >
           See Friend Visualization
-        </a>
+        </a><br/>
+        <Button color='red' onClick={this.handleCSV.bind(this)}>CSV</Button>
+        <Button color='red' onClick={this.handleGraph.bind(this)}>Graph</Button>
         <FriendRecommendation userInfo={this.state.userInfo} />
       </div>
     );
