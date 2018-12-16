@@ -392,20 +392,35 @@ async function addUserToPosts(posts, callback) {
                         users[data.Items[0].attrs.userID] = data.Items[0].attrs;
                         post['creator'] = data.Items[0].attrs;
                     }
-                })
-            }
-            if (users[post.postBy]) {
-                post['postBy'] = users[post.postBy];
-                forPost_cb();
-            } else {
-                User.getInfo(post.postBy, function(err, data) {
-                    if (data.Count > 0) {
-                        users[data.Items[0].attrs.userID] = data.Items[0].attrs;
-                        post['postBy'] = data.Items[0].attrs;
+                    if (users[post.postBy]) {
+                        post['postBy'] = users[post.postBy];
                         forPost_cb();
+                    } else {
+                        User.getInfo(post.postBy, function(err, data) {
+                            if (data.Count > 0) {
+                                users[data.Items[0].attrs.userID] = data.Items[0].attrs;
+                                post['postBy'] = data.Items[0].attrs;
+                                forPost_cb();
+                            }
+                        })
                     }
                 })
+
+            } else {
+                if (users[post.postBy]) {
+                    post['postBy'] = users[post.postBy];
+                    forPost_cb();
+                } else {
+                    User.getInfo(post.postBy, function(err, data) {
+                        if (data.Count > 0) {
+                            users[data.Items[0].attrs.userID] = data.Items[0].attrs;
+                            post['postBy'] = data.Items[0].attrs;
+                            forPost_cb();
+                        }
+                    })
+                }
             }
+
         }
 
         //add name to all comments
