@@ -33,6 +33,8 @@ var MessageList = function (_Component) {
 
   MessageList.prototype.render = function render() {
     var _this2 = this;
+    console.log("Message List", this.props.imageUrl);
+    var images = this.props.imageUrl;
 
     return _react2.default.createElement(
       'div',
@@ -40,7 +42,7 @@ var MessageList = function (_Component) {
           return _this2.scrollList = el;
         } },
       this.props.messages.map(function (message, i) {
-        return _react2.default.createElement(_Messages2.default, { message: message, key: i });
+        return _react2.default.createElement(_Messages2.default, { message: message, key: i, photos: images });
       })
     );
   };

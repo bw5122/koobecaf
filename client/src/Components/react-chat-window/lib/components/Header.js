@@ -49,12 +49,6 @@ var Header = function (_Component) {
         { className: 'sc-header--close-button', onClick: this.props.onClose },
         _react2.default.createElement('img', { src: _closeIcon2.default, alt: '' })
       ),
-
-      _react2.default.createElement(
-        'div',
-        { className: 'sc-header--add-button', onClick: this.props.onAdd },
-        _react2.default.createElement('img', { src: _addIcon2.default, alt: '' })
-      ),
     )
   }
 

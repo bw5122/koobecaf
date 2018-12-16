@@ -94,6 +94,7 @@ var Launcher = function (_Component) {
         onUserInputSubmit: this.props.onMessageWasSent,
         agentProfile: this.props.agentProfile,
         isOpen: isOpen,
+        friendInfo: this.props.friendInfo,
         chatID: this.props.chatID,
         onClose: this.handleClick.bind(this),
         onAdd: this.handleAdd.bind(this),

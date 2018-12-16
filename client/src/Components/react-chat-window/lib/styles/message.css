@@ -1,7 +1,7 @@
 .sc-message {
   width: 300px;
   margin: auto;
-  padding-bottom: 15px;
+  padding-bottom: 25px;
   display: flex;
 }
 
@@ -10,12 +10,18 @@
   display: flex;
 }
 
-.sc-message--username{
+.sc-message--username--sent{
+  color: #e0e0eb;;
+  position: relative;
+  top: -15px;
+  left: 0px;
+}
+
+.sc-message--username--received{
   color: #e0e0eb;;
   position: relative;
   top: -15px;
   right: 0px;
-  left: 0px;
 }
 
 .sc-message--content.sent {
@@ -59,6 +65,8 @@
   color: #263238;
   background-color: #f4f7f9;
   margin-right: 40px;
+  left: -25%;
+  position: relative;
 }
 
 .sc-message--emoji {

@@ -188,6 +188,7 @@ class Navigationbar extends Component {
                     <FriendRequest
                       info={option}
                       userInfo={this.state.userInfo}
+                      updateFriendList={this.props.updateFriendList}
                     />{" "}
                   </Dropdown.Item>
                 ))}
