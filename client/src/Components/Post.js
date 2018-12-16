@@ -253,7 +253,7 @@ class Post extends Component {
 
       case "share":
         //TODO: /post/getonepost
-        return (this.props.info.creator.firstname + ' ' + this.props.info.creator.lastname);
+        return (this.props.info.postBy.firstname + ' ' + this.props.info.postBy.lastname);
         break;
 
       case "message":
@@ -280,6 +280,7 @@ class Post extends Component {
       : [];
     console.log(this.state.likes);
     const header = this.generateHeader();
+    const subject = this.generateFeedUser();
     let image;
     if (this.props.info.image)
       image = (
@@ -295,7 +296,7 @@ class Post extends Component {
             <Feed.Content>
               <Feed.Summary>
                 <Feed.User>
-                  {this.props.info.postBy.firstname} {this.props.info.postBy.lastname}
+                  {subject}
                 </Feed.User>{" "}
                 {header}
                 <Feed.Date>{time}</Feed.Date>

@@ -221,19 +221,6 @@ class Profile extends Component {
           />
           {my_own_posts}
         </div>
-<<<<<<< HEAD
-      <h3 id="name">{this.state.userInfo.firstname} {this.state.userInfo.lastname}</h3>
-      <div className="info">
-        {this.state.data.hasOwnProperty('affiliation') &&
-          <h4>Affiliation: {this.state.data.affiliation}</h4>
-        }
-        {this.state.data.hasOwnProperty('status') &&
-          <h4>Status: {this.state.data.status}</h4>
-        }
-        {this.state.data.hasOwnProperty('birthday') &&
-          <h4>Birthday: {this.state.data.birthday}</h4>
-        }
-        <ul>{list}</ul>
         {this.state.userInfo.userID === this.state.visitor.userID &&
           <Button primary onClick={this.navigateToUpdateProfile}>Update Profile</Button>
         }
@@ -253,8 +240,6 @@ class Profile extends Component {
         </form>{" "} */}
       <CreatePost userInfo={this.state.userInfo} visitor={this.state.visitor} type='message' updatePage={this.updateProfilePage} />
       <div className="posts"><ul>{my_own_posts}</ul></div>
-=======
->>>>>>> origin/master
       </div>
     );
   }
