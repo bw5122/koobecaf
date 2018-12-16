@@ -1,9 +1,9 @@
-##Full name and SEAS login
+# Full name and SEAS login
 Weirong Chen wrchen7@seas.upenn.edu
 Han Yan hyan99@seas.upenn.edu
 Zhiwei Wang zwangcj@seas.upenn.edu
 
-##Description of feature
+# Description of feature
 1.Sign up for new accounts
 2.Update profile info
 3.User Home Page
@@ -22,7 +22,7 @@ Zhiwei Wang zwangcj@seas.upenn.edu
 16.Auto refresh of home page and profile page (every 10 seconds)
 17.Change password
 
-##Extra credit claimed
+# Extra credit claimed
 1.Notifications (dynamically generated. Activities that can be notified include: post, share, public message, comment, like, new friend, rejected friend request, new profile photo)
 2.“Like” buttons (display how many users have liked the post, support “unlike”)
 3.Hashtag for posts and events
@@ -34,14 +34,14 @@ Zhiwei Wang zwangcj@seas.upenn.edu
 9.Search for events
 10.View other users’ profile pages
 
-##Instruction for running the project
+# Instruction for running the project
 1.cd in to “/client”, run ```npm install```
 2.cd in to “/server”, run ```npm install```
 3. In “/server”, run ```node app``` to start the server
 4. In “/client”, run ```npm start``` to start the react server
 5. Go to url localhost:3000 to see the page
 
-##List of source files
+# List of source files
 .
 ├── client
 │   ├── README.md
@@ -222,17 +222,17 @@ Zhiwei Wang zwangcj@seas.upenn.edu
 
 
 
-##Declaration of the submission
-#Did you personally write _all_ the code you are submitting
+# Declaration of the submission
+##Did you personally write _all_ the code you are submitting
 (other than code from the course web page)?
   [v] Yes 
   [ ] No
 
-#Did you copy any code from the Internet, or from classmates?
+##Did you copy any code from the Internet, or from classmates?
   [ ] Yes
   [v] No
 
-#Did you collaborate with anyone on this assignment?
+##Did you collaborate with anyone on this assignment?
   [ ] Yes
   [v] No
 
