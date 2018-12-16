@@ -62,9 +62,9 @@ Zhiwei Wang zwangcj@seas.upenn.edu
 10.View other users’ profile pages
 
 # Instruction for running the project
-1.cd in to “/client”, run ```npm install```
+1. cd in to “/client”, run ```npm install```
 
-2.cd in to “/server”, run ```npm install```
+2. cd in to “/server”, run ```npm install```
 
 3. In “/server”, run ```node app``` to start the server
 
@@ -254,12 +254,11 @@ Zhiwei Wang zwangcj@seas.upenn.edu
 
 
 # Declaration of the submission
-## Did you personally write _all_ the code you are submitting
-(other than code from the course web page)?
+## Did you personally write all the code you are submitting(other than code from the course web page)?
   [v] Yes 
   [ ] No
 
-## Did you copy any code from the Internet, or from classmates?
+## Did you copy any code from the Internet or from classmates?
   [ ] Yes
   [v] No
 
