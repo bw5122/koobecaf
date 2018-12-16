@@ -42,6 +42,23 @@ var Notice = dynamo.define('Notice', {
     }]
 });
 
+var Recommendation = dynamo.define('Recommendation', {
+    hashKey: 'userID',
+    rangeKey: 'objectID',
+    // add the timestamp attributes (updatedAt, createdAt)
+    timestamps: false,
+    schema: {
+        userID: dynamo.types.uuid(),
+        objectID: Joi.string(),
+        weight: Joi.number(),
+    },
+    indexes: [{
+        hashKey: 'userID',
+        rangeKey: 'weight',
+        name: 'userIDIndex',
+        type: 'global',
+    }]
+});
 
 var Post = dynamo.define('Post', {
     hashKey: 'postID',
@@ -188,6 +205,10 @@ dynamo.createTables({
     'Graph': {
         readCapacity: 2,
         writeCapacity: 2,
+    },
+    "Recommendation": {
+        readCapacity: 5,
+        writeCapacity: 5,
     }
 }, function(err) {
     if (err) {
@@ -206,6 +227,7 @@ var db = {
     Message: Message,
     Notice: Notice,
     Graph: Graph,
+    Recommendation: Recommendation,
 }
 
 module.exports = db;
