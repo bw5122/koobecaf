@@ -67,18 +67,13 @@ if (cluster.isMaster) {
     var test_router = require('./routers/test');
     var search_router = require('./routers/search');
 
-    // app.use('/user', passport.authenticationMiddleware(), user_router);
-    // app.use('/chat', passport.authenticationMiddleware(), chat_router);
-    // app.use('/post', passport.authenticationMiddleware(), post_router);
-    // app.use('/friend', passport.authenticationMiddleware(), friend_router);
-    // app.use('/test', passport.authenticationMiddleware(), test_router);
-    // app.use('/search', passport.authenticationMiddleware(), search_router);
-    app.use('/user', user_router);
-    app.use('/chat', chat_router);
-    app.use('/post', post_router);
-    app.use('/friend', friend_router);
-    app.use('/test', test_router);
-    app.use('/search', search_router);
+    app.use('/user', passport.authenticationMiddleware(), user_router);
+    app.use('/chat', passport.authenticationMiddleware(), chat_router);
+    app.use('/post', passport.authenticationMiddleware(), post_router);
+    app.use('/friend', passport.authenticationMiddleware(), friend_router);
+    app.use('/test', passport.authenticationMiddleware(), test_router);
+    app.use('/search', passport.authenticationMiddleware(), search_router);
+
 
 
     /* io code start here */
