@@ -42,6 +42,10 @@ class GroupChatCreationPage2 extends React.Component{
   };
 
   createGroupChat(){
+    if(this.state.name == ""){
+      alert("Group chat name cannot be empty");
+      return;
+    }
     let membersInfo = this.props.selectedValues;
     for(let i=0; i<membersInfo.length; i++)
       membersInfo[i] = membersInfo[i].userID;
@@ -125,7 +129,6 @@ class GroupChatCreationPage2 extends React.Component{
 class GroupChatCreationPage1 extends React.Component {
   constructor(props){
       super(props);
-      console.log("loading simple dialog")
       this.state = {
         checked: [],
       };
@@ -136,6 +139,10 @@ class GroupChatCreationPage1 extends React.Component {
   };
 
   handleNextStep(){
+    if(this.state.checked.length < 2){
+      alert("You must add at least two friends to join the group chat!")
+      return;
+    }
     let data = this.state.checked;
     this.setState({
       checked: []
