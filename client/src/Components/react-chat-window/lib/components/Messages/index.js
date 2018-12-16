@@ -56,7 +56,7 @@ var Message = function (_Component) {
           //  backgroundImage: 'url(' + this.props.message.photo + ')'
             backgroundImage: 'url(' + this.props.photos + ')'
           } }),
-        _react2.default.createElement('div', { className: 'sc-message--username', style: {}},
+        _react2.default.createElement('div', { className: 'sc-message--username--'+contentClassList[1], style: {}},
           this.props.message.firstname
         ),
 
