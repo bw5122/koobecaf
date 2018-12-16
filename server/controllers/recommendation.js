@@ -14,10 +14,10 @@ var client = s3.createClient({
 })
 
 var params_download = {
-    localFile: "../static/hadoop/output.txt",
+    localFile: "./static/hadoop/output.txt",
 
     s3Params: {
-        Bucket: "koobecaf-friendsrecommendation",
+        Bucket: "koobecaf-friendsrecommendation-copy",
         Key: "hadoop/recSampleOutput.txt",
         // other options supported by getObject
         // See: http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#getObject-property
@@ -35,7 +35,7 @@ var create = function(req, res) {
     });
     downloader.on('end', function() {
         console.log("done downloading");
-        fs.readFile('../static/hadoop/output.txt', 'utf8', function(err, contents) {
+        fs.readFile('./static/hadoop/output.txt', 'utf8', function(err, contents) {
             //console.log(contents);
             var recomms = []
             var lines = contents.split('\n');
@@ -83,8 +83,9 @@ var getRecommendation = function(req, res) {
             })
             return;
         }
+
         var IDs = data.Items.map(obj => {
-            return obj.attrs.userID
+            return obj.attrs.objectID
         })
         console.log(IDs);
         User.addUserInfo(IDs, function(users) {
