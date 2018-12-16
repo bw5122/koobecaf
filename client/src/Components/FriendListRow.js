@@ -44,6 +44,29 @@ class FriendListRow extends Component {
     });
   };
 
+  handleDeleteFriend = e => {
+    e.preventDefault();
+    fetch("/friend/deletefriend", {
+      method: "delete",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        userID: this.props.userInfo.userID,
+        objectID: this.props.friendInfo.userID
+      })
+    })
+    .then(res => res.json())
+    .then(res => {
+      if(res.error){
+        alert("error (delete friend)");
+      } else {
+        alert('you have one less friend')
+        //TODO: UPDATE FRIEND LIST
+      }
+    });
+  }
+
   handleClick = event => {
     this.setState({ anchorEl: event.currentTarget });
   };
