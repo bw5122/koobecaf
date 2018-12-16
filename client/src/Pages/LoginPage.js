@@ -15,7 +15,8 @@ class LoginForm extends Component {
       firstname: "",
       lastname: "",
       new_username: "",
-      new_password: ""
+      new_password: "",
+      gender: 'O'
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -99,7 +100,7 @@ class LoginForm extends Component {
 
   handleSignupSubmit = e => {
     e.preventDefault();
-    fetch("/user/signup", {
+    fetch("/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -108,25 +109,24 @@ class LoginForm extends Component {
         username: this.state.new_username,
         password: this.state.new_password,
         firstname: this.state.firstname,
-        lastname: this.state.lastname
+        lastname: this.state.lastname,
+        gender: this.state.gender
       })
     })
       .then(res => res.json())
-      .then(
-        result => {
+      .then(res => {
+        if (res.error) {
+          console.log(res.error);
+          alert("signup failed");
+        } else {
           this.props.history.push({
             pathname: "/home",
             state: {
-              firstname: result.firstname,
-              lastname: result.lastname,
-              userID: result.userID
+              userInfo: res.data,
             }
           });
-        },
-        error => {
-          alert("Error! Please try again.");
         }
-      );
+      });
   };
 
   render() {
@@ -207,6 +207,14 @@ class LoginForm extends Component {
                 onChange={this.handleChange}
                 maxLength="20"
               />
+            </label>{" "}
+            <label>
+              Gender:
+              <select value={this.state.gender} name='gender' onChange={this.handleChange} >
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+                <option value="O">Other</option>
+              </select>
             </label>{" "}
             <input type="submit" className="signup_button" value="Sign Up" />
           </form>{" "}

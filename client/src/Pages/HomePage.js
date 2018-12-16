@@ -25,10 +25,22 @@ class Home extends Component {
     this.handleCreatePost = this.handleCreatePost.bind(this);
     this.homeRef = React.createRef();
     this.updateHomePage = this.updateHomePage.bind(this);
+    this.refreshPage = this.refreshPage.bind(this);
   }
 
   refreshPage() {
-    window.location.reload();
+    fetch("/post/getallpost/" + this.state.userInfo.userID, {
+      method: "GET"
+    })
+      .then(res => res.json())
+      .then(res =>{
+        if(res.error) {
+          alert('error: refresh page')
+        } else {
+          this.setState({posts: res.data},
+          () => console.log(this.state.posts))
+        }
+      });
   }
 
   handleChange(event) {
@@ -127,6 +139,11 @@ class Home extends Component {
           alert("error (get all post)");
         }
       );
+      this.interval = setInterval(() => this.refreshPage(), 5000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   updateHomePage() {
@@ -171,10 +188,11 @@ class Home extends Component {
       <Post
         info={post}
         userInfo={this.state.userInfo}
-        updateHomePage={this.updateHomePage}
+        visitor={this.state.userInfo}
+        updatePage={this.updateHomePage}
+        own={true}
       />
     ));
-
     return (
       <div className="homepage">
 
@@ -188,7 +206,7 @@ class Home extends Component {
         <div className="content">
           <h3>
             {" "}
-            This is {this.state.userInfo.firstname}
+            This is {this.state.userInfo.firstname}{" "}
             home page!{" "}
           </h3>{" "}
           <div className="posts">
@@ -197,7 +215,7 @@ class Home extends Component {
 
             <div className="oldposts">
               {" "}
-              {/* <div>{all_posts}</div> */} {all_posts}{" "}
+              {all_posts}{" "}
             </div>{" "}
           </div>{" "}
         </div>{" "}

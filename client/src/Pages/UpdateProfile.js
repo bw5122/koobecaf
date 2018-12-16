@@ -3,9 +3,9 @@ import { Button, Image, Form, Grid, Label, Input, Icon} from 'semantic-ui-react'
 import Navigationbar from '../Components/Navbar'
 
 const options = [
-  { key: 'm', text: 'Male', value: 'male' },
-  { key: 'f', text: 'Female', value: 'female' },
-  { key: 'o', text: 'Other', value: 'other' }
+  { key: 'm', text: 'Male', value: 'M' },
+  { key: 'f', text: 'Female', value: 'F' },
+  { key: 'o', text: 'Other', value: 'O' }
 ]
 
 class UpdateProfile extends Component {
@@ -45,8 +45,8 @@ class UpdateProfile extends Component {
     this.setState({[name]: value});
   }
 
-  handleSelect(option) {
-    const value = option.value;
+  handleSelect(event) {
+    const value = event.target.value;
     alert(value);
     this.setState({
       gender: value
@@ -164,9 +164,9 @@ class UpdateProfile extends Component {
 
   render() {
     //const { value } = this.state;
-    const tags = this.state.interests.map((tag) =>
+    const tags = (this.state.interests !== undefined) ? (this.state.interests.map((tag) =>
       <Label onClick={this.handleDelete} value={tag}>{tag}<Icon name='delete' /></Label>
-    )
+    )) : []
     return (
       <Grid>
       <Grid.Row columns={1}>
@@ -178,7 +178,14 @@ class UpdateProfile extends Component {
             <Form.Group widths='equal'>
               <Form.Input fluid name='firstname' label='First name' placeholder='First name' onChange={this.handleChange} />
               <Form.Input fluid name='lastname' label='Last name' placeholder='Last name' onChange={this.handleChange} />
-              <Form.Select fluid name='gender' label='Gender' options={options} placeholder='Gender' onChange={this.handleSelect.bind(this)} />
+              <Label>
+                Gender:
+                <select class='semantic ui' value={this.state.gender} name='gender' onChange={this.handleChange} >
+                  <option value="M">Male</option>
+                  <option value="F">Female</option>
+                  <option value="O">Other</option>
+                </select>
+              </Label>
             </Form.Group>
             <Form.Group widths='equal'>
               <Form.Input fluid name='email' label='Email' placeholder='example@gmail.com' onChange={this.handleChange} />

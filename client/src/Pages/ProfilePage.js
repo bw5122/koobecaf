@@ -19,6 +19,21 @@ class Profile extends Component {
     this.navigateToUpdateProfile = this.navigateToUpdateProfile.bind(this);
   }
 
+  refreshPage() {
+    fetch("/post/getownpost/" + this.state.userInfo.userID, {
+      method: "GET"
+    })
+      .then(res => res.json())
+      .then(res =>{
+        if(res.error) {
+          alert('error: refresh page')
+        } else {
+          this.setState({posts: res.data},
+          () => console.log(this.state.posts))
+        }
+      });
+  }
+
   componentDidMount() {
     fetch("/user/getprofile/" + this.state.userInfo.userID, {
       method: "GET",
@@ -122,7 +137,7 @@ class Profile extends Component {
     );
 
     const my_own_posts = this.state.posts.map((post) =>
-      <Post info={post} userInfo={this.state.userInfo} updateHomePage={this.updateProfilePage}/>
+      <Post info={post} userInfo={this.state.userInfo} visitor={this.state.visitor} updateHomePage={this.updateProfilePage}/>
     );
 
     return (
@@ -143,7 +158,10 @@ class Profile extends Component {
           <h4>Birthday: {this.state.data.birthday}</h4>
         }
         <ul>{list}</ul>
-        <Button primary onClick={this.navigateToUpdateProfile}>Update Profile</Button>
+        {this.state.userInfo.userID === this.state.visitor.userID &&
+          <Button primary onClick={this.navigateToUpdateProfile}>Update Profile</Button>
+        }
+
       </div>
       {/*}
         <h2> Upload Photo </h2>
