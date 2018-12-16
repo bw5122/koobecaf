@@ -50,18 +50,21 @@ var ChatWindow = function (_Component) {
   ChatWindow.prototype.render = function render() {
     var messageList = this.props.messageList || [];
     var classList = ["sc-chat-window", this.props.isOpen ? "opened" : "closed"];
+    console.log("chat-window: ", this.props.friendInfo);
     return _react2.default.createElement(
       'div',
       { className: classList.join(' ') },
       _react2.default.createElement(_Header2.default, {
         teamName: this.props.agentProfile.teamName,
-        imageUrl: this.props.agentProfile.imageUrl,
+        friendInfo: this.props.friendInfo,
+        //imageUrl: this.props.agentProfile.imageUrl,
         onClose: this.props.onClose,
         onAdd: this.props.onAdd
       }),
       _react2.default.createElement(_MessageList2.default, {
         messages: messageList,
-        imageUrl: this.props.agentProfile.imageUrl
+        //imageUrl: this.props.agentProfile.imageUrl
+        imageUrl: this.props.friendInfo.photo
       }),
       _react2.default.createElement(_UserInput2.default, { showEmoji: this.props.showEmoji, onSubmit: this.onUserInputSubmit.bind(this) })
     );

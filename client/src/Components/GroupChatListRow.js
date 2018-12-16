@@ -9,6 +9,8 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import ChatRoom from './ChatRoom'
 import '../Styles/FriendList.css'
+import grouchat_default from "../Assets/groupchat.png";
+
 
 
 
@@ -31,7 +33,7 @@ export default class GroupChatListRow extends Component {
       return(
         <ListItem alignItems="flex-start" onClick={this.renderChatRoom}>
           <ListItemAvatar>
-            <Avatar alt="Remy Sharp" src={this.props.chatInfo.photo} />
+            <Avatar alt="Remy Sharp" src={grouchat_default} />
           </ListItemAvatar>
           <ListItemText
             primary={this.props.chatInfo.name}

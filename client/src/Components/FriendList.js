@@ -95,6 +95,10 @@ class FriendList extends Component {
     })
   }
 
+  /*componentWillReceiveProps(props) {
+    this.loadFriendList();
+  }*/
+
   handleChatRoomRender(chatID){
       this.setState({
           chatRoomID: chatID

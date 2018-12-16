@@ -28,7 +28,8 @@ class FriendRequest extends Component {
     .then(res => res.json())
     .then(
       (res) => {
-        alert('You have a new friend!')
+        alert('You have a new friend!');
+        this.props.updateFriendList();
       },
       (error) => {
         console.log(error);
@@ -53,7 +54,7 @@ class FriendRequest extends Component {
     .then(res => res.json())
     .then(
       (res) => {
-      
+
       },
       (error) => {
         console.log(error);

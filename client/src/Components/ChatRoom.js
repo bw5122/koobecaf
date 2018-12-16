@@ -17,7 +17,8 @@ class Chatroom extends Component {
             messageList: [],
             chatID: this.props.chatID,
             socket: "",
-            memberInfo: {}
+            memberInfo: {},
+            teamName: ""
         };
         console.log("constrcutor of chatroom: " + this.state.chatID);
     }
@@ -120,19 +121,23 @@ class Chatroom extends Component {
         const {
             chatHistory
         } = this.state;
-        let info;
+
+        var teamName;
         if(this.props.type == "group")
-          info = this.props.friendInfo.name;
+          teamName = this.props.friendInfo.name;
         else {
-          info = this.props.friendInfo.fristname;
+          console.log("individual type!")
+          teamName = this.props.friendInfo.firstname;
         }
+
+        console.log("teamname: "+teamName);
 
         return ( <
             Launcher className = "chat-popup-window"
             agentProfile = {
                 {
-                    teamName: info,
-                    //imageUrl: this.props.friendInfo.photo
+                    teamName: teamName,
+                    imageUrl: this.props.friendInfo.photo
                 }
             }
             onMessageWasSent = {
@@ -144,6 +149,7 @@ class Chatroom extends Component {
             type = {
               this.props.type
             }
+
             friendInfo = {
                 this.props.friendInfo
             }

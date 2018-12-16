@@ -20,12 +20,14 @@ class Home extends Component {
       friendtags: [],
       reqID: "",
       isLoading: true,
+      refreshFriends: 0
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleCreatePost = this.handleCreatePost.bind(this);
     this.homeRef = React.createRef();
     this.updateHomePage = this.updateHomePage.bind(this);
     this.refreshPage = this.refreshPage.bind(this);
+    this.updateFriendList = this.updateFriendList.bind(this);
   }
 
   refreshPage() {
@@ -37,7 +39,7 @@ class Home extends Component {
         if(res.error) {
           alert('error: refresh page')
         } else {
-          this.setState({posts: res.data},
+          this.setState({posts: res.data, refreshFriends: this.state.refreshFriends++},
           () => console.log(this.state.posts))
         }
       });
@@ -49,6 +51,12 @@ class Home extends Component {
     this.setState({
       [name]: value
     });
+  }
+
+  updateFriendList(){
+    this.setState({
+      refreshFriends: this.state.refreshFriends++
+    })
   }
 
   handleSendFriendRequest(e) {
@@ -198,7 +206,7 @@ class Home extends Component {
 
       <VisitorContext.Provider value={this.state.userInfo} >
 
-        <Navigationbar userInfo={this.state.userInfo} />
+        <Navigationbar updateFriendList={this.updateFriendList} userInfo={this.state.userInfo} />
 
         <Dimmer active={this.state.isLoading} inverted>
           <Loader> Loading </Loader>{" "}
@@ -219,7 +227,7 @@ class Home extends Component {
             </div>{" "}
           </div>{" "}
         </div>{" "}
-        <FriendList userInfo={this.state.userInfo} />{" "}
+        <FriendList updateFriendList={this.updateFriendList} refresh={this.state.refreshFriends} userInfo={this.state.userInfo} />{" "}
         <form
           className="temp"
           onSubmit={this.handleSendFriendRequest.bind(this)}
